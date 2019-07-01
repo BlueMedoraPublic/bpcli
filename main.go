@@ -1,6 +1,6 @@
 package main
 
-import "bpcli/cmd"
+import "github.com/BlueMedoraPublic/bpcli/cmd"
 
 func main() {
 	cmd.Execute()

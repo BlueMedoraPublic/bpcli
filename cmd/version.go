@@ -4,7 +4,7 @@ import (
 	"os"
 	"fmt"
 
-	"bpcli/bindplane"
+	"github.com/BlueMedoraPublic/bpcli/bindplane"
 
 	"github.com/spf13/cobra"
 )

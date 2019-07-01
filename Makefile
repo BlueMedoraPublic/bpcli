@@ -25,10 +25,10 @@ build: clean
 	    -t bpcli:${VERSION} .
 
 	@docker create -ti --name bpcliartifacts bpcli:${VERSION} bash && \
-	    docker cp bpcliartifacts:/build/src/bpcli/bpcli_linux_amd64.zip artifacts/bpcli_linux_amd64.zip && \
-	    docker cp bpcliartifacts:/build/src/bpcli/bpcli_darwin_amd64.zip artifacts/bpcli_darwin_amd64.zip && \
-	    docker cp bpcliartifacts:/build/src/bpcli/bpcli_windows_amd64.zip artifacts/bpcli_windows_amd64.zip && \
-	    docker cp bpcliartifacts:/build/src/bpcli/SHA256SUMS artifacts/SHA256SUMS
+	    docker cp bpcliartifacts:/build/src/github.com/BlueMedoraPublic/bpcli/bpcli_linux_amd64.zip artifacts/bpcli_linux_amd64.zip && \
+	    docker cp bpcliartifacts:/build/src/github.com/BlueMedoraPublic/bpcli/bpcli_darwin_amd64.zip artifacts/bpcli_darwin_amd64.zip && \
+	    docker cp bpcliartifacts:/build/src/github.com/BlueMedoraPublic/bpcli/bpcli_windows_amd64.zip artifacts/bpcli_windows_amd64.zip && \
+	    docker cp bpcliartifacts:/build/src/github.com/BlueMedoraPublic/bpcli/SHA256SUMS artifacts/SHA256SUMS
 
 	# cleanup
 	@docker rm -fv bpcliartifacts &> /dev/null
