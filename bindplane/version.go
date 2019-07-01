@@ -2,4 +2,4 @@ package bindplane
 
 // VERSION const holds the version, and is parsed
 // by the included build.sh script
-const VERSION = "0.1.0-rc2"
+const VERSION = "1.0.0"
