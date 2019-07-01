@@ -1,0 +1,10 @@
+bpcli
+*.zip
+*.SHA256SUMS
+*.json
+*.log
+
+artifacts/
+bpcli_darwin_amd64
+bpcli_linux_amd64
+bpcli_windows_amd64.exe
