@@ -2,7 +2,7 @@
 #
 FROM golang:1.12
 
-WORKDIR /build/src/bpcli
+WORKDIR /build/src/github.com/BlueMedoraPublic/bpcli
 
 ARG bindplane_api_key
 ARG bindplane_live_test
@@ -16,7 +16,7 @@ RUN \
     apt-get update >> /dev/null && \
     apt-get install -y golint zip
 
-ADD . /build/src/bpcli
+ADD . /build/src/github.com/BlueMedoraPublic/bpcli
 
 # for compiling
 RUN go get github.com/mitchellh/gox

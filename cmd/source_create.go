@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 
-	"bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
 	"github.com/spf13/cobra"
 )

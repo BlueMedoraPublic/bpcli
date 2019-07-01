@@ -4,9 +4,9 @@ import (
     "os"
     "errors"
 
-    "bpcli/util/httpclient"
-    "bpcli/bindplane/api"
-    "bpcli/util/uuid"
+    "github.com/BlueMedoraPublic/bpcli/bindplane/api"
+    "github.com/BlueMedoraPublic/bpcli/util/uuid"
+    "github.com/BlueMedoraPublic/bpcli/util/httpclient"
 )
 
 // BindPlane type stores the global configuration

@@ -5,8 +5,8 @@ import (
 	"os"
 	"errors"
 
-	"bpcli/bindplane/sdk"
-	"bpcli/util/uuid"
+	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 
 	"github.com/spf13/cobra"
 )
