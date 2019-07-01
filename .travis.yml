@@ -3,5 +3,5 @@ language: go
 services:
   - docker
 
-before_install:
+script:
   - docker build -t bpcli .
