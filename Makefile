@@ -39,5 +39,8 @@ test:
 lint:
 	golint ./...
 
+fmt:
+	go fmt ./...
+
 clean:
 	$(shell rm -rf artifacts/*)

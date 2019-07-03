@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"os"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
+	"os"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
@@ -35,14 +35,14 @@ func createSource() {
 	}
 
 	/*
-	NOTE: we are sending 'f' ([]byte) to the API, only convert
-	to a struct to perform validation on the object
+		NOTE: we are sending 'f' ([]byte) to the API, only convert
+		to a struct to perform validation on the object
 	*/
 	var s sdk.SourceConfigCreate
-    if err := json.Unmarshal(f, &s); err != nil {
-        fmt.Fprintln(os.Stderr, err.Error())
+	if err := json.Unmarshal(f, &s); err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
-    }
+	}
 	if err := s.Validate(); err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)

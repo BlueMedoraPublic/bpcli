@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,7 @@ func listJobs() {
 	for _, job := range j {
 		if err := job.Print(false); err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
-			os.Exit(1)		
+			os.Exit(1)
 		}
 	}
 }

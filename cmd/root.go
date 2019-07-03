@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"errors"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
@@ -12,17 +12,17 @@ import (
 )
 
 // flags
-var sourceFile     string
+var sourceFile string
 var credentialFile string
-var jsonFmt        bool
+var jsonFmt bool
 
 // uuid flags
-var jobID        string
-var groupID      string
-var collectorID  string
+var jobID string
+var groupID string
+var collectorID string
 var sourceTypeID string
-var sourceID     string
-var credentialID     string
+var sourceID string
+var credentialID string
 var credentialTypeID string
 var sourceTemplateID string
 

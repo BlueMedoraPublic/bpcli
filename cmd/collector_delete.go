@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -17,7 +17,7 @@ var delCollectorCmd = &cobra.Command{
 
 func init() {
 	collectorCmd.AddCommand(delCollectorCmd)
-	delCollectorCmd.Flags().StringVar(&groupID, "group-id", "", "Group ID (default to collector id if not passed)" )
+	delCollectorCmd.Flags().StringVar(&groupID, "group-id", "", "Group ID (default to collector id if not passed)")
 	delCollectorCmd.Flags().StringVar(&collectorID, "id", "", "Collector ID")
 	delCollectorCmd.MarkFlagRequired("id")
 }
@@ -30,5 +30,5 @@ func delCollector() {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
-	fmt.Println("collector deleted:", groupID + "/" + collectorID)
+	fmt.Println("collector deleted:", groupID+"/"+collectorID)
 }
