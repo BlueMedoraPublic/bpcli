@@ -7,6 +7,7 @@ Lightweight command line utility for interacting with the BindPlane public API
 [Bindplane API Documentation](https://docs.bindplane.bluemedora.com/reference#introduction)
 
 [![Build Status](https://travis-ci.com/BlueMedoraPublic/bpcli.svg?branch=master)](https://travis-ci.com/BlueMedoraPublic/bpcli)
+[![Go Report Card](https://goreportcard.com/badge/github.com/BlueMedoraPublic/bpcli)](https://goreportcard.com/report/github.com/BlueMedoraPublic/bpcli)
 
 ## Install
 Download the release zip for your platform, unzip, and place the
