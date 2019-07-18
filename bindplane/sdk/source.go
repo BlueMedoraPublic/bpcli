@@ -179,8 +179,8 @@ func (s SourceConfigCreate) Validate() error {
 	if !uuid.IsUUID(s.CollectorID) {
 		msg = msg + "\ncollector id is invalid"
 	}
-	if len(s.Credentials.Credentials) == 0 {
-		msg = msg + "\ncredentials are not present"
+	if !uuid.IsUUID(s.Credentials.Credentials) {
+		msg = msg + "\ncredentials id is not a valid UUID"
 	}
 	if len(s.Name) == 0 {
 		msg = msg + "\nname is not present"
