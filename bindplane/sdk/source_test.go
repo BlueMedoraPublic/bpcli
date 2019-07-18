@@ -186,7 +186,7 @@ func TestValidate(t *testing.T) {
 func getValidSourceConfigCreate() SourceConfigCreate {
 	var s SourceConfigCreate
 	s.CollectionInterval = 2
-	s.CollectorID = "abc"
+	s.CollectorID = "abcdefAB-0123-4ABC-ab12-CDEF01234567"
 	s.Credentials.Credentials = "abc"
 	s.Name = "abc"
 	s.SourceType = "abc"
