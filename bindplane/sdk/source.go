@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 )
 
 // SourceConfigGet type describes a source configuration
@@ -174,8 +176,8 @@ func (s SourceConfigCreate) Validate() error {
 	if s.CollectionInterval < 1 {
 		msg = msg + "\ncollection interval cannot be less than 1"
 	}
-	if len(s.CollectorID) == 0 {
-		msg = msg + "\ncollector id is not present"
+	if !uuid.IsUUID(s.CollectorID) {
+		msg = msg + "\ncollector id is invalid"
 	}
 	if len(s.Credentials.Credentials) == 0 {
 		msg = msg + "\ncredentials are not present"
