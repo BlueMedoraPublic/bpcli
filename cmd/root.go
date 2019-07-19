@@ -15,6 +15,7 @@ import (
 var sourceFile string
 var credentialFile string
 var jsonFmt bool
+var watch bool
 
 // uuid flags
 var jobID string
