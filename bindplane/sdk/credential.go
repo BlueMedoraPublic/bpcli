@@ -7,12 +7,12 @@ import (
 
 // Credential describes a source credential configuration
 type Credential struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	URL              string      `json:"url"`
-	CredentialTypeID string      `json:"credential_type_id"`
-	Parameters       interface{} `json:"parameters"`
-	Sources []CredentialSource `json:"sources"`
+	ID               string             `json:"id"`
+	Name             string             `json:"name"`
+	URL              string             `json:"url"`
+	CredentialTypeID string             `json:"credential_type_id"`
+	Parameters       interface{}        `json:"parameters"`
+	Sources          []CredentialSource `json:"sources"`
 }
 
 // CredentialSource describes the soure object returned
@@ -42,10 +42,10 @@ type CredentialCreateResponse struct {
 
 // CredentialType describes a credential type object
 type CredentialType struct {
-	ID         string        `json:"id"`
-	Name       string        `json:"name"`
-	Parameters []interface{} `json:"parameters"`
-	Credentials []Credential `json:"credentials"`
+	ID          string        `json:"id"`
+	Name        string        `json:"name"`
+	Parameters  []interface{} `json:"parameters"`
+	Credentials []Credential  `json:"credentials"`
 }
 
 // CredentialTypeTemplate describes a credential type template object
