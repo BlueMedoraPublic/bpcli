@@ -28,6 +28,21 @@ var testSource = strings.TrimRight(`{
   }
 }`, "\r\n")
 
+/*
+Ensure that SourceConfigGet uses []Credential rather than
+a nested []struct, as some packages importing this library
+may rely on this. Switching to a nested struct should be
+considered a breaking change.
+*/
+func SourceConfigGetType(t *testing.T) {
+	sourceConf := SourceConfigGet{}
+	cred := Credential{ID: "myid"}
+	sourceConf.Credentials = append(sourceConf.Credentials, cred)
+	if len(sourceConf.Credentials) != 1 {
+		t.Errorf("Expected sdk.SourceConfGet.Credentials to contain one credential object")
+	}
+}
+
 func TestListGetSources(t *testing.T) {
 	if liveTest() == false {
 		return
