@@ -168,45 +168,35 @@ func TestValidate(t *testing.T) {
 	s = getValidSourceConfigCreate()
 	s.CollectionInterval = -1
 	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an invalid collection interval" +
-			"**VALIDATION ERROR MESSAGE**\n" +
-			s.Validate().Error())
+		t.Errorf("Expected Validate() to return an error when using an invalid collection interval")
 	}
 
 	// test collector id
 	s = getValidSourceConfigCreate()
 	s.CollectorID = ""
 	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an empty collector id" +
-			"**VALIDATION ERROR MESSAGE**\n" +
-			s.Validate().Error())
+		t.Errorf("Expected Validate() to return an error when using an empty collector id")
 	}
 
 	// test credentials
 	s = getValidSourceConfigCreate()
 	s.Credentials.Credentials = ""
 	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an empty credential" +
-			"**VALIDATION ERROR MESSAGE**\n" +
-			s.Validate().Error())
+		t.Errorf("Expected Validate() to return an error when using an empty credential")
 	}
 
 	// test name
 	s = getValidSourceConfigCreate()
 	s.Name = ""
 	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an empty name" +
-			"**VALIDATION ERROR MESSAGE**\n" +
-			s.Validate().Error())
+		t.Errorf("Expected Validate() to return an error when using an empty name")
 	}
 
 	// test source type
 	s = getValidSourceConfigCreate()
 	s.SourceType = ""
 	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an empty source type" +
-			"**VALIDATION ERROR MESSAGE**\n" +
-			s.Validate().Error())
+		t.Errorf("Expected Validate() to return an error when using an empty source type")
 	}
 }
 
