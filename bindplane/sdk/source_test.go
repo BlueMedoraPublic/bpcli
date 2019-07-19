@@ -181,8 +181,10 @@ func TestValidate(t *testing.T) {
 	// test credentials
 	s = getValidSourceConfigCreate()
 	s.Credentials.Credentials = ""
-	if s.Validate() == nil {
-		t.Errorf("Expected Validate() to return an error when using an empty credential")
+	if s.Validate() != nil {
+		t.Errorf("Expected Validate() to a nil error when using an empty credential" +
+			"**VALIDATION ERROR MESSAGE**\n" +
+			s.Validate().Error())
 	}
 
 	// test name
