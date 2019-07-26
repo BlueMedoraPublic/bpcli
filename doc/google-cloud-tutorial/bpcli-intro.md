@@ -1,0 +1,50 @@
+# bpcli tutorial
+
+
+## Introduction 
+
+Welcome to a tutorial on using the `bpcli` tool.  Some prerequisties
+
+* Signed up for a Bindplane account at [https://bindplane.bluemedora.com](https://bindplane.bluemedora.com){:target="_blank"}
+  * Make sure it's attached to a Stackdriver instance
+* Some resources to manage
+
+Let's get started!
+
+## Install bpcli
+
+Ok, let's install the latest version of bpcli in your cloudshell.  Just run the following commands
+
+```
+curl -LO https://github.com/BlueMedoraPublic/bpcli/releases/latest/download/bpcli_linux_amd64.zip && unzip bpcli_linux_amd64.zip && sudo mv bpcli /usr/local/bin/ && sudo chmod +x /usr/local/bin/bpcli
+```
+
+And a quick check to make sure it's working as it sould
+
+```
+bpcli version
+```
+
+## Setup Environment
+
+* Go to your [Bindplane Profile Page](https://bindplane.bluemedora.com/profile){:target="_blank"}.  
+* Click the Generate Button
+* With that key, run the following commands, pasting in the key after the `=` sign
+
+```
+export BINDPLANE_API_KEY=
+```
+
+Verify it works by listing your current collectors
+
+```
+bpcli collector list
+```
+
+## Make it permanent
+
+To make your changes more permanent, run the following command (inserting your API key)
+
+```
+echo export BINDPLANE_API_KEY=api-key-here >> ~/.bashrc
+```
