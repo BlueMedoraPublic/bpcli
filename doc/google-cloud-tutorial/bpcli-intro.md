@@ -1,4 +1,4 @@
-# bpcli tutorial
+# BPcli Tutorial
 
 
 ## Introduction 
@@ -41,7 +41,7 @@ Verify it works by listing your current collectors
 bpcli collector list
 ```
 
-## Make it permanent
+## Make It Permanent
 
 To make your changes more permanent, run the following command (inserting your API key)
 
