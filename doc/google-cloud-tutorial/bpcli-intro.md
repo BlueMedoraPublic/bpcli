@@ -5,8 +5,8 @@
 
 Welcome to a tutorial on using the `bpcli` tool.  Some prerequisties
 
-* Signed up for a Bindplane account at [https://bindplane.bluemedora.com](https://bindplane.bluemedora.com){:target="_blank"}
-  * Make sure it's attached to a Stackdriver instance
+* Signed up for a Bindplane account at [https://bindplane.bluemedora.com](https://bindplane.bluemedora.com)
+* Make sure it's attached to a Stackdriver instance
 * Some resources to manage
 
 Let's get started!
@@ -27,7 +27,7 @@ bpcli version
 
 ## Setup Environment
 
-* Go to your [Bindplane Profile Page](https://bindplane.bluemedora.com/profile){:target="_blank"}.  
+* Go to your [Bindplane Profile Page](https://bindplane.bluemedora.com/profile) 
 * Click the Generate Button
 * With that key, run the following commands, pasting in the key after the `=` sign
 
@@ -48,3 +48,7 @@ To make your changes more permanent, run the following command (inserting your A
 ```
 echo export BINDPLANE_API_KEY=api-key-here >> ~/.bashrc
 ```
+
+## Congratulations
+
+You are up and running with bpcli!  Keep an eye on [the bpcli Github page](https://github.com/BlueMedoraPublic/bpcli) for updates and useful information.
