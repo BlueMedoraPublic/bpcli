@@ -12,7 +12,7 @@ Lightweight command line utility for interacting with the BindPlane public API
 
 ## Cloudshell Tutorial
 
-[![Intro to bpcli in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/BlueMedoraPublic/bpcli&shellonly=true&git_branch=tutorial&tutorial=doc/google-cloud-tutorial/bpcli-intro.md)
+[![Intro to bpcli in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/BlueMedoraPublic/bpcli&shellonly=true&tutorial=doc/google-cloud-tutorial/bpcli-intro.md)
 
 ## Install
 Download the release zip for your platform, unzip, and place the
