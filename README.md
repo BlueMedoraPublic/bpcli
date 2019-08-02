@@ -2,12 +2,17 @@
 
 Lightweight command line utility for interacting with the BindPlane public API
 
-[bindplane.bluemedora.com](https://bindplane.bluemedora.com)
-[Bindplane Getting Started](https://docs.bindplane.bluemedora.com/docs/getting-started)
-[Bindplane API Documentation](https://docs.bindplane.bluemedora.com/reference#introduction)
+* [bindplane.bluemedora.com](https://bindplane.bluemedora.com)
+* [Bindplane Getting Started](https://docs.bindplane.bluemedora.com/docs/getting-started)
+* [Bindplane API Documentation](https://docs.bindplane.bluemedora.com/reference#introduction)
 
 [![Build Status](https://travis-ci.com/BlueMedoraPublic/bpcli.svg?branch=master)](https://travis-ci.com/BlueMedoraPublic/bpcli)
 [![Go Report Card](https://goreportcard.com/badge/github.com/BlueMedoraPublic/bpcli)](https://goreportcard.com/report/github.com/BlueMedoraPublic/bpcli)
+
+
+## Cloudshell Tutorial
+
+[![Intro to bpcli in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/BlueMedoraPublic/bpcli&shellonly=true&tutorial=doc/google-cloud-tutorial/bpcli-intro.md)
 
 ## Install
 Download the release zip for your platform, unzip, and place the
