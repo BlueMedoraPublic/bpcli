@@ -17,6 +17,17 @@ unzip bpcli_darwin_amd64.zip
 chmod +x bpcli
 mv bpcli /usr/local/bin
 ```
+### Bash Completion Setup
+bpcli has a command that generates a script to allow tab completions for all subcommands, flags, etc.
+
+#### MacOS Bash Completion
+To setup bash completion for bpcli on MacOS:
+1. Install *bash-completion* by running `brew install bash-completion`
+2. Include the following line in `~/.bash_profile`
+`[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"`
+3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`
+`bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
+4. Restart the shell and bpcli tab completions will be available
 
 ## Usage
 bpcli uses [cobra](https://github.com/spf13/cobra) for managing
