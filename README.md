@@ -21,11 +21,18 @@ mv bpcli /usr/local/bin
 bpcli has a command that generates a script to allow tab completions for all subcommands, flags, etc.
 
 #### MacOS Bash Completion
+bash-completion v2 requires bash version 4+
+On MacOS, the default version is below 4 and will need to be updated!
+Follow these instructions on [Upgrading Bash on MacOS](https://itnext.io/upgrading-bash-on-macos-7138bd1066ba).
+
 To setup bash completion for bpcli on MacOS:
-1. Install *bash-completion* by running `brew install bash-completion`
-2. Include the following line in `~/.bash_profile`
-`[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"`
-3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`
+1. Install *bash-completion* by running `brew install bash-completion@2`&nbsp;
+2. Include the following lines in `~/.bash_profile`&nbsp;
+```
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+```
+3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`&nbsp;
 `bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
 4. Restart the shell and bpcli tab completions will be available
 
