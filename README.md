@@ -32,7 +32,7 @@ To setup bash completion for bpcli on MacOS:
 export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
 ```
-3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`&nbsp;
+3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`\
 `bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
 4. Restart the shell and bpcli tab completions will be available
 
