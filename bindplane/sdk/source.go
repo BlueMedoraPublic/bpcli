@@ -19,20 +19,15 @@ type SourceConfigGet struct {
 		URL    string `json:"url"`
 		DocURL string `json:"doc_url"`
 	} `json:"source_type"`
-	CollectionInterval int    `json:"collection_interval"`
-	CreatedAt          string `json:"created_at"`
-	Credentials        []struct {
-		ID               string `json:"id"`
-		Name             string `json:"name"`
-		URL              string `json:"url"`
-		CredentialTypeID string `json:"credential_type_id"`
-	} `json:"credentials"`
-	Configuration    interface{} `json:"configuration"`
-	Status           string      `json:"status"`
-	StatusReportedAt string      `json:"status_reported_at"`
-	StatusMessage    string      `json:"status_message"`
-	Stopped          bool        `json:"stopped"`
-	Collector        struct {
+	CollectionInterval int          `json:"collection_interval"`
+	CreatedAt          string       `json:"created_at"`
+	Credentials        []Credential `json:"credentials"`
+	Configuration      interface{}  `json:"configuration"`
+	Status             string       `json:"status"`
+	StatusReportedAt   string       `json:"status_reported_at"`
+	StatusMessage      string       `json:"status_message"`
+	Stopped            bool         `json:"stopped"`
+	Collector          struct {
 		ID         string `json:"id"`
 		Name       string `json:"name"`
 		URL        string `json:"url"`
@@ -58,18 +53,14 @@ type SourceConfigCreate struct {
 
 // SourceType type describes a source type configuration
 type SourceType struct {
-	ID                        string `json:"id"`
-	Name                      string `json:"name"`
-	URL                       string `json:"url"`
-	DocURL                    string `json:"doc_url"`
-	Version                   string `json:"version"`
-	DefaultCollectionInterval int    `json:"default_collection_interval"`
-	CredentialTypes           []struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"credential_types"`
-	ConnectionParameters interface{} `json:"connection_parameters"`
+	ID                        string           `json:"id"`
+	Name                      string           `json:"name"`
+	URL                       string           `json:"url"`
+	DocURL                    string           `json:"doc_url"`
+	Version                   string           `json:"version"`
+	DefaultCollectionInterval int              `json:"default_collection_interval"`
+	CredentialTypes           []CredentialType `json:"credential_types"`
+	ConnectionParameters      interface{}      `json:"connection_parameters"`
 }
 
 // SourceTypeTemplate type describes a source type template configuration
@@ -179,8 +170,10 @@ func (s SourceConfigCreate) Validate() error {
 	if !uuid.IsUUID(s.CollectorID) {
 		msg = msg + "\ncollector id is invalid"
 	}
-	if !uuid.IsUUID(s.Credentials.Credentials) {
-		msg = msg + "\ncredentials id is not a valid UUID"
+	if len(s.Credentials.Credentials) > 0 {
+		if !uuid.IsUUID(s.Credentials.Credentials) {
+			msg = msg + "\ncredentials id is not a valid UUID"
+		}
 	}
 	if len(s.Name) == 0 {
 		msg = msg + "\nname is not present"

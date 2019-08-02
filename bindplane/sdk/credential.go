@@ -7,23 +7,27 @@ import (
 
 // Credential describes a source credential configuration
 type Credential struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	URL              string      `json:"url"`
-	CredentialTypeID string      `json:"credential_type_id"`
-	Parameters       interface{} `json:"parameters"`
-	Sources          []struct {
-		ID         string `json:"id"`
-		Name       string `json:"name"`
-		URL        string `json:"url"`
-		Stopped    bool   `json:"stopped"`
-		Status     string `json:"status"`
-		SourceType struct {
-			ID     string `json:"id"`
-			URL    string `json:"url"`
-			DocURL string `json:"doc_url"`
-		} `json:"source_type"`
-	} `json:"sources"`
+	ID               string             `json:"id"`
+	Name             string             `json:"name"`
+	URL              string             `json:"url"`
+	CredentialTypeID string             `json:"credential_type_id"`
+	Parameters       interface{}        `json:"parameters"`
+	Sources          []CredentialSource `json:"sources"`
+}
+
+// CredentialSource describes the soure object returned
+// inside a Credential object's list of sources
+type CredentialSource struct {
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	URL        string `json:"url"`
+	Stopped    bool   `json:"stopped"`
+	Status     string `json:"status"`
+	SourceType struct {
+		ID     string `json:"id"`
+		URL    string `json:"url"`
+		DocURL string `json:"doc_url"`
+	}
 }
 
 // CredentialCreateResponse type describes the json body returned
@@ -41,12 +45,7 @@ type CredentialType struct {
 	ID          string        `json:"id"`
 	Name        string        `json:"name"`
 	Parameters  []interface{} `json:"parameters"`
-	Credentials []struct {
-		ID               string `json:"id"`
-		Name             string `json:"name"`
-		URL              string `json:"url"`
-		CredentialTypeID string `json:"credential_type_id"`
-	} `json:"credentials"`
+	Credentials []Credential  `json:"credentials"`
 }
 
 // CredentialTypeTemplate describes a credential type template object
