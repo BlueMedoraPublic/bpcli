@@ -4,6 +4,9 @@ bpcli
 *.json
 *.log
 
+*.cred
+*.source
+
 artifacts/
 bpcli_darwin_amd64
 bpcli_linux_amd64
