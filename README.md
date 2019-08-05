@@ -52,7 +52,7 @@ autoload -Uz compinit
 compinit
 ```
 2. Locate `fpath` by running `echo $fpath`
-3. Run the following command to generate the zsh tab completion script.&nbsp;
+3. Run the following command to generate the zsh tab completion script.\
 `bpcli completion --zsh ><YOUR FPATH HERE>/_bpcli`
 4. Restart zsh and the bpcli tab completions will be available.
 
