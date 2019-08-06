@@ -23,6 +23,38 @@ chmod +x bpcli
 mv bpcli /usr/local/bin
 ```
 
+## Shell Completion
+
+#### Bash
+
+bash-completion v2 requires bash version 4+
+On MacOS, the default version is below 4 and will need to be updated!
+Follow these instructions on [Upgrading Bash on MacOS](https://itnext.io/upgrading-bash-on-macos-7138bd1066ba).
+
+To setup bash completion for bpcli on MacOS:
+1. Install *bash-completion* by running `brew install bash-completion@2`&nbsp;
+2. Include the following lines in `~/.bash_profile`&nbsp;
+```
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+```
+3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`\
+`bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
+4. Restart the shell and bpcli tab completions will be available
+
+#### ZSH
+
+To setup zsh completion for bpcli on MacOS:
+1. Include the following lines in `~/.zshrc`&nbsp;
+```
+autoload -Uz compinit
+compinit
+```
+2. Locate `fpath` by running `echo $fpath`
+3. Run the following command to generate the zsh tab completion script.\
+`bpcli completion --zsh ><YOUR FPATH HERE>/_bpcli`
+4. Restart zsh and the bpcli tab completions will be available.
+
 ## Usage
 bpcli uses [cobra](https://github.com/spf13/cobra) for managing
 commands and flags.
