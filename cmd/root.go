@@ -52,7 +52,7 @@ func init() {
 func initConfig() {
 	// avoid running bp.Init() if these commands were passed
 	// as argument one
-	y := []string{"help", "version"}
+	y := []string{"help", "version", "completion"}
 	for _, subCmd := range y {
 		if subCmd == os.Args[1] {
 			return
