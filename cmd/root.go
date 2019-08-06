@@ -12,6 +12,7 @@ import (
 )
 
 // flags
+var accountName string
 var sourceFile string
 var credentialFile string
 var jsonFmt bool
@@ -19,6 +20,7 @@ var zshCompletion bool
 var watch bool
 
 // uuid flags
+var accountID string
 var jobID string
 var groupID string
 var collectorID string
@@ -52,7 +54,7 @@ func init() {
 func initConfig() {
 	// avoid running bp.Init() if these commands were passed
 	// as argument one
-	y := []string{"help", "version", "completion"}
+	y := []string{"help", "version", "completion", "account"}
 	for _, subCmd := range y {
 		if subCmd == os.Args[1] {
 			return
