@@ -228,12 +228,12 @@ func SetCurrent(name string) error {
 func read() ([]account, error) {
 	accountList := []account{}
 
-	dir, err := homeDir()
+	filePath, err := configPath()
 	if err != nil {
 		return accountList, err
 	}
 
-	file, err := ioutil.ReadFile(dir + "/.bpcli")
+	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return accountList, err
 	}
@@ -247,12 +247,12 @@ func read() ([]account, error) {
 // write is a helper function that will write/re-write the configuration file
 func write(list []byte) error {
 
-	dir, err := homeDir()
+	filePath, err := configPath()
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(dir+"/.bpcli", list, 0644)
+	return ioutil.WriteFile(filePath, list, 0644)
 }
 
 // uniqueUUID checks the account list for duplicate UUIDs
@@ -332,16 +332,18 @@ func hasCurrent() (bool, error) {
 	return false, nil
 }
 
-// homeDir returns the home directory of the current user
-func homeDir() (string, error) {
+// configPath returns the home directory of the current user
+func configPath() (string, error) {
+	x := os.Getenv("BINDPLANE_CONFIG_FILE")
+	if len(x) > 0 {
+		return x, nil
+	}
 
 	usr, err := user.Current()
 	if err != nil {
 		return "", err
 	}
-
-	dir := usr.HomeDir
-	return dir, nil
+	return usr.HomeDir + "/.bpcli", nil
 }
 
 // accountExists checks the config file to see whether a given account exists
