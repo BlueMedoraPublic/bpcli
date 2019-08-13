@@ -44,3 +44,6 @@ fmt:
 
 clean:
 	$(shell rm -rf artifacts/*)
+
+quick:
+	$(shell env CGO_ENABLED=0 go build)
