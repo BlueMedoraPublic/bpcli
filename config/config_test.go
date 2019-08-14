@@ -47,8 +47,8 @@ func TestListAccounts2(t *testing.T) {
 	createConfigFile()
 
 	err := ListAccounts()
-	if err != nil {
-		t.Errorf("The function should not be returning an error if file is empty")
+	if err == nil {
+		t.Errorf(err.Error())
 	}
 }
 
