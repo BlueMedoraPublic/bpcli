@@ -149,8 +149,8 @@ func Remove(name string) error {
 	return write(newListBytes)
 }
 
-// GetCurrentAPIKey attempts to retrieve an API key
-func GetCurrentAPIKey() (string, error) {
+// CurrentAPIKey attempts to retrieve an API key
+func CurrentAPIKey() (string, error) {
 
 	errMsg := `To use bpcli you must do either of the following:
 	1. Set an environment variable named BINDPLANE_API_KEY

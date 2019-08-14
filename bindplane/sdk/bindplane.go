@@ -70,7 +70,7 @@ func (bp *BindPlane) setAPIKey() error {
 
 	// Checks current API Key string length
 	if len(bp.APIKey) == 0 {
-		apiKey, err := config.GetCurrentAPIKey()
+		apiKey, err := config.CurrentAPIKey()
 		if err != nil {
 			return err
 		}
