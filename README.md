@@ -30,7 +30,7 @@ having to always change the **BINDPLANE_API_KEY** environment variable by hand.
 **WARNING**
 If both the environment variable and configuration file exist, the environment
 variable will ALWAYS take precedence over the configuration file. To use the
-configuration file, make sure the environment variable has not already been set.
+configuration file, make sure the environment variable has not already been exported/set in `~/.bash_profile`, `~/.bashrc`, etc. 
 
 #### Example Usage
 Adding and setting an account to be used by bpcli
