@@ -15,9 +15,9 @@ import (
 
 // account stores users BindPlane account information
 type account struct {
-	Name    string //`json:”name”`
-	Key     string //`json:”key”`
-	Current bool   //`json:”current”`
+	Name    string `json:"name"`
+	Key     string `json:"key"`
+	Current bool   `json:"current"`
 }
 
 // ListAccounts prints a formatted list of users read from the configuration file

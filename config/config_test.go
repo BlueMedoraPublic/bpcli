@@ -2,12 +2,30 @@ package config
 
 import (
 	//"os/exec"
-	"os"
 	"log"
+	"os"
 	"testing"
 )
 
 const configFile = "/tmp/.bpcli"
+
+var testFile = []account{
+	{
+		Name:    "test1",
+		Key:     "43c009e8-40f3-4506-93ef-411299cf4181",
+		Current: false,
+	},
+	{
+		Name:    "test2",
+		Key:     "024f5f47-e0e1-4f61-bf9c-39976db7f4a8",
+		Current: false,
+	},
+	{
+		Name:    "test3",
+		Key:     "91f5e858-eb9f-4136-8a37-bedeebbb7885",
+		Current: true,
+	},
+}
 
 //Writes tests for all functions within config.go
 
@@ -45,7 +63,6 @@ func TestListAccounts(t *testing.T) {
 // 	}
 // }
 
-
 func createConfigFile() {
 	emptyFile, err := os.Create(configFile)
 	if err != nil {
@@ -56,5 +73,5 @@ func createConfigFile() {
 }
 
 func cleanconfigFile() {
-	
+
 }
