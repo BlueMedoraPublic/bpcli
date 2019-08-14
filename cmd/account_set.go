@@ -19,6 +19,7 @@ var setAccountCmd = &cobra.Command{
 func init() {
 	accountCmd.AddCommand(setAccountCmd)
 	setAccountCmd.Flags().StringVar(&accountName, "name", "", "The name of the BindPlane account")
+	setAccountCmd.MarkFlagRequired("name")
 }
 
 func set() {

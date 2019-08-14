@@ -16,4 +16,5 @@ var removeAccountCmd = &cobra.Command{
 func init() {
 	accountCmd.AddCommand(removeAccountCmd)
 	removeAccountCmd.Flags().StringVar(&accountName, "name", "", "The name of the BindPlane account")
+	setAccountCmd.MarkFlagRequired("name")
 }

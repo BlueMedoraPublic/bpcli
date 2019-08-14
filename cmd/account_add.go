@@ -20,6 +20,8 @@ func init() {
 	accountCmd.AddCommand(addAccountCmd)
 	addAccountCmd.Flags().StringVar(&accountName, "name", "", "The name of the BindPlane account")
 	addAccountCmd.Flags().StringVar(&accountID, "id", "", "The BindPlane API Key")
+	setAccountCmd.MarkFlagRequired("name")
+	setAccountCmd.MarkFlagRequired("id")
 }
 
 func add() {

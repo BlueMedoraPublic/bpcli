@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/user"
 
@@ -14,9 +15,9 @@ import (
 
 // account stores users BindPlane account information
 type account struct {
-	Name    string `json:”name”`
-	Key     string `json:”key”`
-	Current bool   `json:”current”`
+	Name    string //`json:”name”`
+	Key     string //`json:”key”`
+	Current bool   //`json:”current”`
 }
 
 // ListAccounts prints a formatted list of users read from the configuration file
@@ -27,8 +28,13 @@ func ListAccounts() error {
 		return err
 	}
 
+	path, err := configPath()
+	if err != nil {
+		return err
+	}
+
 	if len(currentList) == 0 {
-		return errors.New(`the file is empty! try adding a new account to the list`)
+		return errors.New(path + " is empty! try adding a new account to the list\n")
 	}
 
 	fmt.Println("List of Account Names. * Denotes Current Account")
@@ -49,7 +55,30 @@ func AddAccount(name string, key string) error {
 
 	currentList, err := read()
 	if err != nil {
+		os.Stderr.WriteString("ERROR: " + err.Error() + "\n")
+
+		path, err := configPath()
+		if err != nil {
+			return err
+		}
+
+		emptyFile, err := os.Create(path)
+		if err != nil {
+			log.Fatal(err)
+			os.Exit(1)
+		}
+
+		os.Stderr.WriteString("Creating a new file at: " + path + "\n")
+		emptyFile.Close()
+	}
+
+	currentList, err = read()
+	if err != nil {
 		return err
+	}
+
+	if len(name) == 0 {
+		return errors.New("The name cannot be an empty string")
 	}
 
 	if !uuid.IsUUID(key) {
