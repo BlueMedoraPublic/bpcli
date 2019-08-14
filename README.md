@@ -23,6 +23,32 @@ chmod +x bpcli
 mv bpcli /usr/local/bin
 ```
 
+## Configuration File
+bpcli now allows the user to change the account they are manipulating without
+having to always change the **BINDPLANE_API_KEY** environment variable by hand.
+
+**WARNING**
+If both the environment variable and configuration file exist, the environment
+variable will ALWAYS take precedence over the configuration file. To use the
+configuration file, make sure the environment variable has not already been set.
+
+#### Example Usage
+Adding and setting an account to be used by bpcli
+```
+bpcli account add --name=<ACCOUNT NAME> --id=<API_KEY>
+bpcli account set --name=<ACCOUNT_NAME>
+```
+
+List all accounts that have been added to the configuration file
+```
+bpcli account list
+```
+
+Remove an account from the configuration file
+```
+bpcli account remove --name=<ACCOUNT_NAME>
+```
+
 ## Shell Completion
 
 #### Bash
@@ -103,7 +129,13 @@ bpcli collector group list
 bpcli job list
 bpcli job get
 ````
-
+#### Accounts
+```
+bpcli account list
+bpcli account add
+bpcli account set
+bpcli account remove
+```
 
 ## Developing
 
