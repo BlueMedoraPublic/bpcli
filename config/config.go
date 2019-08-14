@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/user"
+	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/google/go-cmp/cmp"
@@ -77,7 +78,7 @@ func AddAccount(name string, key string) error {
 		return err
 	}
 
-	if len(name) == 0 {
+	if len(strings.TrimSpace(name)) == 0 {
 		return errors.New("The name cannot be an empty string")
 	}
 

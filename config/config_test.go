@@ -84,7 +84,7 @@ func TestAddAccount2(t *testing.T) {
 	createConfigFile()
 	resetConfigFile()
 
-	err := AddAccount("", "74a1aee1-ee9b-462f-88dc-65773eada2d7")
+	err := AddAccount(" ", "74a1aee1-ee9b-462f-88dc-65773eada2d7")
 	if err == nil {
 		t.Errorf(err.Error())
 	}
