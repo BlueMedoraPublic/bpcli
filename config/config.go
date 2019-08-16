@@ -26,7 +26,10 @@ func ListAccounts() error {
 
 	currentList, err := read()
 	if err != nil {
-		return err
+		return errors.Wrap(err,
+			"The credentials file has not been found\n"+
+				"Use the `bpcli account add` command to generate the file "+
+				"and add an account to the list\n")
 	}
 
 	path, err := configPath()
@@ -118,7 +121,10 @@ func Remove(name string) error {
 
 	currentList, err := read()
 	if err != nil {
-		return err
+		return errors.Wrap(err,
+			"The credentials file has not been found\n"+
+				"Use the `bpcli account add` command to generate the file "+
+				"and add an account to the list\n")
 	}
 
 	newList := currentList
@@ -137,7 +143,7 @@ func Remove(name string) error {
 	}
 
 	if cmp.Equal(newList, currentList) {
-		fmt.Println("No names matched the given input\n" +
+		os.Stderr.WriteString("No names matched the given input\n" +
 			"Name Given: " + name + "\n")
 		return nil
 	}
@@ -211,6 +217,16 @@ func CurrentAPIKey() (string, error) {
 
 	// Env variables exists, file exists
 	if envExists && fileExists {
+
+		if len(apiKey) <= 0 {
+			return apiKey, errors.New("ERROR: The environment variable is not set\n" +
+				errMsg)
+		}
+		if !uuid.IsUUID(apiKey) {
+			return apiKey, errors.New("ERROR: The API Key given is not a valid UUID\n" +
+				errMsg)
+		}
+
 		os.Stderr.WriteString("WARNING: An environment variable is set and a configuration file exists\n" +
 			"The environment variable will ALWAYS take precedence over the configuration file\n" +
 			"If you would like to use the configuration file, remove the environment variable\n" +
@@ -227,7 +243,10 @@ func SetCurrent(name string) error {
 
 	currentList, err := read()
 	if err != nil {
-		return err
+		return errors.Wrap(err,
+			"The credentials file has not been found\n"+
+				"Use the `bpcli account add` command to generate the file "+
+				"and add an account to the list\n")
 	}
 
 	b, err := accountExists(name)
@@ -250,7 +269,8 @@ func SetCurrent(name string) error {
 
 		return write(updatedListBytes)
 	}
-
+	os.Stderr.WriteString("No names matched the given input\n" +
+		"Name Given: " + name + "\n")
 	return nil
 }
 
@@ -282,7 +302,7 @@ func write(list []byte) error {
 		return err
 	}
 
-	return ioutil.WriteFile(filePath, list, 0644)
+	return ioutil.WriteFile(filePath, list, 0600)
 }
 
 // uniqueUUID checks the account list for duplicate UUIDs
@@ -338,6 +358,16 @@ func getCurrentFromConfig() (string, error) {
 			continue
 		} else {
 			currentKey = currentList[i].Key
+
+			if len(currentKey) <= 0 {
+				return currentKey, errors.New(currentList[i].Name + " does not have a" +
+					" valid API Key set")
+			}
+
+			if !uuid.IsUUID(currentKey) {
+				return currentKey, errors.New(currentKey + " for " +
+					currentList[i].Name + " is not a valid UUID")
+			}
 		}
 	}
 

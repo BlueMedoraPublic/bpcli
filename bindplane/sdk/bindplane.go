@@ -4,7 +4,6 @@ import (
 	"github.com/BlueMedoraPublic/bpcli/bindplane/api"
 	"github.com/BlueMedoraPublic/bpcli/config"
 	"github.com/BlueMedoraPublic/bpcli/util/httpclient"
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -66,7 +65,7 @@ func (bp *BindPlane) setBaseURL() error {
 }
 
 func (bp *BindPlane) setAPIKey() error {
-	var apiKey string
+	// var apiKey string
 
 	// Checks current API Key string length
 	if len(bp.APIKey) == 0 {
@@ -76,11 +75,6 @@ func (bp *BindPlane) setAPIKey() error {
 		}
 		// Set API Key
 		bp.APIKey = apiKey
-	}
-
-	// If the API Key is not a valid UUID, return an error
-	if uuid.IsUUID(bp.APIKey) == false {
-		return errors.New("APIKey: " + apiKey + " is not a uuid. Is it correct?")
 	}
 
 	return nil

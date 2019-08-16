@@ -23,64 +23,6 @@ chmod +x bpcli
 mv bpcli /usr/local/bin
 ```
 
-## Configuration File
-bpcli now allows the user to change the account they are manipulating without
-having to always change the **BINDPLANE_API_KEY** environment variable by hand.
-
-**WARNING**
-If both the environment variable and configuration file exist, the environment
-variable will ALWAYS take precedence over the configuration file. To use the
-configuration file, make sure the environment variable has not already been exported/set in `~/.bash_profile`, `~/.bashrc`, etc. 
-
-#### Example Usage
-Adding and setting an account to be used by bpcli
-```
-bpcli account add --name=<ACCOUNT NAME> --id=<API_KEY>
-bpcli account set --name=<ACCOUNT_NAME>
-```
-
-List all accounts that have been added to the configuration file
-```
-bpcli account list
-```
-
-Remove an account from the configuration file
-```
-bpcli account remove --name=<ACCOUNT_NAME>
-```
-
-## Shell Completion
-
-#### Bash
-
-bash-completion v2 requires bash version 4+
-On MacOS, the default version is below 4 and will need to be updated!
-Follow these instructions on [Upgrading Bash on MacOS](https://itnext.io/upgrading-bash-on-macos-7138bd1066ba).
-
-To setup bash completion for bpcli on MacOS:
-1. Install *bash-completion* by running `brew install bash-completion@2`&nbsp;
-2. Include the following lines in `~/.bash_profile`&nbsp;
-```
-export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-```
-3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`\
-`bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
-4. Restart the shell and bpcli tab completions will be available
-
-#### ZSH
-
-To setup zsh completion for bpcli on MacOS:
-1. Include the following lines in `~/.zshrc`&nbsp;
-```
-autoload -Uz compinit
-compinit
-```
-2. Locate `fpath` by running `echo $fpath`
-3. Run the following command to generate the zsh tab completion script.\
-`bpcli completion --zsh ><YOUR FPATH HERE>/_bpcli`
-4. Restart zsh and the bpcli tab completions will be available.
-
 ## Usage
 bpcli uses [cobra](https://github.com/spf13/cobra) for managing
 commands and flags.
@@ -136,6 +78,65 @@ bpcli account add
 bpcli account set
 bpcli account remove
 ```
+
+## Credentials File
+bpcli allows the user to change the account they are manipulating by utilizing
+a credentials file.
+
+*Warning*
+The **BINDPLANE_API_KEY** environment variable will always take precedence over the
+credentials file, if it is present. 
+
+#### Example Usage
+Adding and setting an account to be used by bpcli
+The `set` command makes the given account the **Active** account and is
+required even when only one entry is present in the credentials file
+```
+bpcli account add --name=<ACCOUNT NAME> --id=<API_KEY>
+bpcli account set --name=<ACCOUNT_NAME>
+```
+
+List all accounts that have been added to the configuration file
+```
+bpcli account list
+```
+
+Remove an account from the configuration file
+```
+bpcli account remove --name=<ACCOUNT_NAME>
+```
+
+## Shell Completion
+
+#### Bash
+
+bash-completion v2 requires bash version 4+
+On MacOS, the default version is below 4 and will need to be updated!
+Follow these instructions on [Upgrading Bash on MacOS](https://itnext.io/upgrading-bash-on-macos-7138bd1066ba).
+
+To setup bash completion for bpcli on MacOS:
+1. Install *bash-completion* by running `brew install bash-completion@2`&nbsp;
+2. Include the following lines in `~/.bash_profile`&nbsp;
+```
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+```
+3. Run the following command to include the bash-completion script in `/usr/local/etc/bash_completion.d/`\
+`bpcli completion >/usr/local/etc/bash_completion.d/bpcli`
+4. Restart the shell and bpcli tab completions will be available
+
+#### ZSH
+
+To setup zsh completion for bpcli on MacOS:
+1. Include the following lines in `~/.zshrc`&nbsp;
+```
+autoload -Uz compinit
+compinit
+```
+2. Locate `fpath` by running `echo $fpath`
+3. Run the following command to generate the zsh tab completion script.\
+`bpcli completion --zsh ><YOUR FPATH HERE>/_bpcli`
+4. Restart zsh and the bpcli tab completions will be available.
 
 ## Developing
 

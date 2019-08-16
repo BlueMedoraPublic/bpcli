@@ -23,9 +23,9 @@ func init() {
 }
 
 func set() {
-	err := config.SetCurrent(accountName)
-	if err != nil {
+	if err := config.SetCurrent(accountName); err != nil {
 		fmt.Fprint(os.Stderr, err.Error())
 		os.Exit(1)
 	}
+	fmt.Println(accountName + " has successfully been set as current")
 }

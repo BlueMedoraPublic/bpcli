@@ -21,8 +21,7 @@ func init() {
 }
 
 func list() {
-	err := config.ListAccounts()
-	if err != nil {
+	if err := config.ListAccounts(); err != nil {
 		fmt.Fprint(os.Stderr, err.Error())
 		os.Exit(1)
 	}
