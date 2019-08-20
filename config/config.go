@@ -26,10 +26,7 @@ func ListAccounts() error {
 
 	currentList, err := read()
 	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
+		return errors.Wrap(err, fileNotFoundError().Error())
 	}
 
 	path, err := configPath()
@@ -38,7 +35,7 @@ func ListAccounts() error {
 	}
 
 	if len(currentList) == 0 {
-		return errors.New(path + " is empty! try adding a new account to the list\n")
+		return errors.New(path + " is empty, add an account with 'bpcli account add'")
 	}
 
 	fmt.Println("List of Account Names. * Denotes Current Account")
@@ -59,7 +56,9 @@ func AddAccount(name string, key string) error {
 
 	currentList, err := read()
 	if err != nil {
-		os.Stderr.WriteString("ERROR: " + err.Error() + "\n")
+		// Write to standard error in order to make sure the user
+		// can see that we are taking additional action
+		os.Stderr.WriteString("ERROR: " + err.Error())
 
 		path, err := configPath()
 		if err != nil {
@@ -72,7 +71,10 @@ func AddAccount(name string, key string) error {
 			os.Exit(1)
 		}
 
-		os.Stderr.WriteString("Creating a new file at: " + path + "\n")
+		// Write to standard error in order to make sure the user
+		// can see that we are taking additional action
+		os.Stderr.WriteString("Creating a new file at: " + path)
+
 		emptyFile.Close()
 	}
 
@@ -121,10 +123,7 @@ func Remove(name string) error {
 
 	currentList, err := read()
 	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
+		return errors.Wrap(err, fileNotFoundError().Error())
 	}
 
 	newList := currentList
@@ -143,8 +142,8 @@ func Remove(name string) error {
 	}
 
 	if cmp.Equal(newList, currentList) {
-		os.Stderr.WriteString("No names match the given input\n" +
-			"Name Given: " + name + "\n")
+		os.Stderr.WriteString("No names match the given input" +
+			"Name Given: " + name)
 		return nil
 	}
 
@@ -204,10 +203,7 @@ func SetCurrent(name string) error {
 
 	currentList, err := read()
 	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
+		return errors.Wrap(err, fileNotFoundError().Error())
 	}
 
 	b, err := accountExists(name)
@@ -230,8 +226,7 @@ func SetCurrent(name string) error {
 
 		return write(updatedListBytes)
 	}
-	os.Stderr.WriteString("No names match the given input\n" +
-		"Name Given: " + name + "\n")
+	os.Stderr.WriteString("No names match the given input: " + name)
 	return nil
 }
 
