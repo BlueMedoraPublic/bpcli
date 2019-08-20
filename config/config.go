@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/user"
 	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
@@ -353,20 +352,6 @@ func hasCurrent() (bool, error) {
 	}
 
 	return false, nil
-}
-
-// configPath returns the home directory of the current user
-func configPath() (string, error) {
-	x := os.Getenv("BINDPLANE_CONFIG_FILE")
-	if len(x) > 0 {
-		return x, nil
-	}
-
-	usr, err := user.Current()
-	if err != nil {
-		return "", err
-	}
-	return usr.HomeDir + "/.bpcli", nil
 }
 
 // accountExists checks the config file to see whether a given account exists
