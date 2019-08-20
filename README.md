@@ -179,10 +179,10 @@ Build with Docker, and check the artifacts directory when finished
 make
 ```
 
-To build on your own system, without Docker:
+To build on your own, without Docker, clone this repo *outside* of your GOPATH, as 
+bpcli uses go modules:
 ```
-go get ./...
-env CGO_ENABLED=0 go build
+env CGO_ENABLED=0 go build -a
 ```
 
 To cross compile on your own system, without Docker, set
