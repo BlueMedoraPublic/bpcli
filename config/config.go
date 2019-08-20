@@ -156,86 +156,47 @@ func Remove(name string) error {
 	return write(newListBytes)
 }
 
-// CurrentAPIKey attempts to retrieve an API key
+/*
+CurrentAPIKey returns the API key found in the environment,
+or the 'current' API key found in the credentials file if
+the environment is not set
+*/
 func CurrentAPIKey() (string, error) {
+	apiKey, found, err := currentAPIKeyENV()
 
-	errMsg := `To use bpcli you must do either of the following:
-	1. Set an environment variable named BINDPLANE_API_KEY
-	2. Define a configuration file`
-
-	// Check environment variable
-	apiKey, envExists := os.LookupEnv("BINDPLANE_API_KEY")
-
-	fileExists, _ := checkConfig()
-
-	// No env variable, no file
-	// Error
-	if !fileExists && !envExists {
-		return apiKey, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not present\n" +
-			"ERROR: The configuration file is not present\n" +
-			errMsg)
+	// return an error if env is found but malformed
+	if found == true && err != nil {
+		return "", err
 	}
 
-	// Env variable exists, no file
-	if !fileExists && envExists {
-		if len(apiKey) <= 0 {
-			return apiKey, errors.New("ERROR: The environment variable is not set\n" +
-				errMsg)
-		}
-		if !uuid.IsUUID(apiKey) {
-			return apiKey, errors.New("ERROR: The API Key given is not a valid UUID\n" +
-				errMsg)
-		}
+	// return api key if found
+	if found == true && err == nil {
 		return apiKey, nil
 	}
 
-	// No env variable, config file w/o current set
-	// Error
-	if !envExists && fileExists {
-		b, err := hasCurrent()
-		if err != nil {
-			return apiKey, err
-		}
-		if b == false {
-			return apiKey, errors.New("ERROR: An environment variable is not present.\n" +
-				"ERROR: A configuration file exists, but does not have an account set to current.\n" +
-				errMsg + "\n" +
-				"use the `bpcli account set` command to set an account to current in the config file.")
-		}
+	apiKey, e := getCurrentFromConfig()
+	if e != nil {
+		// return both ENV and File errors
+		return "", errors.Wrap(err, e.Error())
 	}
-
-	// No env variable, config file w/ current set
-	if !envExists && fileExists {
-		b, err := hasCurrent()
-		if err != nil {
-			return apiKey, err
-		}
-		if b == true {
-			return getCurrentFromConfig()
-		}
-	}
-
-	// Env variables exists, file exists
-	if envExists && fileExists {
-
-		if len(apiKey) <= 0 {
-			return apiKey, errors.New("ERROR: The environment variable is not set\n" +
-				errMsg)
-		}
-		if !uuid.IsUUID(apiKey) {
-			return apiKey, errors.New("ERROR: The API Key given is not a valid UUID\n" +
-				errMsg)
-		}
-
-		os.Stderr.WriteString("WARNING: An environment variable is set and a configuration file exists\n" +
-			"The environment variable will ALWAYS take precedence over the configuration file\n" +
-			"If you would like to use the configuration file, remove the environment variable\n" +
-			"****COLLECTOR LIST****\n")
-
-		return apiKey, nil
-	}
-
 	return apiKey, nil
+}
+
+// currentAPIKeyENV returns the API key, true, and nil if
+// the API key is found in the environment and is a valid uuid
+// returns false if the environment is empty
+func currentAPIKeyENV() (string, bool, error) {
+	a := os.Getenv("BINDPLANE_API_KEY")
+
+	if len(strings.TrimSpace(a)) == 0 {
+		return "", false, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not set")
+	}
+
+	if !uuid.IsUUID(a) {
+		return "", true, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not a valid uuid")
+	}
+
+	return a, true, nil
 }
 
 // SetCurrent sets a chosen account to be the current account being worked in
@@ -346,6 +307,13 @@ func uniqueName(name string) (bool, error) {
 // getCurrentFromConfig retrieves the currently active/set API key from the
 // config file
 func getCurrentFromConfig() (string, error) {
+	b, err := hasCurrent()
+	if err != nil {
+		return "", err
+	} else if b == false {
+		return "", errors.New("ERROR: credential file does not have an account set, use 'bpcli account set'")
+	}
+
 	var currentKey string
 
 	currentList, err := read()
