@@ -1,12 +1,10 @@
 package sdk
 
 import (
-	"errors"
-	"os"
-
 	"github.com/BlueMedoraPublic/bpcli/bindplane/api"
+	"github.com/BlueMedoraPublic/bpcli/config"
 	"github.com/BlueMedoraPublic/bpcli/util/httpclient"
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
+	"github.com/pkg/errors"
 )
 
 // BindPlane type stores the global configuration
@@ -67,15 +65,16 @@ func (bp *BindPlane) setBaseURL() error {
 }
 
 func (bp *BindPlane) setAPIKey() error {
-	if len(bp.APIKey) == 0 {
-		bp.APIKey, _ = os.LookupEnv("BINDPLANE_API_KEY")
-		if len(bp.APIKey) == 0 {
-			return errors.New("You must set BINDPLANE_API_KEY in your environment")
-		}
-	}
+	// var apiKey string
 
-	if uuid.IsUUID(bp.APIKey) == false {
-		return errors.New("APIKey: " + bp.APIKey + " is not a uuid. Is it correct?")
+	// Checks current API Key string length
+	if len(bp.APIKey) == 0 {
+		apiKey, err := config.CurrentAPIKey()
+		if err != nil {
+			return err
+		}
+		// Set API Key
+		bp.APIKey = apiKey
 	}
 
 	return nil

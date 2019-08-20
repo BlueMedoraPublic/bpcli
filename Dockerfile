@@ -16,19 +16,12 @@ RUN \
     apt-get update >> /dev/null && \
     apt-get install -y golint zip
 
-ADD . /build/src/github.com/BlueMedoraPublic/bpcli
-
-# for compiling
-RUN go get github.com/mitchellh/gox
-
-# for command line
-RUN go get github.com/spf13/cobra
-
-# required for cobra, when compiling for Windows
-RUN go get github.com/inconshreveable/mousetrap
+ADD . /bpcli
+WORKDIR /bpcli
 
 # Disable CGO to avoid pulling in C dependencies, and compile for
 # MACOS, Linux, and Windows
+RUN go get github.com/mitchellh/gox
 RUN \
     env CGO_ENABLED=0 \
     $GOPATH/bin/gox \
