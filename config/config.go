@@ -280,21 +280,16 @@ func hasCurrent(accounts []account) (bool, error) {
 	return false, nil
 }
 
-// accountExists checks the config file to see whether a given account exists
 func accountExists(name string) (bool, error) {
-
 	currentList, err := read()
 	if err != nil {
 		return false, err
 	}
 
 	for i := range currentList {
-		if name != currentList[i].Name {
-			continue
-		} else {
+		if name == currentList[i].Name {
 			return true, nil
 		}
 	}
-
 	return false, nil
 }
