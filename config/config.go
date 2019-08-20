@@ -208,24 +208,25 @@ func SetCurrent(name string) error {
 	if err != nil {
 		return err
 	}
-	if b == true {
-		for i := range currentList {
-			if name == currentList[i].Name {
-				currentList[i].Current = true
-			} else {
-				currentList[i].Current = false
-			}
-		}
-
-		updatedListBytes, err := json.Marshal(currentList)
-		if err != nil {
-			return err
-		}
-
-		return write(updatedListBytes)
+	if b == false {
+		return accountNotFoundError(name)
 	}
-	os.Stderr.WriteString("No names match the given input: " + name)
-	return nil
+
+	for i := range currentList {
+		if name == currentList[i].Name {
+			currentList[i].Current = true
+		} else {
+			currentList[i].Current = false
+		}
+	}
+
+	updatedListBytes, err := json.Marshal(currentList)
+	if err != nil {
+		return err
+	}
+
+	return write(updatedListBytes)
+
 }
 
 // getCurrentFromConfig retrieves the currently active/set API key from the
