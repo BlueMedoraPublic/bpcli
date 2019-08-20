@@ -273,13 +273,10 @@ func hasCurrent() (bool, error) {
 	}
 
 	for i := range currentList {
-		if currentList[i].Current == false {
-			continue
-		} else {
+		if currentList[i].Current == true {
 			return true, nil
 		}
 	}
-
 	return false, nil
 }
 
