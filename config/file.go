@@ -3,9 +3,24 @@ package config
 import (
     "os"
     "os/user"
+    "errors"
     "io/ioutil"
     "encoding/json"
 )
+
+// checkConfig determines if a config file exists and whether it is empty
+func checkConfig() (bool, error) {
+	accounts, err := read()
+	if err != nil {
+		return false, err
+	}
+
+    // return true with or without an errror
+	if !(len(accounts) > 0) {
+		return true, errors.New("The accounts list is empty")
+	}
+	return true, nil
+}
 
 // configPath returns the home directory of the current user
 // if BINDPLANE_CONFIG_FILE is not set

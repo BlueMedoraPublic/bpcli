@@ -19,36 +19,6 @@ type account struct {
 	Current bool   `json:"current"`
 }
 
-// ListAccounts prints a formatted list of users read from the configuration file
-func ListAccounts() error {
-
-	currentList, err := read()
-	if err != nil {
-		return errors.Wrap(err, fileNotFoundError().Error())
-	}
-
-	path, err := configPath()
-	if err != nil {
-		return err
-	}
-
-	if len(currentList) == 0 {
-		return errors.New(path + " is empty, add an account with 'bpcli account add'")
-	}
-
-	fmt.Println("List of Account Names. * Denotes Current Account")
-
-	// Print the list in a formatted way
-	for _, acc := range currentList {
-		if acc.Current == true {
-			fmt.Println("* " + acc.Name)
-		} else {
-			fmt.Println(acc.Name)
-		}
-	}
-	return nil
-}
-
 // AddAccount appends an account to the configuration file
 func AddAccount(name string, key string) error {
 
@@ -116,6 +86,62 @@ func AddAccount(name string, key string) error {
 	return write(newListBytes)
 }
 
+/*
+CurrentAPIKey returns the API key found in the environment,
+or the 'current' API key found in the credentials file if
+the environment is not set
+*/
+func CurrentAPIKey() (string, error) {
+	apiKey, found, err := currentAPIKeyENV()
+
+	// return an error if env is found but malformed
+	if found == true && err != nil {
+		return "", err
+	}
+
+	// return api key if found
+	if found == true && err == nil {
+		return apiKey, nil
+	}
+
+	apiKey, e := getCurrentFromConfig()
+	if e != nil {
+		// return both ENV and File errors
+		return "", errors.Wrap(err, e.Error())
+	}
+	return apiKey, nil
+}
+
+// ListAccounts prints a formatted list of users read from the configuration file
+func ListAccounts() error {
+
+	currentList, err := read()
+	if err != nil {
+		return errors.Wrap(err, fileNotFoundError().Error())
+	}
+
+	path, err := configPath()
+	if err != nil {
+		return err
+	}
+
+	if len(currentList) == 0 {
+		return errors.New(path + " is empty, add an account with 'bpcli account add'")
+	}
+
+	fmt.Println("List of Account Names. * Denotes Current Account")
+
+	// Print the list in a formatted way
+	for _, acc := range currentList {
+		if acc.Current == true {
+			fmt.Println("* " + acc.Name)
+		} else {
+			fmt.Println(acc.Name)
+		}
+	}
+	return nil
+}
+
 // Remove erases an account from the configuration file
 func Remove(name string) error {
 
@@ -153,49 +179,6 @@ func Remove(name string) error {
 	return write(newListBytes)
 }
 
-/*
-CurrentAPIKey returns the API key found in the environment,
-or the 'current' API key found in the credentials file if
-the environment is not set
-*/
-func CurrentAPIKey() (string, error) {
-	apiKey, found, err := currentAPIKeyENV()
-
-	// return an error if env is found but malformed
-	if found == true && err != nil {
-		return "", err
-	}
-
-	// return api key if found
-	if found == true && err == nil {
-		return apiKey, nil
-	}
-
-	apiKey, e := getCurrentFromConfig()
-	if e != nil {
-		// return both ENV and File errors
-		return "", errors.Wrap(err, e.Error())
-	}
-	return apiKey, nil
-}
-
-// currentAPIKeyENV returns the API key, true, and nil if
-// the API key is found in the environment and is a valid uuid
-// returns false if the environment is empty
-func currentAPIKeyENV() (string, bool, error) {
-	a := os.Getenv("BINDPLANE_API_KEY")
-
-	if len(strings.TrimSpace(a)) == 0 {
-		return "", false, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not set")
-	}
-
-	if !uuid.IsUUID(a) {
-		return "", true, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not a valid uuid")
-	}
-
-	return a, true, nil
-}
-
 // SetCurrent sets a chosen account to be the current account being worked in
 func SetCurrent(name string) error {
 
@@ -226,7 +209,23 @@ func SetCurrent(name string) error {
 	}
 
 	return write(updatedListBytes)
+}
 
+// currentAPIKeyENV returns the API key, true, and nil if
+// the API key is found in the environment and is a valid uuid
+// returns false if the environment is empty
+func currentAPIKeyENV() (string, bool, error) {
+	a := os.Getenv("BINDPLANE_API_KEY")
+
+	if len(strings.TrimSpace(a)) == 0 {
+		return "", false, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not set")
+	}
+
+	if !uuid.IsUUID(a) {
+		return "", true, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not a valid uuid")
+	}
+
+	return a, true, nil
 }
 
 // getCurrentFromConfig retrieves the currently active/set API key from the
@@ -268,7 +267,6 @@ func getCurrentFromConfig() (string, error) {
 }
 
 func hasCurrent() (bool, error) {
-
 	currentList, err := read()
 	if err != nil {
 		return false, err
@@ -302,19 +300,4 @@ func accountExists(name string) (bool, error) {
 	}
 
 	return false, nil
-}
-
-// checkConfig determines if a config file exists and whether it is empty
-func checkConfig() (bool, error) {
-
-	file, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	if !(len(file) > 0) {
-		return true, errors.New("The accounts list is empty")
-	}
-
-	return true, nil
 }
