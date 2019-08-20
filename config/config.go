@@ -143,7 +143,7 @@ func Remove(name string) error {
 	}
 
 	if cmp.Equal(newList, currentList) {
-		os.Stderr.WriteString("No names matched the given input\n" +
+		os.Stderr.WriteString("No names match the given input\n" +
 			"Name Given: " + name + "\n")
 		return nil
 	}
@@ -269,7 +269,7 @@ func SetCurrent(name string) error {
 
 		return write(updatedListBytes)
 	}
-	os.Stderr.WriteString("No names matched the given input\n" +
+	os.Stderr.WriteString("No names match the given input\n" +
 		"Name Given: " + name + "\n")
 	return nil
 }
