@@ -231,7 +231,12 @@ func currentAPIKeyENV() (string, bool, error) {
 // getCurrentFromConfig retrieves the currently active/set API key from the
 // config file
 func getCurrentFromConfig() (string, error) {
-	b, err := hasCurrent()
+	accounts, err := read()
+	if err != nil {
+		return "", err
+	}
+
+	b, err := hasCurrent(accounts)
 	if err != nil {
 		return "", err
 	} else if b == false {
@@ -266,14 +271,9 @@ func getCurrentFromConfig() (string, error) {
 	return currentKey, nil
 }
 
-func hasCurrent() (bool, error) {
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	for i := range currentList {
-		if currentList[i].Current == true {
+func hasCurrent(accounts []account) (bool, error) {
+	for i := range accounts {
+		if accounts[i].Current == true {
 			return true, nil
 		}
 	}
