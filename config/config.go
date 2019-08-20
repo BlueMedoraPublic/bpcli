@@ -1,12 +1,11 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+	"encoding/json"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/google/go-cmp/cmp"
@@ -227,75 +226,6 @@ func SetCurrent(name string) error {
 	}
 	os.Stderr.WriteString("No names match the given input: " + name)
 	return nil
-}
-
-// read Returns an array of accounts read from the configuration file
-func read() ([]account, error) {
-	accountList := []account{}
-
-	filePath, err := configPath()
-	if err != nil {
-		return accountList, err
-	}
-
-	file, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return accountList, err
-	}
-	if len(file) == 0 {
-		return accountList, nil
-	}
-
-	return accountList, json.Unmarshal(file, &accountList)
-}
-
-// write is a helper function that will write/re-write the configuration file
-func write(list []byte) error {
-
-	filePath, err := configPath()
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(filePath, list, 0600)
-}
-
-// uniqueUUID checks the account list for duplicate UUIDs
-func uniqueUUID(key string) (bool, error) {
-
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	if uuid.IsUUID(key) {
-		for _, acc := range currentList {
-			if key == acc.Key {
-				return false, nil
-			}
-		}
-	} else {
-		return false, errors.New("The value given was not a valid UUID")
-	}
-
-	return true, nil
-}
-
-// uniqueName checks the users account list for duplicate names
-func uniqueName(name string) (bool, error) {
-
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	for _, acc := range currentList {
-		if name == acc.Name {
-			return false, nil
-		}
-	}
-
-	return true, nil
 }
 
 // getCurrentFromConfig retrieves the currently active/set API key from the
