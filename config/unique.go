@@ -7,24 +7,17 @@ import (
 )
 
 // uniqueUUID checks the account list for duplicate UUIDs
-func uniqueUUID(key string) (bool, error) {
+func uniqueUUID(accounts []account, key string) (bool, error) {
+    if uuid.IsUUID(key) == false {
+        return false, errors.New("The API key given is not a valid UUID")
+    }
 
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	if uuid.IsUUID(key) {
-		for _, acc := range currentList {
-			if key == acc.Key {
-				return false, nil
-			}
-		}
-	} else {
-		return false, errors.New("The value given was not a valid UUID")
-	}
-
-	return true, nil
+    for _, a := range accounts {
+        if a.Key == key {
+            return false, nil
+        }
+    }
+    return true, nil
 }
 
 // uniqueName checks the users account list for duplicate names
