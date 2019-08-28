@@ -104,7 +104,7 @@ func CurrentAPIKey() (string, error) {
 		return apiKey, nil
 	}
 
-	apiKey, e := getCurrentFromConfig()
+	apiKey, e := currentAccount()
 	if e != nil {
 		// return both ENV and File errors
 		return "", errors.Wrap(err, e.Error())
@@ -228,56 +228,22 @@ func currentAPIKeyENV() (string, bool, error) {
 	return a, true, nil
 }
 
-// getCurrentFromConfig retrieves the currently active/set API key from the
-// config file
-func getCurrentFromConfig() (string, error) {
+func currentAccount() (string, error) {
 	accounts, err := read()
 	if err != nil {
 		return "", err
 	}
 
-	b, err := hasCurrent(accounts)
-	if err != nil {
-		return "", err
-	} else if b == false {
-		return "", errors.New("ERROR: credential file does not have an account set, use 'bpcli account set'")
-	}
-
-	var currentKey string
-
-	currentList, err := read()
-	if err != nil {
-		return currentKey, err
-	}
-
-	for i := range currentList {
-		if currentList[i].Current == false {
-			continue
-		} else {
-			currentKey = currentList[i].Key
-
-			if len(currentKey) <= 0 {
-				return currentKey, errors.New(currentList[i].Name + " does not have a" +
-					" valid API Key set")
+	for _, a := range accounts {
+		if a.Current == true {
+			if uuid.IsUUID(a.Key) {
+				return a.Key, nil
 			}
-
-			if !uuid.IsUUID(currentKey) {
-				return currentKey, errors.New(currentKey + " for " +
-					currentList[i].Name + " is not a valid UUID")
-			}
+			//return a.Key, nil
+			return "", errors.New("Found current account in config, '" + a.Name + "', however, the API key is not a valid UUID")
 		}
 	}
-
-	return currentKey, nil
-}
-
-func hasCurrent(accounts []account) (bool, error) {
-	for i := range accounts {
-		if accounts[i].Current == true {
-			return true, nil
-		}
-	}
-	return false, nil
+	return "", noCurrentAccountError()
 }
 
 func accountExists(name string) (bool, error) {
