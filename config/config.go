@@ -20,7 +20,7 @@ type account struct {
 
 // AddAccount appends an account to the configuration file
 func AddAccount(name string, key string) error {
-	currentList, err := read()
+	accounts, err := read()
 	if err != nil {
 		if strings.Contains(err.Error(), "no such file or directory") == false {
 			return err
@@ -31,17 +31,17 @@ func AddAccount(name string, key string) error {
 		}
 	}
 
-	currentList, err = read()
+	accounts, err = read()
 	if err != nil {
 		return err
 	}
 
-	if err := validateNewAccount(name, key); err != nil {
+	if err := validateNewAccount(accounts, name, key); err != nil {
 		return err
 	}
 
 	a := account{Name: name, Key: key, Current: false}
-	newList := append(currentList, a)
+	newList := append(accounts, a)
 
 	newListBytes, err := json.Marshal(newList)
 	if err != nil {
@@ -225,7 +225,7 @@ func accountExists(name string) (bool, error) {
 	return false, nil
 }
 
-func validateNewAccount(name string, key string) error {
+func validateNewAccount(accounts []account, name string, key string) error {
 	if len(strings.TrimSpace(name)) == 0 {
 		return errors.New("The name cannot be an empty string")
 	}
@@ -234,7 +234,7 @@ func validateNewAccount(name string, key string) error {
 		return errors.New("The API Key given is not a valid UUID")
 	}
 
-	b, err := uniqueUUID(key)
+	b, err := uniqueUUID(accounts, key)
 	if err != nil {
 		return err
 	}
