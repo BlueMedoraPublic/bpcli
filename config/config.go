@@ -36,28 +36,8 @@ func AddAccount(name string, key string) error {
 		return err
 	}
 
-	if len(strings.TrimSpace(name)) == 0 {
-		return errors.New("The name cannot be an empty string")
-	}
-
-	if !uuid.IsUUID(key) {
-		return errors.New("The API Key given is not a valid UUID")
-	}
-
-	b, err := uniqueUUID(key)
-	if err != nil {
+	if err := validateNewAccount(name, key); err != nil {
 		return err
-	}
-	if b == false {
-		return errors.New("The API Key given already exists within the config file")
-	}
-
-	n, err := uniqueName(name)
-	if err != nil {
-		return err
-	}
-	if n == false {
-		return errors.New("The name given already exists within the config file")
 	}
 
 	a := account{Name: name, Key: key, Current: false}
@@ -243,4 +223,32 @@ func accountExists(name string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func validateNewAccount(name string, key string) error {
+	if len(strings.TrimSpace(name)) == 0 {
+		return errors.New("The name cannot be an empty string")
+	}
+
+	if !uuid.IsUUID(key) {
+		return errors.New("The API Key given is not a valid UUID")
+	}
+
+	b, err := uniqueUUID(key)
+	if err != nil {
+		return err
+	}
+	if b == false {
+		return errors.New("The API Key given already exists within the config file")
+	}
+
+	n, err := uniqueName(name)
+	if err != nil {
+		return err
+	}
+	if n == false {
+		return errors.New("The name given already exists within the config file")
+	}
+
+	return nil
 }
