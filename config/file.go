@@ -65,3 +65,18 @@ func write(list []byte) error {
 	}
 	return ioutil.WriteFile(filePath, list, 0600)
 }
+
+// create creates the config file
+func create() error {
+    path, err := configPath()
+    if err != nil {
+        return err
+    }
+
+    emptyFile, err := os.Create(path)
+    if err != nil {
+        return err
+    }
+    defer emptyFile.Close()
+    return nil
+}
