@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 	"encoding/json"
@@ -21,29 +20,15 @@ type account struct {
 
 // AddAccount appends an account to the configuration file
 func AddAccount(name string, key string) error {
-
 	currentList, err := read()
 	if err != nil {
-		// Write to standard error in order to make sure the user
-		// can see that we are taking additional action
-		os.Stderr.WriteString("ERROR: " + err.Error())
-
-		path, err := configPath()
-		if err != nil {
+		if strings.Contains(err.Error(), "no such file or directory") == false {
 			return err
 		}
 
-		emptyFile, err := os.Create(path)
-		if err != nil {
-			log.Fatal(err)
-			os.Exit(1)
+		if err := create(); err != nil {
+			return err
 		}
-
-		// Write to standard error in order to make sure the user
-		// can see that we are taking additional action
-		os.Stderr.WriteString("Creating a new file at: " + path)
-
-		emptyFile.Close()
 	}
 
 	currentList, err = read()
