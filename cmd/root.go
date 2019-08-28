@@ -20,7 +20,7 @@ var zshCompletion bool
 var watch bool
 
 // uuid flags
-var accountID string
+var accountKey string
 var jobID string
 var groupID string
 var collectorID string
