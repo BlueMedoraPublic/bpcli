@@ -3,10 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
-	"os/user"
 	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
@@ -21,92 +18,32 @@ type account struct {
 	Current bool   `json:"current"`
 }
 
-// ListAccounts prints a formatted list of users read from the configuration file
-func ListAccounts() error {
-
-	currentList, err := read()
-	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
-	}
-
-	path, err := configPath()
-	if err != nil {
-		return err
-	}
-
-	if len(currentList) == 0 {
-		return errors.New(path + " is empty! try adding a new account to the list\n")
-	}
-
-	fmt.Println("List of Account Names. * Denotes Current Account")
-
-	// Print the list in a formatted way
-	for _, acc := range currentList {
-		if acc.Current == true {
-			fmt.Println("* " + acc.Name)
-		} else {
-			fmt.Println(acc.Name)
-		}
-	}
-	return nil
-}
-
 // AddAccount appends an account to the configuration file
 func AddAccount(name string, key string) error {
+	envWarning()
 
-	currentList, err := read()
+	accounts, err := read()
 	if err != nil {
-		os.Stderr.WriteString("ERROR: " + err.Error() + "\n")
-
-		path, err := configPath()
-		if err != nil {
+		if strings.Contains(err.Error(), "no such file or directory") == false {
 			return err
 		}
 
-		emptyFile, err := os.Create(path)
-		if err != nil {
-			log.Fatal(err)
-			os.Exit(1)
+		if err := create(); err != nil {
+			return err
 		}
-
-		os.Stderr.WriteString("Creating a new file at: " + path + "\n")
-		emptyFile.Close()
 	}
 
-	currentList, err = read()
+	accounts, err = read()
 	if err != nil {
 		return err
 	}
 
-	if len(strings.TrimSpace(name)) == 0 {
-		return errors.New("The name cannot be an empty string")
-	}
-
-	if !uuid.IsUUID(key) {
-		return errors.New("The API Key given is not a valid UUID")
-	}
-
-	b, err := uniqueUUID(key)
-	if err != nil {
+	if err := validateNewAccount(accounts, name, key); err != nil {
 		return err
-	}
-	if b == false {
-		return errors.New("The API Key given already exists within the config file")
-	}
-
-	n, err := uniqueName(name)
-	if err != nil {
-		return err
-	}
-	if n == false {
-		return errors.New("The name given already exists within the config file")
 	}
 
 	a := account{Name: name, Key: key, Current: false}
-	newList := append(currentList, a)
+	newList := append(accounts, a)
 
 	newListBytes, err := json.Marshal(newList)
 	if err != nil {
@@ -116,15 +53,70 @@ func AddAccount(name string, key string) error {
 	return write(newListBytes)
 }
 
+/*
+CurrentAPIKey returns the API key found in the environment,
+or the 'current' API key found in the credentials file if
+the environment is not set
+*/
+func CurrentAPIKey() (string, error) {
+	apiKey, found, err := currentAPIKeyENV()
+
+	// return an error if env is found but malformed
+	if found == true && err != nil {
+		return "", err
+	}
+
+	// return api key if found
+	if found == true && err == nil {
+		return apiKey, nil
+	}
+
+	apiKey, err = currentAccount()
+	if err != nil {
+		// return both ENV and File errors
+		//return "", errors.Wrap(err, e.Error())
+		return "", err
+	}
+	return apiKey, nil
+}
+
+// ListAccounts prints a formatted list of users read from the configuration file
+func ListAccounts() error {
+	envWarning()
+
+	currentList, err := read()
+	if err != nil {
+		return errors.Wrap(err, fileNotFoundError().Error())
+	}
+
+	path, err := configPath()
+	if err != nil {
+		return err
+	}
+
+	if len(currentList) == 0 {
+		return errors.New(path + " is empty, add an account with 'bpcli account add'")
+	}
+
+	fmt.Println("List of Accounts and API Keys. * Denotes Current Account")
+
+	// Print the list in a formatted way
+	for _, acc := range currentList {
+		if acc.Current == true {
+			fmt.Println("* "+acc.Name, acc.Key)
+		} else {
+			fmt.Println(acc.Name, acc.Key)
+		}
+	}
+	return nil
+}
+
 // Remove erases an account from the configuration file
 func Remove(name string) error {
 
 	currentList, err := read()
 	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
+		return errors.Wrap(err, fileNotFoundError().Error())
 	}
 
 	newList := currentList
@@ -143,8 +135,8 @@ func Remove(name string) error {
 	}
 
 	if cmp.Equal(newList, currentList) {
-		os.Stderr.WriteString("No names matched the given input\n" +
-			"Name Given: " + name + "\n")
+		os.Stderr.WriteString("No names match the given input" +
+			"Name Given: " + name)
 		return nil
 	}
 
@@ -156,286 +148,119 @@ func Remove(name string) error {
 	return write(newListBytes)
 }
 
-// CurrentAPIKey attempts to retrieve an API key
-func CurrentAPIKey() (string, error) {
-
-	errMsg := `To use bpcli you must do either of the following:
-	1. Set an environment variable named BINDPLANE_API_KEY
-	2. Define a configuration file`
-
-	// Check environment variable
-	apiKey, envExists := os.LookupEnv("BINDPLANE_API_KEY")
-
-	fileExists, _ := checkConfig()
-
-	// No env variable, no file
-	// Error
-	if !fileExists && !envExists {
-		return apiKey, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not present\n" +
-			"ERROR: The configuration file is not present\n" +
-			errMsg)
-	}
-
-	// Env variable exists, no file
-	if !fileExists && envExists {
-		if len(apiKey) <= 0 {
-			return apiKey, errors.New("ERROR: The environment variable is not set\n" +
-				errMsg)
-		}
-		if !uuid.IsUUID(apiKey) {
-			return apiKey, errors.New("ERROR: The API Key given is not a valid UUID\n" +
-				errMsg)
-		}
-		return apiKey, nil
-	}
-
-	// No env variable, config file w/o current set
-	// Error
-	if !envExists && fileExists {
-		b, err := hasCurrent()
-		if err != nil {
-			return apiKey, err
-		}
-		if b == false {
-			return apiKey, errors.New("ERROR: An environment variable is not present.\n" +
-				"ERROR: A configuration file exists, but does not have an account set to current.\n" +
-				errMsg + "\n" +
-				"use the `bpcli account set` command to set an account to current in the config file.")
-		}
-	}
-
-	// No env variable, config file w/ current set
-	if !envExists && fileExists {
-		b, err := hasCurrent()
-		if err != nil {
-			return apiKey, err
-		}
-		if b == true {
-			return getCurrentFromConfig()
-		}
-	}
-
-	// Env variables exists, file exists
-	if envExists && fileExists {
-
-		if len(apiKey) <= 0 {
-			return apiKey, errors.New("ERROR: The environment variable is not set\n" +
-				errMsg)
-		}
-		if !uuid.IsUUID(apiKey) {
-			return apiKey, errors.New("ERROR: The API Key given is not a valid UUID\n" +
-				errMsg)
-		}
-
-		os.Stderr.WriteString("WARNING: An environment variable is set and a configuration file exists\n" +
-			"The environment variable will ALWAYS take precedence over the configuration file\n" +
-			"If you would like to use the configuration file, remove the environment variable\n" +
-			"****COLLECTOR LIST****\n")
-
-		return apiKey, nil
-	}
-
-	return apiKey, nil
-}
-
 // SetCurrent sets a chosen account to be the current account being worked in
 func SetCurrent(name string) error {
+	envWarning()
 
 	currentList, err := read()
 	if err != nil {
-		return errors.Wrap(err,
-			"The credentials file has not been found\n"+
-				"Use the `bpcli account add` command to generate the file "+
-				"and add an account to the list\n")
+		return errors.Wrap(err, fileNotFoundError().Error())
 	}
 
 	b, err := accountExists(name)
 	if err != nil {
 		return err
 	}
-	if b == true {
-		for i := range currentList {
-			if name == currentList[i].Name {
-				currentList[i].Current = true
-			} else {
-				currentList[i].Current = false
-			}
+	if b == false {
+		return accountNotFoundError(name)
+	}
+
+	for i := range currentList {
+		if name == currentList[i].Name {
+			currentList[i].Current = true
+		} else {
+			currentList[i].Current = false
 		}
-
-		updatedListBytes, err := json.Marshal(currentList)
-		if err != nil {
-			return err
-		}
-
-		return write(updatedListBytes)
-	}
-	os.Stderr.WriteString("No names matched the given input\n" +
-		"Name Given: " + name + "\n")
-	return nil
-}
-
-// read Returns an array of accounts read from the configuration file
-func read() ([]account, error) {
-	accountList := []account{}
-
-	filePath, err := configPath()
-	if err != nil {
-		return accountList, err
 	}
 
-	file, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return accountList, err
-	}
-	if len(file) == 0 {
-		return accountList, nil
-	}
-
-	return accountList, json.Unmarshal(file, &accountList)
-}
-
-// write is a helper function that will write/re-write the configuration file
-func write(list []byte) error {
-
-	filePath, err := configPath()
+	updatedListBytes, err := json.Marshal(currentList)
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(filePath, list, 0600)
+	return write(updatedListBytes)
 }
 
-// uniqueUUID checks the account list for duplicate UUIDs
-func uniqueUUID(key string) (bool, error) {
+// currentAPIKeyENV returns the API key, true, and nil if
+// the API key is found in the environment and is a valid uuid
+// returns false if the environment is empty
+func currentAPIKeyENV() (string, bool, error) {
+	a := os.Getenv("BINDPLANE_API_KEY")
 
-	currentList, err := read()
-	if err != nil {
-		return false, err
+	if len(strings.TrimSpace(a)) == 0 {
+		return "", false, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not set")
 	}
 
-	if uuid.IsUUID(key) {
-		for _, acc := range currentList {
-			if key == acc.Key {
-				return false, nil
-			}
-		}
-	} else {
-		return false, errors.New("The value given was not a valid UUID")
+	if !uuid.IsUUID(a) {
+		return "", true, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not a valid uuid")
 	}
 
-	return true, nil
+	return a, true, nil
 }
 
-// uniqueName checks the users account list for duplicate names
-func uniqueName(name string) (bool, error) {
-
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	for _, acc := range currentList {
-		if name == acc.Name {
-			return false, nil
-		}
-	}
-
-	return true, nil
-}
-
-// getCurrentFromConfig retrieves the currently active/set API key from the
-// config file
-func getCurrentFromConfig() (string, error) {
-	var currentKey string
-
-	currentList, err := read()
-	if err != nil {
-		return currentKey, err
-	}
-
-	for i := range currentList {
-		if currentList[i].Current == false {
-			continue
-		} else {
-			currentKey = currentList[i].Key
-
-			if len(currentKey) <= 0 {
-				return currentKey, errors.New(currentList[i].Name + " does not have a" +
-					" valid API Key set")
-			}
-
-			if !uuid.IsUUID(currentKey) {
-				return currentKey, errors.New(currentKey + " for " +
-					currentList[i].Name + " is not a valid UUID")
-			}
-		}
-	}
-
-	return currentKey, nil
-}
-
-func hasCurrent() (bool, error) {
-
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	for i := range currentList {
-		if currentList[i].Current == false {
-			continue
-		} else {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
-// configPath returns the home directory of the current user
-func configPath() (string, error) {
-	x := os.Getenv("BINDPLANE_CONFIG_FILE")
-	if len(x) > 0 {
-		return x, nil
-	}
-
-	usr, err := user.Current()
+func currentAccount() (string, error) {
+	accounts, err := read()
 	if err != nil {
 		return "", err
 	}
-	return usr.HomeDir + "/.bpcli", nil
+
+	for _, a := range accounts {
+		if a.Current == true {
+			if uuid.IsUUID(a.Key) {
+				return a.Key, nil
+			}
+			//return a.Key, nil
+			return "", errors.New("Found current account in config, '" + a.Name + "', however, the API key is not a valid UUID")
+		}
+	}
+	return "", noCurrentAccountError()
 }
 
-// accountExists checks the config file to see whether a given account exists
 func accountExists(name string) (bool, error) {
-
 	currentList, err := read()
 	if err != nil {
 		return false, err
 	}
 
 	for i := range currentList {
-		if name != currentList[i].Name {
-			continue
-		} else {
+		if name == currentList[i].Name {
 			return true, nil
 		}
 	}
-
 	return false, nil
 }
 
-// checkConfig determines if a config file exists and whether it is empty
-func checkConfig() (bool, error) {
+func validateNewAccount(accounts []account, name string, key string) error {
+	if len(strings.TrimSpace(name)) == 0 {
+		return errors.New("The name cannot be an empty string")
+	}
 
-	file, err := read()
+	if !uuid.IsUUID(key) {
+		return errors.New("The API Key given is not a valid UUID")
+	}
+
+	b, err := uniqueUUID(accounts, key)
 	if err != nil {
-		return false, err
+		return err
+	}
+	if b == false {
+		return errors.New("The API Key given already exists within the config file")
 	}
 
-	if !(len(file) > 0) {
-		return true, errors.New("The accounts list is empty")
+	n, err := uniqueName(accounts, name)
+	if err != nil {
+		return err
+	}
+	if n == false {
+		return errors.New("The name given already exists within the config file")
 	}
 
-	return true, nil
+	return nil
+}
+
+func envWarning() {
+	x := os.Getenv("BINDPLANE_API_KEY")
+	if len(x) > 0 {
+		fmt.Fprintf(os.Stderr, "WARNING: BINDPLANE_API_KEY is set and will take precidence over the configuration file\n")
+	}
 }

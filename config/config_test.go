@@ -321,8 +321,8 @@ func TestSetCurrentNonExistingAccount(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	if err := SetCurrent("no-exist"); err != nil {
-		t.Errorf(err.Error())
+	if err := SetCurrent("no-exist"); err == nil {
+		t.Errorf("Expected an error when trying to set the current account to an account that does not exist")
 	}
 
 	if err := os.Remove(configFile); err != nil {
