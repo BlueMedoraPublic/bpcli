@@ -20,6 +20,8 @@ type account struct {
 
 // AddAccount appends an account to the configuration file
 func AddAccount(name string, key string) error {
+	envWarning()
+
 	accounts, err := read()
 	if err != nil {
 		if strings.Contains(err.Error(), "no such file or directory") == false {
@@ -80,6 +82,7 @@ func CurrentAPIKey() (string, error) {
 
 // ListAccounts prints a formatted list of users read from the configuration file
 func ListAccounts() error {
+	envWarning()
 
 	currentList, err := read()
 	if err != nil {
@@ -147,6 +150,7 @@ func Remove(name string) error {
 
 // SetCurrent sets a chosen account to be the current account being worked in
 func SetCurrent(name string) error {
+	envWarning()
 
 	currentList, err := read()
 	if err != nil {
@@ -252,4 +256,11 @@ func validateNewAccount(accounts []account, name string, key string) error {
 	}
 
 	return nil
+}
+
+func envWarning() {
+	x := os.Getenv("BINDPLANE_API_KEY")
+	if len(x) > 0 {
+		fmt.Fprintf(os.Stderr, "WARNING: BINDPLANE_API_KEY is set and will take precidence over the configuration file\n")
+	}
 }
