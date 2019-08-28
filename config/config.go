@@ -95,14 +95,14 @@ func ListAccounts() error {
 		return errors.New(path + " is empty, add an account with 'bpcli account add'")
 	}
 
-	fmt.Println("List of Account Names. * Denotes Current Account")
+	fmt.Println("List of Accounts and API Keys. * Denotes Current Account")
 
 	// Print the list in a formatted way
 	for _, acc := range currentList {
 		if acc.Current == true {
-			fmt.Println("* " + acc.Name)
+			fmt.Println("* " + acc.Name, acc.Key)
 		} else {
-			fmt.Println(acc.Name)
+			fmt.Println(acc.Name, acc.Key)
 		}
 	}
 	return nil
