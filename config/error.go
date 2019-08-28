@@ -15,5 +15,7 @@ func accountNotFoundError(name string) error {
 }
 
 func noCurrentAccountError() error {
-    return errors.New("The configuration file does not have an account marked as 'current', use 'bpcli account set' to select an account")
+    return errors.New("The configuration file does not have an account " +
+        "set as 'current', use 'bpcli account set' to select an account " +
+        "or set the environment variable BINDPLANE_API_KEY to bypass the configuration file")
 }

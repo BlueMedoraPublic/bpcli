@@ -69,10 +69,11 @@ func CurrentAPIKey() (string, error) {
 		return apiKey, nil
 	}
 
-	apiKey, e := currentAccount()
-	if e != nil {
+	apiKey, err = currentAccount()
+	if err != nil {
 		// return both ENV and File errors
-		return "", errors.Wrap(err, e.Error())
+		//return "", errors.Wrap(err, e.Error())
+		return "", err
 	}
 	return apiKey, nil
 }
