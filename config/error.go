@@ -13,3 +13,7 @@ func fileNotFoundError() error {
 func accountNotFoundError(name string) error {
     return errors.New("The account '" + name + "' does not exist in the credentials file")
 }
+
+func noCurrentAccountError() error {
+    return errors.New("The configuration file does not have an account marked as 'current', use 'bpcli account set' to select an account")
+}
