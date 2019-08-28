@@ -1,11 +1,11 @@
 package config
 
 import (
-    "os"
-    "os/user"
-    "errors"
-    "io/ioutil"
-    "encoding/json"
+	"encoding/json"
+	"errors"
+	"io/ioutil"
+	"os"
+	"os/user"
 )
 
 // checkConfig determines if a config file exists and whether it is empty
@@ -15,7 +15,7 @@ func checkConfig() (bool, error) {
 		return false, err
 	}
 
-    // return true with or without an errror
+	// return true with or without an errror
 	if !(len(accounts) > 0) {
 		return true, errors.New("The accounts list is empty")
 	}
@@ -68,15 +68,15 @@ func write(list []byte) error {
 
 // create creates the config file
 func create() error {
-    path, err := configPath()
-    if err != nil {
-        return err
-    }
+	path, err := configPath()
+	if err != nil {
+		return err
+	}
 
-    emptyFile, err := os.Create(path)
-    if err != nil {
-        return err
-    }
-    defer emptyFile.Close()
-    return nil
+	emptyFile, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer emptyFile.Close()
+	return nil
 }

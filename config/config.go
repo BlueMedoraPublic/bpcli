@@ -1,10 +1,10 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
-	"encoding/json"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/google/go-cmp/cmp"
@@ -103,7 +103,7 @@ func ListAccounts() error {
 	// Print the list in a formatted way
 	for _, acc := range currentList {
 		if acc.Current == true {
-			fmt.Println("* " + acc.Name, acc.Key)
+			fmt.Println("* "+acc.Name, acc.Key)
 		} else {
 			fmt.Println(acc.Name, acc.Key)
 		}
