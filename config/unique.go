@@ -21,18 +21,11 @@ func uniqueUUID(accounts []account, key string) (bool, error) {
 }
 
 // uniqueName checks the users account list for duplicate names
-func uniqueName(name string) (bool, error) {
-
-	currentList, err := read()
-	if err != nil {
-		return false, err
-	}
-
-	for _, acc := range currentList {
-		if name == acc.Name {
+func uniqueName(accounts []account, name string) (bool, error) {
+	for _, a := range accounts {
+		if name == a.Name {
 			return false, nil
 		}
 	}
-
 	return true, nil
 }

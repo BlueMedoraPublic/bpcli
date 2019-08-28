@@ -242,7 +242,7 @@ func validateNewAccount(accounts []account, name string, key string) error {
 		return errors.New("The API Key given already exists within the config file")
 	}
 
-	n, err := uniqueName(name)
+	n, err := uniqueName(accounts, name)
 	if err != nil {
 		return err
 	}
