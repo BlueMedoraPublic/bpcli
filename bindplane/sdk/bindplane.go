@@ -10,6 +10,8 @@ import (
 )
 
 const bindplaneAPIEndpoint = "BINDPLANE_API_ENDPOINT"
+const bindplaneAPIVersion = "BINDPLANE_API_VERSION"
+
 
 // BindPlane type stores the global configuration
 type BindPlane struct {
@@ -40,6 +42,10 @@ func (bp *BindPlane) Init() error {
 
 	if err := bp.setAPIVersion(); err != nil {
 		return err
+	}
+
+	if apiVersionIsValid(bp.APIVersion) == false {
+		return errors.New("API Version " + bp.APIVersion + " is not valid.")
 	}
 
 	bp.paths.collectors = api.GetCollectorPath(bp.APIVersion)
@@ -98,15 +104,17 @@ func (bp *BindPlane) setAPIKey() error {
 }
 
 func (bp *BindPlane) setAPIVersion() error {
-	if len(bp.APIVersion) == 0 {
-		bp.APIVersion = api.GetDefaultVersion()
+	if len(bp.APIVersion) > 0 {
 		return nil
 	}
 
-	if apiVersionIsValid(bp.APIVersion) == false {
-		return errors.New("API Version " + bp.APIVersion + " is not valid.")
+	x := os.Getenv(bindplaneAPIVersion)
+	if len(x) > 0 {
+		bp.APIVersion = x
+		return nil
 	}
 
+	bp.APIVersion = api.GetDefaultVersion()
 	return nil
 }
 
