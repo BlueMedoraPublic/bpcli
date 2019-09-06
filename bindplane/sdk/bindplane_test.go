@@ -1,10 +1,16 @@
 package sdk
 
 import (
+	"os"
 	"testing"
 )
 
 func TestInit(t *testing.T) {
+	if err := clearENV(); err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+
 	var bp BindPlane
 
 	err := bp.Init()
@@ -65,10 +71,49 @@ func TestInit(t *testing.T) {
 	if bp.APIKey != "ffae6858-1055-482a-90d0-826b20af2081" {
 		t.Errorf("Expected APIKey to be 'ffae6858-1055-482a-90d0-826b20af2081', got: " + bp.APIKey)
 	}
+}
 
-	bp.APIVersion = "v444"
-	err = bp.Init()
-	if err == nil {
-		t.Errorf("Expected APIVersion 'v444 to cause an error', APIVersion is set to: " + bp.APIVersion)
+func TestInitENV(t *testing.T) {
+	if err := clearENV(); err != nil {
+		t.Errorf(err.Error())
+		return
 	}
+
+	var bp BindPlane
+	base := "https://test.bindplane.bluemedora.com"
+	version := "/v2"
+
+	if err := os.Setenv(bindplaneAPIEndpoint, base); err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+
+	if err := os.Setenv(bindplaneAPIVersion, version); err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+
+	if err := bp.Init(); err != nil {
+		t.Errorf(err.Error())
+	}
+
+	if bp.BaseURL != base {
+		t.Errorf("Expected bp.BaseURL to match " + base + " but got " + bp.BaseURL)
+	}
+
+	if bp.APIVersion != version {
+		t.Errorf("Expected bp.BaseURL to match " + version + " but got " + bp.APIVersion)
+	}
+}
+
+func clearENV() error {
+	if err := os.Setenv(bindplaneAPIEndpoint, ""); err != nil {
+		return err
+	}
+
+	if err := os.Setenv(bindplaneAPIVersion, ""); err != nil {
+		return err
+	}
+
+	return nil
 }
