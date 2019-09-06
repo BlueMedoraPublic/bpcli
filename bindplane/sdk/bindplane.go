@@ -11,7 +11,6 @@ import (
 const bindplaneAPIEndpoint = "BINDPLANE_API_ENDPOINT"
 const bindplaneAPIVersion = "BINDPLANE_API_VERSION"
 
-
 // BindPlane type stores the global configuration
 type BindPlane struct {
 	BaseURL    string
