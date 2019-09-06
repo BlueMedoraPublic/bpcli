@@ -6,7 +6,6 @@ import (
 	"github.com/BlueMedoraPublic/bpcli/bindplane/api"
 	"github.com/BlueMedoraPublic/bpcli/config"
 	"github.com/BlueMedoraPublic/bpcli/util/httpclient"
-	"github.com/pkg/errors"
 )
 
 const bindplaneAPIEndpoint = "BINDPLANE_API_ENDPOINT"
@@ -42,10 +41,6 @@ func (bp *BindPlane) Init() error {
 
 	if err := bp.setAPIVersion(); err != nil {
 		return err
-	}
-
-	if apiVersionIsValid(bp.APIVersion) == false {
-		return errors.New("API Version " + bp.APIVersion + " is not valid.")
 	}
 
 	bp.paths.collectors = api.GetCollectorPath(bp.APIVersion)
@@ -116,13 +111,4 @@ func (bp *BindPlane) setAPIVersion() error {
 
 	bp.APIVersion = api.GetDefaultVersion()
 	return nil
-}
-
-func apiVersionIsValid(v string) bool {
-	for _, version := range api.Versions() {
-		if v == version {
-			return true
-		}
-	}
-	return false
 }
