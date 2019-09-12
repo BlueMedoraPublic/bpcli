@@ -1,0 +1,17 @@
+name: Go
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: golang:1.13
+    steps:
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Install Gox
+      run: go get github.com/mitchellh/gox
+
+    - name: Build
+      run: gox -arch=amd64 -os='!netbsd !openbsd !freebsd' ./...
