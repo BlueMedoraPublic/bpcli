@@ -2,10 +2,11 @@ package httpclient
 
 import (
 	"bytes"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 // Request returns a response body and status code
@@ -16,6 +17,9 @@ func Request(method string, uri string, payload []byte, token string) ([]byte, e
 	}
 
 	body, status, err := performRequest(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "error while making request to " + uri)
+	}
 
 	if StatusIs20X(status) == false {
 		return body, apiErrorHelper(uri, status, body)
@@ -38,6 +42,10 @@ func CreateRequest(method string, uri string, payload []byte, token string) (*ht
 // PerformRequest performs an HTTP request and returns a
 // response body and status code
 func performRequest(req *http.Request) ([]byte, int, error) {
+	if err := validMethod(req.Method); err != nil {
+		return nil, 0, err
+	}
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -74,5 +82,14 @@ func StatusIs20X(status int) bool {
 		return true
 	default:
 		return false
+	}
+}
+
+func validMethod(method string) error {
+	switch method {
+	case "GET", "POST", "PUT", "PATCH", "DELETE":
+		return nil
+	default:
+		return errors.New("invalid http method '" + method + "'")
 	}
 }
