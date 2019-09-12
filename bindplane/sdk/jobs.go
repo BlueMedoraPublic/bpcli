@@ -1,8 +1,9 @@
 package sdk
 
 import (
-	"encoding/json"
 	"fmt"
+	"net/http"
+	"encoding/json"
 )
 
 // Job describes a job object
@@ -17,7 +18,7 @@ type Job struct {
 // ListJobs will return an array of collector objects
 func (bp BindPlane) ListJobs() ([]Job, error) {
 	var c []Job
-	body, err := bp.APICall("GET", bp.paths.jobs, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.jobs, nil)
 	if err != nil {
 		return c, err
 	}
@@ -30,7 +31,7 @@ func (bp BindPlane) ListJobs() ([]Job, error) {
 // the result key
 func (bp BindPlane) GetJob(id string) (Job, error) {
 	var c Job
-	body, err := bp.APICall("GET", bp.paths.jobs+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.jobs+"/"+id, nil)
 	if err != nil {
 		return c, err
 	}

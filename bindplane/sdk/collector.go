@@ -1,8 +1,9 @@
 package sdk
 
 import (
-	"encoding/json"
 	"fmt"
+	"net/http"
+	"encoding/json"
 )
 
 // Collector type describes a collector configuration
@@ -30,7 +31,7 @@ type CollectorGroup struct {
 // GetCollector will return a collector object
 func (bp BindPlane) GetCollector(id string) (Collector, error) {
 	var c Collector
-	body, err := bp.APICall("get", bp.paths.collectors+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.collectors+"/"+id, nil)
 	if err != nil {
 		return c, err
 	}
@@ -42,7 +43,7 @@ func (bp BindPlane) GetCollector(id string) (Collector, error) {
 // GetCollectorGroup will return a collector group object
 func (bp BindPlane) GetCollectorGroup(id string) (CollectorGroup, error) {
 	var g CollectorGroup
-	body, err := bp.APICall("get", bp.paths.collectors+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.collectors+"/"+id, nil)
 	if err != nil {
 		return g, err
 	}
@@ -54,7 +55,7 @@ func (bp BindPlane) GetCollectorGroup(id string) (CollectorGroup, error) {
 // GetCollectors will return an array of collector group objects
 func (bp BindPlane) GetCollectors() ([]CollectorGroup, error) {
 	var c []CollectorGroup
-	body, err := bp.APICall("get", bp.paths.collectors, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.collectors, nil)
 	if err != nil {
 		return c, err
 	}
@@ -65,7 +66,7 @@ func (bp BindPlane) GetCollectors() ([]CollectorGroup, error) {
 
 // DeleteCollector will delete a configured collector
 func (bp BindPlane) DeleteCollector(id string) error {
-	_, err := bp.APICall("delete", bp.paths.collectors+"/"+id, nil)
+	_, err := bp.APICall(http.MethodDelete, bp.paths.collectors+"/"+id, nil)
 	return err
 }
 
