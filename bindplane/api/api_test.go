@@ -4,23 +4,6 @@ import (
 	"testing"
 )
 
-func TestVersions(t *testing.T) {
-	x := Versions()
-	if len(x) != 1 {
-		t.Errorf("Expected Versions() to return a single api version as only '/v1' has been implemented")
-	}
-
-	foundV1 := false
-	for _, v := range x {
-		if v == "/v1" {
-			foundV1 = true
-		}
-	}
-	if foundV1 != true {
-		t.Errorf("Expected Versions() to include '/v1'")
-	}
-}
-
 func TestGetDefaultBaseURL(t *testing.T) {
 	x := GetDefaultBaseURL()
 	if x != defaultBaseURL {

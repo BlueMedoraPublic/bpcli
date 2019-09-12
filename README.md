@@ -85,7 +85,7 @@ a credentials file.
 
 *Warning*
 The **BINDPLANE_API_KEY** environment variable will always take precedence over the
-credentials file, if it is present. 
+credentials file, if it is present.
 
 #### Example Usage
 Adding and setting an account to be used by bpcli
@@ -163,6 +163,16 @@ export BINDPLANE_LIVE_TEST=1
 make test
 ```
 
+#### Alternative API
+
+If you wish to target an API other than the default ("https://public-api.bindplane.bluemedora.com/v1"),
+set the following environment variables:
+```
+export BINDPLANE_API_ENDPOINT="https://public-api.gcloud.bindplane.bluemedora.com"
+export BINDPLANE_API_VERSION="/v1"
+```
+
+`BINDPLANE_API_ENDPOINT` and `BINDPLANE_API_VERSION` can be set independently
 
 #### Build
 
@@ -179,7 +189,7 @@ Build with Docker, and check the artifacts directory when finished
 make
 ```
 
-To build on your own, without Docker, clone this repo *outside* of your GOPATH, as 
+To build on your own, without Docker, clone this repo *outside* of your GOPATH, as
 bpcli uses go modules:
 ```
 env CGO_ENABLED=0 go build -a

@@ -1,11 +1,15 @@
 package sdk
 
 import (
+	"os"
+
 	"github.com/BlueMedoraPublic/bpcli/bindplane/api"
 	"github.com/BlueMedoraPublic/bpcli/config"
 	"github.com/BlueMedoraPublic/bpcli/util/httpclient"
-	"github.com/pkg/errors"
 )
+
+const bindplaneAPIEndpoint = "BINDPLANE_API_ENDPOINT"
+const bindplaneAPIVersion = "BINDPLANE_API_VERSION"
 
 // BindPlane type stores the global configuration
 type BindPlane struct {
@@ -58,7 +62,20 @@ func (bp BindPlane) APICall(method string, relativePath string, payload []byte) 
 }
 
 func (bp *BindPlane) setBaseURL() error {
-	if len(bp.BaseURL) == 0 {
+	// if already set programmatically
+	if len(bp.BaseURL) > 0 {
+		return nil
+	}
+
+	// if env is set
+	x := os.Getenv(bindplaneAPIEndpoint)
+	if len(x) > 0 {
+		bp.BaseURL = x
+		return nil
+	}
+
+	// set default
+	if len(bp.BaseURL) < 1 {
 		bp.BaseURL = api.GetDefaultBaseURL()
 	}
 	return nil
@@ -81,23 +98,16 @@ func (bp *BindPlane) setAPIKey() error {
 }
 
 func (bp *BindPlane) setAPIVersion() error {
-	if len(bp.APIVersion) == 0 {
-		bp.APIVersion = api.GetDefaultVersion()
+	if len(bp.APIVersion) > 0 {
 		return nil
 	}
 
-	if apiVersionIsValid(bp.APIVersion) == false {
-		return errors.New("API Version " + bp.APIVersion + " is not valid.")
+	x := os.Getenv(bindplaneAPIVersion)
+	if len(x) > 0 {
+		bp.APIVersion = x
+		return nil
 	}
 
+	bp.APIVersion = api.GetDefaultVersion()
 	return nil
-}
-
-func apiVersionIsValid(v string) bool {
-	for _, version := range api.Versions() {
-		if v == version {
-			return true
-		}
-	}
-	return false
 }
