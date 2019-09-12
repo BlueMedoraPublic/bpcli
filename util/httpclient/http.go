@@ -23,30 +23,6 @@ func Request(method string, uri string, payload []byte, token string) ([]byte, e
 	return body, err
 }
 
-// apiErrorHelper formats an error message
-func apiErrorHelper(uri string, status int, respBody []byte) error {
-	return errors.New(uri + " returned " + strconv.Itoa(status) + "\n" + string(respBody))
-}
-
-// StatusIs20X takes a status code, returns true if status
-// is a 20X
-func StatusIs20X(status int) bool {
-	switch status {
-	case 200:
-		return true
-	case 201:
-		return true
-	case 202:
-		return true
-	case 203:
-		return true
-	case 204:
-		return true
-	default:
-		return false
-	}
-}
-
 // CreateRequest returns an http request with headers
 func CreateRequest(method string, uri string, payload []byte, token string) (*http.Request, error) {
 	req, err := http.NewRequest(method, uri, bytes.NewBuffer(payload))
@@ -75,4 +51,28 @@ func performRequest(req *http.Request) ([]byte, int, error) {
 	defer resp.Body.Close()
 
 	return body, resp.StatusCode, err
+}
+
+// apiErrorHelper formats an error message
+func apiErrorHelper(uri string, status int, respBody []byte) error {
+	return errors.New(uri + " returned " + strconv.Itoa(status) + "\n" + string(respBody))
+}
+
+// StatusIs20X takes a status code, returns true if status
+// is a 20X
+func StatusIs20X(status int) bool {
+	switch status {
+	case 200:
+		return true
+	case 201:
+		return true
+	case 202:
+		return true
+	case 203:
+		return true
+	case 204:
+		return true
+	default:
+		return false
+	}
 }
