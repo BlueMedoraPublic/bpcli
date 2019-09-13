@@ -16,7 +16,7 @@ Ok, let's install the latest version of bpcli in your cloudshell.  Just run the 
 
 ```bash
 mkdir ~/bin 
-echo 'echo export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 export PATH=$PATH:$HOME/bin
 curl -LO https://github.com/BlueMedoraPublic/bpcli/releases/latest/download/bpcli_linux_amd64.zip && unzip bpcli_linux_amd64.zip && sudo cp bpcli ~/bin/ && sudo chmod +x ~/bin/bpcli
 ```
