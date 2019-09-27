@@ -1,6 +1,6 @@
 # staging environment retrieves dependencies and compiles
 #
-FROM golang:1.12
+FROM golang:1.13
 
 WORKDIR /build/src/github.com/BlueMedoraPublic/bpcli
 
