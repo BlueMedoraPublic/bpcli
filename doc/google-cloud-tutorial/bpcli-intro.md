@@ -15,10 +15,13 @@ Let's get started!
 Ok, let's install the latest version of bpcli in your cloudshell.  Just run the following commands
 
 ```bash
-curl -LO https://github.com/BlueMedoraPublic/bpcli/releases/latest/download/bpcli_linux_amd64.zip && unzip bpcli_linux_amd64.zip && sudo cp bpcli /usr/local/bin/ && sudo chmod +x /usr/local/bin/bpcli
+mkdir ~/bin 
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+export PATH=$PATH:$HOME/bin
+curl -LO https://github.com/BlueMedoraPublic/bpcli/releases/latest/download/bpcli_linux_amd64.zip && unzip bpcli_linux_amd64.zip && sudo cp bpcli ~/bin/ && sudo chmod +x ~/bin/bpcli
 ```
 
-And a quick check to make sure it's working as it sould
+And a quick check to make sure it's working as it should
 
 ```bash
 bpcli version
