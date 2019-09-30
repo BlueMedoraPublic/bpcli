@@ -79,37 +79,37 @@ func initConfig() {
 func validateFlags() error {
 	if len(collectorID) > 0 {
 		if uuid.IsUUID(collectorID) != true {
-			return errors.New("--collectorID must be a valid UUID")
+			return errors.New("collector id must be a valid UUID")
 		}
 	}
 
 	if len(groupID) > 0 {
 		if uuid.IsUUID(groupID) != true {
-			return errors.New("--groupID must be a valid UUID")
+			return errors.New("group id must be a valid UUID")
 		}
 	}
 
 	if len(jobID) > 0 {
 		if uuid.IsUUID(jobID) != true {
-			return errors.New("--jobID must be a valid UUID")
+			return errors.New("job id must be a valid UUID")
 		}
 	}
 
 	if len(sourceID) > 0 {
 		if uuid.IsUUID(sourceID) != true {
-			return errors.New("--sourceID must be a valid UUID")
+			return errors.New("source id must be a valid UUID")
 		}
 	}
 
 	if len(credentialID) > 0 {
 		if uuid.IsUUID(credentialID) != true {
-			return errors.New("--credentialID must be a valid UUID")
+			return errors.New("credential must be a valid UUID")
 		}
 	}
 
 	if len(credentialTypeID) > 0 {
 		if uuid.IsUUID(credentialTypeID) != true {
-			return errors.New("--credentialTypeID must be a valid UUID")
+			return errors.New("credential type id must be a valid UUID")
 		}
 	}
 
