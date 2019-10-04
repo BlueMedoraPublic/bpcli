@@ -1,10 +1,10 @@
 package sdk
 
 import (
-	"fmt"
-	"errors"
-	"net/http"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
 
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 )

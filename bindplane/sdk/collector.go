@@ -1,9 +1,9 @@
 package sdk
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
 // Collector type describes a collector configuration

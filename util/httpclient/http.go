@@ -18,7 +18,7 @@ func Request(method string, uri string, payload []byte, token string) ([]byte, e
 
 	body, status, err := performRequest(req)
 	if err != nil {
-		return nil, errors.Wrap(err, "error while making request to " + uri)
+		return nil, errors.Wrap(err, "error while making request to "+uri)
 	}
 
 	if StatusIs20X(status) == false {
