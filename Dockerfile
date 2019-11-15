@@ -1,8 +1,4 @@
-# staging environment retrieves dependencies and compiles
-#
 FROM golang:1.13
-
-WORKDIR /build/src/github.com/BlueMedoraPublic/bpcli
 
 ARG bindplane_api_key
 ARG bindplane_live_test
@@ -10,7 +6,6 @@ ARG version
 
 ENV BINDPLANE_API_KEY=$bindplane_api_key
 ENV BINDPLANE_LIVE_TEST=$bindplane_live_test
-ENV GOPATH=/build
 
 RUN \
     apt-get update >> /dev/null && \
@@ -27,12 +22,14 @@ RUN \
     $GOPATH/bin/gox \
         -arch=amd64 \
         -os='!netbsd !openbsd !freebsd'  \
+        -output "artifacts/bpcli_{{.OS}}_{{.Arch}}" \
         ./...
 
-# rename each binary and then zip them
-RUN mv bpcli_linux_amd64 bpcli && zip bpcli_linux_amd64.zip bpcli
-RUN mv bpcli_darwin_amd64 bpcli && zip bpcli_darwin_amd64.zip bpcli
-RUN mv bpcli_windows_amd64.exe bpcli.exe && zip bpcli_windows_amd64.zip bpcli.exe
-
-# build the sha256sum file
-RUN ls | grep 'bpcli_' | xargs -n1 sha256sum >> SHA256SUMS
+# zip and checksum the output
+WORKDIR /bpcli/artifacts
+RUN ls | xargs -I{} zip {}.zip {}
+# checksum the binaries and zip files, even though we remove
+# the binaries at the end
+RUN ls | grep 'bpcli' | xargs -n1 sha256sum >> SHA256SUMS
+# keep only the zip files
+RUN ls | grep -Ev 'zip|SUM' | xargs -n1 rm -f

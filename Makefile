@@ -25,10 +25,7 @@ build: clean
 	    -t bpcli:${VERSION} .
 
 	@docker create -ti --name bpcliartifacts bpcli:${VERSION} bash && \
-	    docker cp bpcliartifacts:/bpcli/bpcli_linux_amd64.zip artifacts/bpcli_linux_amd64.zip && \
-	    docker cp bpcliartifacts:/bpcli/bpcli_darwin_amd64.zip artifacts/bpcli_darwin_amd64.zip && \
-	    docker cp bpcliartifacts:/bpcli/bpcli_windows_amd64.zip artifacts/bpcli_windows_amd64.zip && \
-	    docker cp bpcliartifacts:/bpcli/SHA256SUMS artifacts/SHA256SUMS
+		docker cp bpcliartifacts:/bpcli/artifacts/. artifacts/
 
 	# cleanup
 	@docker rm -fv bpcliartifacts &> /dev/null
