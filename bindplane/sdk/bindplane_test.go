@@ -80,8 +80,8 @@ func TestInitENV(t *testing.T) {
 	}
 
 	var bp BindPlane
-	base := "https://test.bindplane.bluemedora.com"
-	version := "/v2"
+	base := "https://public-api.bindplane.bluemedora.com"
+	version := "/v1"
 
 	if err := os.Setenv(bindplaneAPIEndpoint, base); err != nil {
 		t.Errorf(err.Error())
