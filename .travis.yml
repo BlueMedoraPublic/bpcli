@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  - docker build -t bpcli .
+  - make
