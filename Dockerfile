@@ -9,10 +9,12 @@ ENV BINDPLANE_LIVE_TEST=$bindplane_live_test
 
 RUN \
     apt-get update >> /dev/null && \
-    apt-get install -y golint zip
+    apt-get install -y zip
 
 ADD . /bpcli
 WORKDIR /bpcli
+
+RUN go test ./...
 
 # Disable CGO to avoid pulling in C dependencies, and compile for
 # MACOS, Linux, and Windows
