@@ -4,6 +4,8 @@ import (
     "testing"
 )
 
+var apiVersion = GetDefaultVersion()
+
 func TestGetDefaultBaseURL(t *testing.T) {
 	x := GetDefaultBaseURL()
 	if x != defaultBaseURL {

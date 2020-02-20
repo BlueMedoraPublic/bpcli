@@ -4,8 +4,6 @@ import (
 	"testing"
 )
 
-var apiVersion = GetDefaultVersion()
-
 func TestGetCollectorPath(t *testing.T) {
 	x := GetCollectorPath(apiVersion)
 	if x != (apiVersion + "/collectors") {
