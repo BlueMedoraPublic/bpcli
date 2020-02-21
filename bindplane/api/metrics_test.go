@@ -4,6 +4,33 @@ import (
 	"testing"
 )
 
+func TestMetricsConst(t *testing.T) {
+    if collectorPath != "/collectors" {
+        t.Errorf("Expected collectorPath const to equal /collectors")
+    }
+
+    if credentialPath != "/credentials"{
+        t.Errorf("Expected credentialPath const to equal /credentials")
+    }
+
+    if credentialTypePath != "/credential_types"{
+        t.Errorf("Expected credentialTypePath const to equal /credential_types")
+    }
+
+    if jobPath != "/jobs"{
+        t.Errorf("Expected jobPath const to equal /jobs")
+    }
+
+    if sourcePath != "/sources"{
+        t.Errorf("Expected sourcePath const to equal /sources")
+    }
+
+    if sourceTypePath != "/source_types"{
+        t.Errorf("Expected sourceTypePath const to equal /source_types")
+    }
+
+}
+
 func TestGetCollectorPath(t *testing.T) {
 	x := GetCollectorPath(apiVersion)
 	if x != (apiVersion + "/collectors") {

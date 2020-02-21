@@ -4,6 +4,33 @@ import (
     "testing"
 )
 
+func TestLogConsts(t *testing.T) {
+    if logSourceTypesPath != "/logs/source_types" {
+        t.Errorf("Expected logSourcetypesPath const to equal /logs/source_types")
+    }
+
+    if logSourceConfigsPath != "/logs/source_configs"{
+        t.Errorf("Expected logSourceConfigsPath const to equal /logs/source_configs")
+    }
+
+    if logAgentsPath != "/logs/agents"{
+        t.Errorf("Expected logAgentsPath const to equal /logs/agents")
+    }
+
+    if logDestinationTypesPath != "/logs/destination_types"{
+        t.Errorf("Expected logDestinationTypesPath const to equal /logs/destination_types")
+    }
+
+    if logDestinationConfigsPath != "/logs/destination_configs"{
+        t.Errorf("Expected logDestinationConfigsPath const to equal /logs/destination_configs")
+    }
+
+    if logTemplatesPath != "/logs/templates"{
+        t.Errorf("Expected logTemplatesPath const to equal /logs/templates")
+    }
+
+}
+
 func TestGetLogsourcetypesPath(t *testing.T) {
     x := GetLogSourceTypesPath(apiVersion)
     if x != (apiVersion + logSourceTypesPath) {
