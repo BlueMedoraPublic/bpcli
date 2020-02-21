@@ -100,8 +100,6 @@ func (bp *BindPlane) setBaseURL() error {
 }
 
 func (bp *BindPlane) setAPIKey() error {
-	// var apiKey string
-
 	// Checks current API Key string length
 	if len(bp.APIKey) == 0 {
 		apiKey, err := config.CurrentAPIKey()
