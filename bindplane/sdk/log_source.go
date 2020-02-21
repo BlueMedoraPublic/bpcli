@@ -14,6 +14,19 @@ type LogSourceType struct {
 	DocURL  string `json:"doc_url"`
 }
 
+// GetLogSourceType returns a source type
+func (bp BindPlane) GetLogSourceType(id string) (LogSourceType, error) {
+    var s LogSourceType
+    uri := bp.paths.logs.sourceTypes+"/"+id
+    body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return s, err
+    }
+
+    err = json.Unmarshal(body, &s)
+    return s, err
+}
+
 // ListLogSourceTypes returns all available log source types
 func (bp BindPlane) ListLogSourceTypes() ([]LogSourceType, error) {
     var s []LogSourceType

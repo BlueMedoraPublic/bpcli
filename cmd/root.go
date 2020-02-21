@@ -29,6 +29,7 @@ var sourceID string
 var credentialID string
 var credentialTypeID string
 var sourceTemplateID string
+var logSourceTypeID string
 
 // bindplane object
 var bp sdk.BindPlane
