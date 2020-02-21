@@ -11,7 +11,10 @@ var logSourceTypeListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all source types",
 	Run: func(cmd *cobra.Command, args []string) {
-		listLogSourceTypes()
+		if err := listLogSourceTypes(); err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+			os.Exit(1)
+		}
 	},
 }
 
@@ -22,14 +25,12 @@ func init() {
 func listLogSourceTypes() {
 	s, err := bp.ListLogSourceTypes()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(1)
+		return err
 	}
 
 	for _, sourceType := range s {
 		if err := sourceType.Print(false); err != nil {
-			fmt.Fprintln(os.Stderr, err.Error())
-			os.Exit(1)
+			return err
 		}
 	}
 }
