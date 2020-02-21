@@ -1,19 +1,19 @@
 package api
 
 import (
-    "testing"
+	"testing"
 )
 
 var apiVersion = GetDefaultVersion()
 
 func TestApiConst(t *testing.T) {
-    if defaultBaseURL != "https://public-api.bindplane.bluemedora.com" {
-        t.Errorf("Expected defaultBaseURL to be https://public-api.bindplane.bluemedora.com")
-    }
+	if defaultBaseURL != "https://public-api.bindplane.bluemedora.com" {
+		t.Errorf("Expected defaultBaseURL to be https://public-api.bindplane.bluemedora.com")
+	}
 
-    if defaultVersion != "/v1" {
-        t.Errorf("Expected defaultVersion to be /v1")
-    }
+	if defaultVersion != "/v1" {
+		t.Errorf("Expected defaultVersion to be /v1")
+	}
 }
 
 func TestGetDefaultBaseURL(t *testing.T) {
