@@ -18,12 +18,24 @@ type BindPlane struct {
 	APIVersion string
 
 	paths struct {
-		collectors      string
-		credentials     string
-		credentialTypes string
-		jobs            string
-		sources         string
-		sourceTypes     string
+		metrics struct {
+			collectors      string
+			credentials     string
+			credentialTypes string
+			jobs            string
+			sources         string
+			sourceTypes     string
+		}
+		logs struct {
+			sourceTypes string
+			sourceConfigs string
+			agents string
+			agentInstallCmd string
+			destTypes string
+			destConfigs string
+			destUpdate string
+			templates string
+		}
 	}
 }
 
@@ -42,12 +54,12 @@ func (bp *BindPlane) Init() error {
 		return err
 	}
 
-	bp.paths.collectors = api.GetCollectorPath(bp.APIVersion)
-	bp.paths.credentials = api.GetCredentialPath(bp.APIVersion)
-	bp.paths.jobs = api.GetJobPath(bp.APIVersion)
-	bp.paths.credentialTypes = api.GetCredentialTypePath(bp.APIVersion)
-	bp.paths.sources = api.GetSourcePath(bp.APIVersion)
-	bp.paths.sourceTypes = api.GetSourceTypePath(bp.APIVersion)
+	bp.paths.metrics.collectors = api.GetCollectorPath(bp.APIVersion)
+	bp.paths.metrics.credentials = api.GetCredentialPath(bp.APIVersion)
+	bp.paths.metrics.jobs = api.GetJobPath(bp.APIVersion)
+	bp.paths.metrics.credentialTypes = api.GetCredentialTypePath(bp.APIVersion)
+	bp.paths.metrics.sources = api.GetSourcePath(bp.APIVersion)
+	bp.paths.metrics.sourceTypes = api.GetSourceTypePath(bp.APIVersion)
 
 	return nil
 }

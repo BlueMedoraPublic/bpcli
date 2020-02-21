@@ -35,23 +35,23 @@ func TestInit(t *testing.T) {
 	}
 
 	// make sure api paths are set
-	if len(bp.paths.collectors) == 0 {
-		t.Errorf("Expected bp.paths.collectors to be set")
+	if len(bp.paths.metrics.collectors) == 0 {
+		t.Errorf("Expected bp.paths.metrics.collectors to be set")
 	}
-	if len(bp.paths.credentialTypes) == 0 {
-		t.Errorf("Expected bp.paths.credentialTypes to be set")
+	if len(bp.paths.metrics.credentialTypes) == 0 {
+		t.Errorf("Expected bp.paths.metrics.credentialTypes to be set")
 	}
-	if len(bp.paths.credentials) == 0 {
-		t.Errorf("Expected bp.paths.credentials to be set")
+	if len(bp.paths.metrics.credentials) == 0 {
+		t.Errorf("Expected bp.paths.metrics.credentials to be set")
 	}
-	if len(bp.paths.jobs) == 0 {
-		t.Errorf("Expected bp.paths.jobs to be set")
+	if len(bp.paths.metrics.jobs) == 0 {
+		t.Errorf("Expected bp.paths.metrics.jobs to be set")
 	}
-	if len(bp.paths.sourceTypes) == 0 {
-		t.Errorf("Expected bp.paths.sourceTypes to be set")
+	if len(bp.paths.metrics.sourceTypes) == 0 {
+		t.Errorf("Expected bp.paths.metrics.sourceTypes to be set")
 	}
-	if len(bp.paths.sources) == 0 {
-		t.Errorf("Expected bp.paths.sources to be set")
+	if len(bp.paths.metrics.sources) == 0 {
+		t.Errorf("Expected bp.paths.metrics.sources to be set")
 	}
 
 	// modify url and make sure Init() does not set it

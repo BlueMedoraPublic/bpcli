@@ -59,7 +59,7 @@ type CredentialTypeTemplate struct {
 // GetCredential will return a credential type
 func (bp BindPlane) GetCredential(id string) (Credential, error) {
 	var c Credential
-	body, err := bp.APICall(http.MethodGet, bp.paths.credentials+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.credentials+"/"+id, nil)
 	if err != nil {
 		return c, err
 	}
@@ -71,7 +71,7 @@ func (bp BindPlane) GetCredential(id string) (Credential, error) {
 // GetCredentials will return a credential type
 func (bp BindPlane) GetCredentials() ([]Credential, error) {
 	var c []Credential
-	body, err := bp.APICall(http.MethodGet, bp.paths.credentials, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.credentials, nil)
 	if err != nil {
 		return c, err
 	}
@@ -83,7 +83,7 @@ func (bp BindPlane) GetCredentials() ([]Credential, error) {
 // GetCredentialTemplate will return a Credential configuration
 func (bp BindPlane) GetCredentialTemplate(id string) (CredentialTypeTemplate, error) {
 	var c CredentialTypeTemplate
-	body, err := bp.APICall(http.MethodGet, bp.paths.credentialTypes+"/"+id+"/template", nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.credentialTypes+"/"+id+"/template", nil)
 	if err != nil {
 		return c, err
 	}
@@ -95,7 +95,7 @@ func (bp BindPlane) GetCredentialTemplate(id string) (CredentialTypeTemplate, er
 // GetCredentialType returns a credentials type
 func (bp BindPlane) GetCredentialType(id string) (CredentialType, error) {
 	var c CredentialType
-	body, err := bp.APICall(http.MethodGet, bp.paths.credentialTypes+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.credentialTypes+"/"+id, nil)
 	if err != nil {
 		return c, err
 	}
@@ -106,14 +106,14 @@ func (bp BindPlane) GetCredentialType(id string) (CredentialType, error) {
 
 // DeleteCredential will delete a configured credential
 func (bp BindPlane) DeleteCredential(id string) error {
-	_, err := bp.APICall(http.MethodDelete, bp.paths.credentials+"/"+id, nil)
+	_, err := bp.APICall(http.MethodDelete, bp.paths.metrics.credentials+"/"+id, nil)
 	return err
 }
 
 // CreateCredential will configure a credential
 func (bp BindPlane) CreateCredential(payload []byte) (CredentialCreateResponse, error) {
 	var c CredentialCreateResponse
-	body, err := bp.APICall(http.MethodPost, bp.paths.credentials, payload)
+	body, err := bp.APICall(http.MethodPost, bp.paths.metrics.credentials, payload)
 	if err != nil {
 		return c, err
 	}
