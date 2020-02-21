@@ -29,7 +29,7 @@ func listLogSourceTypes() error {
 	}
 
 	for _, sourceType := range s {
-		if err := sourceType.Print(false); err != nil {
+		if err := sourceType.Print(jsonFmt); err != nil {
 			return err
 		}
 	}
