@@ -87,3 +87,38 @@ func TestGetLogAgentDeployDestinationConfigPath(t *testing.T) {
         t.Errorf("Expected GetLogAgentDeployDestinationConfigPath() to return " + GetLogAgentPath(apiVersion, "abc") + "/deploy_destination_config")
     }
 }
+
+func TestGetLogDestinatinationTypesPath(t *testing.T) {
+    x := GetLogDestinationTypesPath(apiVersion)
+    if x != apiVersion + logDestinationTypesPath {
+        t.Errorf("Expected GetLogDestinationTypesPath() to return " + apiVersion + logDestinationTypesPath)
+    }
+}
+
+func TestGetLogDestinationTypesParametersPath(t *testing.T) {
+    x := GetLogDestinationTypesParametersPath(apiVersion, "abc")
+    if x != GetLogDestinationTypesPath(apiVersion) + "/abc/parameters" {
+        t.Errorf("Expected GetLogDestinationTypesParametersPath() to return " + GetLogDestinationTypesPath(apiVersion) + "abc" )
+    }
+}
+
+func TestGetLogDestinationConfigsAllPath(t *testing.T) {
+    x := GetLogDestinationConfigsAllPath(apiVersion)
+    if x != apiVersion + logDestinationConfigsPath {
+        t.Errorf("Expected GetLogDestinationConfigsAllPath() to return " + apiVersion + logDestinationConfigsPath)
+    }
+}
+
+func TestGetLogDestinationConfigPath(t *testing.T) {
+    x := GetLogDestinationConfigPath(apiVersion, "abc")
+    if x != GetLogDestinationConfigsAllPath(apiVersion) + "/abc" {
+        t.Errorf("Expected GetLogDestinationConfigPath() to return " + GetLogDestinationConfigsAllPath(apiVersion) + "/abc")
+    }
+}
+
+func TestGetLogDestinationUpdatePath(t *testing.T) {
+    x := GetLogDestinationUpdatePath(apiVersion, "abc")
+    if x != GetLogDestinationConfigsAllPath(apiVersion) + "/abc/update_destination" {
+        t.Errorf("Expected GetLogDestinationUpdatePath() to return" + GetLogDestinationConfigsAllPath(apiVersion) + "/abc/update_destination")
+    }
+}
