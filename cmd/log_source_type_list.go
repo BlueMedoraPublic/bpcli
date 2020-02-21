@@ -22,7 +22,7 @@ func init() {
 	logsTypeCmd.AddCommand(logSourceTypeListCmd)
 }
 
-func listLogSourceTypes() {
+func listLogSourceTypes() error {
 	s, err := bp.ListLogSourceTypes()
 	if err != nil {
 		return err
@@ -33,4 +33,5 @@ func listLogSourceTypes() {
 			return err
 		}
 	}
+	return nil
 }
