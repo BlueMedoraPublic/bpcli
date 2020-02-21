@@ -17,9 +17,10 @@ type LogSourceType struct {
 // ListLogSourceTypes returns all available log source types
 func (bp BindPlane) ListLogSourceTypes() ([]LogSourceType, error) {
     var s []LogSourceType
-    body, err := bp.APICall(http.MethodGet, bp.paths.logs.sourceTypes, nil)
+    uri := bp.paths.logs.sourceTypes
+    body, err := bp.APICall(http.MethodGet, uri, nil)
     if err != nil {
-        return nil, err
+        return s, err
     }
 
     err = json.Unmarshal(body, &s)
