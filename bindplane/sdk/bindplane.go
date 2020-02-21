@@ -33,7 +33,6 @@ type BindPlane struct {
 			agentInstallCmd string
 			destTypes string
 			destConfigs string
-			destUpdate string
 			templates string
 		}
 	}
@@ -60,6 +59,13 @@ func (bp *BindPlane) Init() error {
 	bp.paths.metrics.credentialTypes = api.GetCredentialTypePath(bp.APIVersion)
 	bp.paths.metrics.sources = api.GetSourcePath(bp.APIVersion)
 	bp.paths.metrics.sourceTypes = api.GetSourceTypePath(bp.APIVersion)
+	bp.paths.logs.sourceTypes = api.GetLogSourceTypesPath(bp.APIVersion)
+	bp.paths.logs.sourceConfigs = api.GetLogSourceConfigsPath(bp.APIVersion)
+	bp.paths.logs.agents = api.GetLogAgentsAllPath(bp.APIVersion)
+	bp.paths.logs.agentInstallCmd = api.GetLogAgentInstallCommandPath(bp.APIVersion)
+	bp.paths.logs.destTypes = api.GetLogDestinationTypesPath(bp.APIVersion)
+	bp.paths.logs.destConfigs = api.GetLogDestinationConfigsAllPath(bp.APIVersion)
+	bp.paths.logs.templates = api.GetLogTemplatesAllPath(bp.APIVersion)
 
 	return nil
 }

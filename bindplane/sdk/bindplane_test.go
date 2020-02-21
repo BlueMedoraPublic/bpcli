@@ -53,6 +53,27 @@ func TestInit(t *testing.T) {
 	if len(bp.paths.metrics.sources) == 0 {
 		t.Errorf("Expected bp.paths.metrics.sources to be set")
 	}
+	if len(bp.paths.logs.sourceTypes) == 0 {
+		t.Errorf("Expected bp.paths.logs.sourceTypes to be set")
+	}
+	if len(bp.paths.logs.sourceConfigs) == 0 {
+		t.Errorf("Expected bp.paths.logs.sourceConfigs to be set")
+	}
+	if len(bp.paths.logs.agents) == 0 {
+		t.Errorf("Expected bp.paths.logs.agents to be set")
+	}
+	if len(bp.paths.logs.agentInstallCmd) == 0 {
+		t.Errorf("Expected bp.paths.logs.agentInstallCmd to be set")
+	}
+	if len(bp.paths.logs.destTypes) == 0 {
+		t.Errorf("Expected bp.paths.logs.destTypes to be set")
+	}
+	if len(bp.paths.logs.destConfigs) == 0 {
+		t.Errorf("Expected bp.paths.logs.destConfigs to be set")
+	}
+	if len(bp.paths.logs.templates) == 0 {
+		t.Errorf("Expected bp.paths.logs.templates to be set")
+	}
 
 	// modify url and make sure Init() does not set it
 	bp.BaseURL = "https://dev.bluemedora.com"
