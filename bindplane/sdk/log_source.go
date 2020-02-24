@@ -101,6 +101,19 @@ func (bp BindPlane) ListLogSourceConfigs() ([]LogSourceConfig, error) {
     return c, err
 }
 
+// CreateLogSourceConfig creates a log source config
+func (bp BindPlane) CreateLogSourceConfig(config []byte) ([]byte, error) {
+    c := newLogSourceConfig()
+    if err := json.Unmarshal(config, &c); err != nil {
+        return nil, errors.Wrap(err, "configuration for creating a log source is invalid")
+    }
+
+    if err := c.ValidateCreate(); err != nil {
+        return nil, errors.Wrap(err, "cannot create new log source config")
+    }
+    return []byte("worked"), nil
+}
+
 // Print prints a LogSourceType
 func (s LogSourceType) Print(j bool) error {
 	if j == true {
@@ -159,4 +172,13 @@ func (c LogSourceConfig) ValidateCreate() error {
     }
 
     return nil
+}
+
+// newLogSourceConfig returns a LogSourceConfig struct
+// with an initilized Configuraton map. This helps prevent
+// runtime nil points panics
+func newLogSourceConfig() LogSourceConfig {
+    return LogSourceConfig{
+        Configuration: make(map[string]interface{}),
+    }
 }
