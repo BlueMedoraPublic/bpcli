@@ -103,15 +103,19 @@ func (bp BindPlane) ListLogSourceConfigs() ([]LogSourceConfig, error) {
 
 // CreateLogSourceConfig creates a log source config
 func (bp BindPlane) CreateLogSourceConfig(config []byte) ([]byte, error) {
+    // validate the config by marshalling it into
+    // a struct. the origonal []byte will be passed to the API
     c := newLogSourceConfig()
     if err := json.Unmarshal(config, &c); err != nil {
         return nil, errors.Wrap(err, "configuration for creating a log source is invalid")
     }
-
     if err := c.ValidateCreate(); err != nil {
         return nil, errors.Wrap(err, "cannot create new log source config")
     }
-    return []byte("worked"), nil
+
+    uri := bp.paths.logs.sourceConfigs
+    body, err := bp.APICall(http.MethodPost, uri, config)
+    return body, err
 }
 
 // Print prints a LogSourceType
