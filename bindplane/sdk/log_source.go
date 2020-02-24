@@ -23,6 +23,11 @@ type LogSourceConfig struct {
 		Name    string `json:"name"`
 		Version string `json:"version"`
 	} `json:"source"`
+
+    // configuration is only returned when getting a specific
+    // config, not during a list operation, therefore we omit
+    // it when it is not present
+    Configuration interface{} `json:"configuration,omitempty"`
 }
 
 // GetLogSourceType returns a source type
@@ -39,6 +44,7 @@ func (bp BindPlane) GetLogSourceType(id string) (LogSourceType, error) {
 }
 
 // GetLogSourceTypeParameters returns a source type template
+// TODO: Finish once implemented in API
 func (bp BindPlane) GetLogSourceTypeParameters(id string) ([]byte, error) {
     //var t LogSourceTypeTemplate
     uri := bp.paths.logs.sourceTypes+"/"+id+"/parameters"
@@ -63,6 +69,19 @@ func (bp BindPlane) ListLogSourceTypes() ([]LogSourceType, error) {
 
     err = json.Unmarshal(body, &s)
     return s, err
+}
+
+// GetLogSourceConfig returns a specified log source config
+func (bp BindPlane) GetLogSourceConfig(id string) (LogSourceConfig, error) {
+    var c LogSourceConfig
+    uri := bp.paths.logs.sourceConfigs+"/"+id
+    body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return c, err
+    }
+
+    err = json.Unmarshal(body, &c)
+    return c, err
 }
 
 // ListLogSourceConfigs returns all configured log sources
