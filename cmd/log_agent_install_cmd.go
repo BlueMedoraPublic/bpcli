@@ -23,5 +23,10 @@ func init() {
 }
 
 func agentInstallCommand() error {
+	b, err := bp.InstallCMDLogAgent()
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(b))
 	return nil
 }

@@ -27,5 +27,11 @@ func init() {
 }
 
 func getLogAgentTask() error {
+	a, err := bp.GetLogAgentTask(logAgentID, logTaskID)
+	if err != nil {
+		return err
+	}
+
+	a.Print(jsonFmt)
 	return nil
 }
