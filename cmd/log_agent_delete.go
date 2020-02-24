@@ -25,5 +25,10 @@ func init() {
 }
 
 func delLogAgent() error {
+	if err := bp.DeleteLogAgent(logAgentID); err != nil {
+		return err
+	}
+
+	fmt.Println("log agent " + logAgentID + " deleted")
 	return nil
 }

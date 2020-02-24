@@ -31,7 +31,7 @@ func (bp BindPlane) InstallCMDLogAgent() ([]byte, error) {
     return body, err
 }
 
-// GetLogAgent returns all log agents
+// GetLogAgent returns a log agent
 func (bp BindPlane) GetLogAgent(id string) (LogAgent, error) {
     var a LogAgent
     uri := bp.paths.logs.agents+"/"+id
@@ -42,6 +42,13 @@ func (bp BindPlane) GetLogAgent(id string) (LogAgent, error) {
 
     err = json.Unmarshal(body, &a)
     return a, err
+}
+
+// DeleteLogAgent deletes a log agent
+func (bp BindPlane) DeleteLogAgent(id string) error {
+    uri := bp.paths.logs.agents+"/"+id
+    _, err := bp.APICall(http.MethodDelete, uri, nil)
+    return err
 }
 
 // ListLogAgents returns all log agents
