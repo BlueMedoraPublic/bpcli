@@ -32,6 +32,5 @@ func getLogAgentTask() error {
 		return err
 	}
 
-	a.Print(jsonFmt)
-	return nil
+	return a.Print(jsonFmt)
 }
