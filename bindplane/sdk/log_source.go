@@ -118,6 +118,13 @@ func (bp BindPlane) CreateLogSourceConfig(config []byte) ([]byte, error) {
     return body, err
 }
 
+// DeleteLogSourceConfig deletes a log source config
+func (bp BindPlane) DeleteLogSourceConfig(id  string) error {
+    uri := bp.paths.logs.sourceConfigs+"/"+id
+    _, err := bp.APICall(http.MethodDelete, uri, nil)
+    return err
+}
+
 // Print prints a LogSourceType
 func (s LogSourceType) Print(j bool) error {
 	if j == true {
