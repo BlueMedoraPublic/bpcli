@@ -10,7 +10,7 @@ import (
 
 var logSourceConfigCreateCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Describe a source config",
+	Short: "Create a source config",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := createLogSourceConfigs(); err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
