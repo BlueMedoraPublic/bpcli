@@ -23,5 +23,15 @@ func init() {
 }
 
 func listLogAgents() error {
+	a, err := bp.ListLogAgents()
+	if err != nil {
+		return err
+	}
+
+	for _, agent := range a {
+		if err := agent.Print(jsonFmt); err != nil {
+			return err
+		}
+	}
 	return nil
 }
