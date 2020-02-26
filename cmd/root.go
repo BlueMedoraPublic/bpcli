@@ -34,6 +34,8 @@ var logSourceConfigID string
 var logAgentID string
 var logTaskID string
 var logAgentSourceID string
+var logDestTypeID string
+var logDestConfigID string
 
 // bindplane object
 var bp sdk.BindPlane
