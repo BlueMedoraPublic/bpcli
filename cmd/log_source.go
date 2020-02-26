@@ -6,7 +6,7 @@ import (
 
 var logsSourceCmd = &cobra.Command{
 	Use:   "source",
-	Short: "Manage BindPlane logs sources",
+	Short: "Manage BindPlane log sources",
 }
 
 func init() {
