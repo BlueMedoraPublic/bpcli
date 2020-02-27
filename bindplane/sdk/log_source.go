@@ -48,18 +48,13 @@ func (bp BindPlane) GetLogSourceType(id string) (LogSourceType, error) {
 }
 
 // GetLogSourceTypeParameters returns a source type template
-// TODO: Finish once implemented in API
 func (bp BindPlane) GetLogSourceTypeParameters(id string) ([]byte, error) {
-    //var t LogSourceTypeTemplate
     uri := bp.paths.logs.sourceTypes+"/"+id+"/parameters"
     body, err := bp.APICall(http.MethodGet, uri, nil)
     if err != nil {
-        //return t, err
         return nil, err
     }
     return body, err
-    //err = json.Unmarshal(body, &t)
-    //return s, err
 }
 
 // ListLogSourceTypes returns all available log source types
