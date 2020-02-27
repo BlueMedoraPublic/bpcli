@@ -34,6 +34,7 @@ var logSourceConfigID string
 var logAgentID string
 var logTaskID string
 var logAgentSourceID string
+var logAgentDestID string
 var logDestTypeID string
 var logDestConfigID string
 

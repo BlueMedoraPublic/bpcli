@@ -26,12 +26,22 @@ type LogAgentSource struct {
 	Type          string `json:"type"`
 }
 
-// LogAgentTask represents a BindPlane log agent
+// LogAgentTask represents a BindPlane log agent task
 type LogAgentTask struct {
     ID      string `json:"id"`
 	AgentID string `json:"agent_id"`
 	Name    string `json:"name"`
 	State   string `json:"state"`
+}
+
+// LogAgentDest represents a Bindplane Log agent destination
+// config
+type LogAgentDest struct{
+	DestinationConfigID string `json:"destination_config_id"`
+	Name                string `json:"name"`
+	Version             string `json:"version"`
+	LatestVersion       string `json:"latest_version"`
+	TypeID              string `json:"type_id"`
 }
 
 // InstallCMDLogAgent returns the install commands for installing
@@ -88,7 +98,7 @@ func (bp BindPlane) GetLogAgentTask(agentID, taskID string) (LogAgentTask, error
     return t, err
 }
 
-// ListLogAgentSources returns a log agent
+// ListLogAgentSources returns all log agents
 func (bp BindPlane) ListLogAgentSources(id string) ([]LogAgentSource, error) {
     var s []LogAgentSource
     uri := bp.paths.logs.agents+"/"+id+"/sources"
@@ -101,8 +111,8 @@ func (bp BindPlane) ListLogAgentSources(id string) ([]LogAgentSource, error) {
     return s, err
 }
 
-// GetLogAgentSources returns a log agent
-func (bp BindPlane) GetLogAgentSources(agentID, sourceID string) (LogAgentSource, error) {
+// GetLogAgentSource returns a log agent's source by id
+func (bp BindPlane) GetLogAgentSource(agentID, sourceID string) (LogAgentSource, error) {
     s, err := bp.ListLogAgentSources(agentID)
     if err != nil {
         return LogAgentSource{}, err
@@ -118,6 +128,35 @@ func (bp BindPlane) GetLogAgentSources(agentID, sourceID string) (LogAgentSource
     return LogAgentSource{}, err
 }
 
+// ListLogAgentDest returns a log agent
+func (bp BindPlane) ListLogAgentDest(id string) ([]LogAgentDest, error) {
+    var d []LogAgentDest
+    uri := bp.paths.logs.agents+"/"+id+"/destinations"
+    body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
+// GetLogAgentDest returns a log agent's source by id
+func (bp BindPlane) GetLogAgentDest(agentID, destID string) (LogAgentDest, error) {
+    d, err := bp.ListLogAgentDest(agentID)
+    if err != nil {
+        return LogAgentDest{}, err
+    }
+
+    for _, dest := range d {
+        if dest.DestinationConfigID == destID {
+            return dest, nil
+        }
+    }
+
+    err = errors.New("destination with id " + destID + " was not found when reading agent sources. agent_id: " + agentID)
+    return LogAgentDest{}, err
+}
 
 // Print prints a LogAgent
 func (a LogAgent) Print(j bool) error {
@@ -160,6 +199,24 @@ func (s LogAgentSource) Print(j bool) error {
 		return nil
 	}
 
-	fmt.Println("id:", s.ID, "name:", s.Name, "Version:", s.Version)
+	fmt.Println("id:", s.ID, "name:", s.Name, "version:", s.Version)
+	return nil
+}
+
+// Print prints a LogAgentDest
+func (d LogAgentDest) Print(j bool) error {
+    if j == true {
+		b, err := json.MarshalIndent(d, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Printf(string(b))
+		return nil
+	}
+
+	fmt.Println("destination_config_id:", d.DestinationConfigID,
+        "name:", d.Name,
+        "version:", d.Version,
+        "type_id:", d.TypeID)
 	return nil
 }

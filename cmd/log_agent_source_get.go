@@ -27,7 +27,7 @@ func init() {
 }
 
 func getSourceLogAgent() error {
-	s, err := bp.GetLogAgentSources(logAgentID, logAgentSourceID)
+	s, err := bp.GetLogAgentSource(logAgentID, logAgentSourceID)
 	if err != nil {
 		return err
 	}
