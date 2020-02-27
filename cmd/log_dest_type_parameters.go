@@ -25,5 +25,10 @@ func init() {
 }
 
 func getLogDestTypeParameters() error {
+	d, err := bp.GetLogDestTypeParameters(logDestTypeID)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(d))
 	return nil
 }

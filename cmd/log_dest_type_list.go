@@ -23,5 +23,15 @@ func init() {
 }
 
 func listLogDestTypes() error {
+	d, err := bp.ListLogDestTypes()
+	if err != nil {
+		return err
+	}
+
+	for _, d := range d {
+		if err := d.Print(jsonFmt); err != nil {
+			return err
+		}
+	}
 	return nil
 }
