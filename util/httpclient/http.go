@@ -1,16 +1,24 @@
 package httpclient
 
 import (
+	"os"
 	"bytes"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 
 	"github.com/pkg/errors"
+	"github.com/golang/glog"
 )
 
 // Request returns a response body and status code
 func Request(method string, uri string, payload []byte, token string) ([]byte, error) {
+	// just keep debug to false if ParseBool returns an error
+	debug, _ := strconv.ParseBool(os.Getenv("BINDPLANE_DEBUG"))
+	if debug {
+		glog.Info(method + " " + uri + " " + string(payload))
+	}
+
 	req, err := CreateRequest(method, uri, payload, token)
 	if err != nil {
 		return nil, err
