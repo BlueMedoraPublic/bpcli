@@ -29,6 +29,13 @@ func Request(method string, uri string, payload []byte, token string) ([]byte, e
 		return nil, errors.Wrap(err, "error while making request to "+uri)
 	}
 
+	if debug {
+		glog.Info("status_code:" + strconv.Itoa(status))
+		if body != nil {
+			glog.Info("response_body: " + string(body))
+		}
+	}
+
 	if StatusIs20X(status) == false {
 		return body, apiErrorHelper(uri, status, body)
 	}
