@@ -25,5 +25,10 @@ func init() {
 }
 
 func updateVersionLogDestConfigs() error {
-	return nil
+	d, err := bp.UpdateLogDestConfig(logDestConfigID)
+	if err != nil {
+		return err
+	}
+
+	return d.Print(jsonFmt)
 }

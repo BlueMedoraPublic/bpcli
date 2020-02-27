@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
-	//"io/ioutil"
+	"io/ioutil"
 
 	"github.com/spf13/cobra"
 )
@@ -26,5 +26,15 @@ func init() {
 }
 
 func createLogDestConfigs() error {
-	return nil
+	f, err := ioutil.ReadFile(sourceFile)
+	if err != nil {
+		return err
+	}
+
+	d, err := bp.CreateLogDestConfig(f)
+	if err != nil {
+		return err
+	}
+
+	return d.Print(jsonFmt)
 }

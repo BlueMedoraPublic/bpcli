@@ -25,5 +25,10 @@ func init() {
 }
 
 func getLogDestConfigs() error {
-	return nil
+	d, err := bp.GetLogDestConfig(logDestConfigID)
+	if err != nil {
+		return err
+	}
+
+	return d.Print(jsonFmt)
 }

@@ -25,5 +25,5 @@ func init() {
 }
 
 func delLogDestConfigs() error {
-	return nil
+	return bp.DelLogDestConfig(logDestConfigID)
 }

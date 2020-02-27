@@ -16,6 +16,17 @@ type LogDestType struct {
 	DocURL  string `json:"doc_url"`
 }
 
+// LogDestConfig represents a logging destination configuration
+type LogDestConfig struct {
+    ID          string `json:"id"`
+    Name        string `json:"name"`
+    Destination struct {
+        ID      string `json:"id"`
+        Name    string `json:"name"`
+        Version string `json:"version"`
+    } `json:"destination"`
+}
+
 // GetLogDestType returns a logging destination type
 func (bp BindPlane) GetLogDestType(id string) (LogDestType, error) {
     d, err := bp.ListLogDestTypes()
@@ -57,6 +68,66 @@ func (bp BindPlane) ListLogDestTypes() ([]LogDestType, error) {
     return d, err
 }
 
+// CreateLogDestConfig creates a destination config
+func (bp BindPlane) CreateLogDestConfig(config []byte) (LogDestType, error) {
+    var d LogDestType
+    uri := bp.paths.logs.destConfigs
+    body, err := bp.APICall(http.MethodPost, uri, config)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
+// GetLogDestConfig returns a log destination config
+func (bp BindPlane) GetLogDestConfig(id string) (LogDestConfig, error) {
+    var d LogDestConfig
+    uri := bp.paths.logs.destConfigs+"/"+id
+    body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
+// UpdateLogDestConfig updates the log destination config version
+// to the latest
+func (bp BindPlane) UpdateLogDestConfig(id string) (LogDestConfig, error) {
+    var d LogDestConfig
+    uri := bp.paths.logs.destConfigs+"/"+id+"/update_destination_version"
+    body, err := bp.APICall(http.MethodPut, uri, nil)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
+// DelLogDestConfig deletes a log destination config
+func (bp BindPlane) DelLogDestConfig(id string) error {
+    uri := bp.paths.logs.destConfigs+"/"+id
+    _, err := bp.APICall(http.MethodDelete, uri, nil)
+    return err
+}
+
+// ListLogDestConfigs lists available log destination types
+func (bp BindPlane) ListLogDestConfigs() ([]LogDestConfig, error) {
+    var d []LogDestConfig
+    uri := bp.paths.logs.destConfigs
+    body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
 // Print prints a LogDestType type
 func (d LogDestType) Print(j bool) error {
     if j == true {
@@ -70,4 +141,19 @@ func (d LogDestType) Print(j bool) error {
 
 	fmt.Println("id:", d.ID, "name:", d.Name, "version:", d.Version, "doc_url:", d.DocURL)
 	return nil
+}
+
+// Print print a LogDestConfig type
+func (d LogDestConfig) Print(j bool) error {
+    if j == true {
+        b, err := json.MarshalIndent(d, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Printf(string(b))
+		return nil
+    }
+
+    fmt.Println("id:", d.ID, "name:", d.Name)
+    return nil
 }
