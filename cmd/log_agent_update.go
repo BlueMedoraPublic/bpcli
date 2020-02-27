@@ -25,5 +25,19 @@ func init() {
 }
 
 func updateVersionLogAgent() error {
+	t, err := bp.UpdateLogAgent(logAgentID)
+	if err != nil {
+		return err
+	}
+
+	for {
+		task, err := bp.GetLogAgentTask(logAgentID, t.TaskID)
+		if err != nil {
+			return err
+		}
+		if err := task.Print(jsonFmt); err != nil {
+			return err
+		}
+	}
 	return nil
 }

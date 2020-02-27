@@ -17,6 +17,13 @@ type LogAgent struct {
     Status        string `json:"status"`
 }
 
+// LogAgentUpdateResp represents the object returned by
+// the api when an update command is issued
+type LogAgentUpdateResp struct {
+    AgentID string `json:"agent_id"`
+    TaskID  string `json:"task_id"`
+}
+
 // LogAgentSource represents a BindPlane log agent's source configuration
 type LogAgentSource struct {
 	ID            string `json:"id"`
@@ -57,6 +64,19 @@ func (bp BindPlane) GetLogAgent(id string) (LogAgent, error) {
     var a LogAgent
     uri := bp.paths.logs.agents+"/"+id
     body, err := bp.APICall(http.MethodGet, uri, nil)
+    if err != nil {
+        return a, err
+    }
+
+    err = json.Unmarshal(body, &a)
+    return a, err
+}
+
+// UpdateLogAgent returns a log agent
+func (bp BindPlane) UpdateLogAgent(id string) (LogAgentUpdateResp, error) {
+    var a LogAgentUpdateResp
+    uri := bp.paths.logs.agents+"/"+id+"/update_agent_version"
+    body, err := bp.APICall(http.MethodPatch, uri, nil)
     if err != nil {
         return a, err
     }
@@ -141,7 +161,7 @@ func (bp BindPlane) ListLogAgentDest(id string) ([]LogAgentDest, error) {
     return d, err
 }
 
-// GetLogAgentDest returns a log agent's source by id
+// GetLogAgentDest returns a log agent's destination by id
 func (bp BindPlane) GetLogAgentDest(agentID, destID string) (LogAgentDest, error) {
     d, err := bp.ListLogAgentDest(agentID)
     if err != nil {
@@ -156,6 +176,13 @@ func (bp BindPlane) GetLogAgentDest(agentID, destID string) (LogAgentDest, error
 
     err = errors.New("destination with id " + destID + " was not found when reading agent sources. agent_id: " + agentID)
     return LogAgentDest{}, err
+}
+
+// DeleteLogAgentDest deletes a destination config from a log agent
+func (bp BindPlane) DeleteLogAgentDest(agentID, destID string) error {
+    uri := bp.paths.logs.agents+"/"+agentID+"/destinations/"+destID
+    _, err := bp.APICall(http.MethodDelete, uri, nil)
+    return err
 }
 
 // Print prints a LogAgent
@@ -218,5 +245,21 @@ func (d LogAgentDest) Print(j bool) error {
         "name:", d.Name,
         "version:", d.Version,
         "type_id:", d.TypeID)
+	return nil
+}
+
+
+// Print prints a LogAgentUpdateResp
+func (a LogAgentUpdateResp) Print(j bool) error {
+    if j == true {
+		b, err := json.MarshalIndent(a, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Printf(string(b))
+		return nil
+	}
+
+	fmt.Println("agent_id:", a.AgentID, "task_id:", a.TaskID)
 	return nil
 }
