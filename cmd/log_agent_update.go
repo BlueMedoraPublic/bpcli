@@ -30,14 +30,5 @@ func updateVersionLogAgent() error {
 		return err
 	}
 
-	for {
-		task, err := bp.GetLogAgentTask(logAgentID, t.TaskID)
-		if err != nil {
-			return err
-		}
-		if err := task.Print(jsonFmt); err != nil {
-			return err
-		}
-	}
-	return nil
+	return t.Print(jsonFmt)
 }
