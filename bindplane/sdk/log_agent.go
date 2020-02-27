@@ -114,7 +114,8 @@ func (bp BindPlane) GetLogAgentSources(agentID, sourceID string) (LogAgentSource
         }
     }
 
-    return LogAgentSource{}, errors.New("source with id " + sourceID + " was not found when reading agent sources. agent_id: " + agentID)
+    err = errors.New("source with id " + sourceID + " was not found when reading agent sources. agent_id: " + agentID)
+    return LogAgentSource{}, err
 }
 
 
