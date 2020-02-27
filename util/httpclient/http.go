@@ -41,7 +41,9 @@ func CreateRequest(method string, uri string, payload []byte, token string) (*ht
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "application/json")
+	if payload != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("x-bindplane-api-key", token)
 	return req, err
