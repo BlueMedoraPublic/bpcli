@@ -102,4 +102,7 @@ func init() {
 
 	logAgentUpdateVersion.Flags().StringVarP(&logAgentID, agentIDFlagName, agentIDFlagShort, agentIDFlagDefault, agentIDFlagDesc)
 	logAgentUpdateVersion.MarkFlagRequired(agentIDFlagName)
+
+	logAgentInstallCmd.Flags().StringVarP(&logAgentPlatform, "platform", "", "", "platform (debian9, centos7, kubernetes, etc)")
+	logAgentInstallCmd.MarkFlagRequired("platform")
 }

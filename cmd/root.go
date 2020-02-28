@@ -33,6 +33,7 @@ var sourceTemplateID string
 var logAgentID string
 var logTaskID string
 var logConfigID string
+var logAgentPlatform string
 
 // bindplane object
 var bp sdk.BindPlane
