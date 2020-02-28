@@ -26,15 +26,15 @@ func init() {
 
 	// define all agent source sub command flags here
 	const (
-		logSourceIDFlagName = "source-id"
-		logSourceIDFlagShort = ""
+		logSourceIDFlagName    = "source-id"
+		logSourceIDFlagShort   = ""
 		logSourceIDFlagDefault = ""
-		logSourceIDFlagDesc = ""
+		logSourceIDFlagDesc    = ""
 
-		logSourceTypeIDFlagName = "source-type-id"
-		logSourceTypeIDFlagShort = ""
+		logSourceTypeIDFlagName    = "source-type-id"
+		logSourceTypeIDFlagShort   = ""
 		logSourceTypeIDFlagDefault = ""
-		logSourceTypeIDFlagDesc = "source type id"
+		logSourceTypeIDFlagDesc    = "source type id"
 	)
 
 	logSourceConfigCreateCmd.Flags().StringVarP(&sourceFile, "file", "", "", "The source json file")

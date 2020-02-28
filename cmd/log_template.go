@@ -14,9 +14,9 @@ func init() {
 
 	// define all agent sub command flags here
 	const (
-		logTemplateIDFlagName = "template-id"
-		logTemplateIDFlagShort = ""
-		logTemplateIDFlagDefault  = ""
+		logTemplateIDFlagName    = "template-id"
+		logTemplateIDFlagShort   = ""
+		logTemplateIDFlagDefault = ""
 		logTemplateIDFlagDesc    = "log template id"
 	)
 

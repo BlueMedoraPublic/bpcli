@@ -1,12 +1,12 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"encoding/json"
 
-	"github.com/spf13/cobra"
 	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
 )
 
 var logAgentInstallCmd = &cobra.Command{
@@ -60,5 +60,5 @@ func agentInstallCommand() error {
 	}
 
 	err = errors.New("platform is not supported: " + logAgentPlatform)
-	return errors.Wrap(err, "supported platforms: " + valid)
+	return errors.Wrap(err, "supported platforms: "+valid)
 }

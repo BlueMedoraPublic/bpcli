@@ -1,14 +1,14 @@
 package httpclient
 
 import (
-	"os"
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 
-	"github.com/pkg/errors"
 	"github.com/golang/glog"
+	"github.com/pkg/errors"
 )
 
 // Request returns a response body and status code

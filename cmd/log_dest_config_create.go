@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"io/ioutil"
+	"os"
 
 	"github.com/spf13/cobra"
 )

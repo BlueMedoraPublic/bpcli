@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 

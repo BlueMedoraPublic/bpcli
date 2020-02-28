@@ -28,5 +28,5 @@ func getDestinationsLogAgent() error {
 		return err
 	}
 
- 	return d.Print(jsonFmt)
+	return d.Print(jsonFmt)
 }

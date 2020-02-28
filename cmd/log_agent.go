@@ -32,25 +32,25 @@ func init() {
 
 	// define all agent sub command flags here
 	const (
-		agentIDFlagName = "agent-id"
-		agentIDFlagShort = "a"
-		agentIDFlagDefault  = ""
+		agentIDFlagName    = "agent-id"
+		agentIDFlagShort   = "a"
+		agentIDFlagDefault = ""
 		agentIDFlagDesc    = "log agent id"
 
-		destIDFlagName  = "destination-id"
-		destIDFlagShort  = ""
-		destIDFlagDefault  = ""
-		destIDFlagDesc  = "destination configuration ID"
+		destIDFlagName    = "destination-id"
+		destIDFlagShort   = ""
+		destIDFlagDefault = ""
+		destIDFlagDesc    = "destination configuration ID"
 
-		sourceIDFlagName = "source-id"
-		sourceIDFlagShort = ""
+		sourceIDFlagName    = "source-id"
+		sourceIDFlagShort   = ""
 		sourceIDFlagDefault = ""
-		sourceIDFlagDesc = "source config id"
+		sourceIDFlagDesc    = "source config id"
 
-		taskIDFlagName = "task-id"
-		taskIDFlagShort = ""
+		taskIDFlagName    = "task-id"
+		taskIDFlagShort   = ""
 		taskIDFlagDefault = ""
-		taskIDFlagDesc = "task id"
+		taskIDFlagDesc    = "task id"
 	)
 
 	logAgentDeleteCmd.Flags().StringVarP(&logAgentID, agentIDFlagName, agentIDFlagShort, agentIDFlagDefault, agentIDFlagDesc)

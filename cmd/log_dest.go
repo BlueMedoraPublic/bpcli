@@ -26,15 +26,15 @@ func init() {
 
 	// define all destination sub command flags here
 	const (
-		logDestIDFlagName = "destination-id"
-		logDestIDFlagShort = ""
+		logDestIDFlagName    = "destination-id"
+		logDestIDFlagShort   = ""
 		logDestIDFlagDefault = ""
-		logDestIDFlagDesc = "destination id"
+		logDestIDFlagDesc    = "destination id"
 
-		logDestTypeIDFlagName = "destination-type-id"
-		logDestTypeIDFlagShort = ""
+		logDestTypeIDFlagName    = "destination-type-id"
+		logDestTypeIDFlagShort   = ""
 		logDestTypeIDFlagDefault = ""
-		logDestTypeIDFlagDesc = "destination type id"
+		logDestTypeIDFlagDesc    = "destination type id"
 	)
 
 	logDestConfigCreateCmd.Flags().StringVarP(&sourceFile, "file", "", "", "destination json file")

@@ -27,13 +27,13 @@ type BindPlane struct {
 			sourceTypes     string
 		}
 		logs struct {
-			sourceTypes string
-			sourceConfigs string
-			agents string
+			sourceTypes     string
+			sourceConfigs   string
+			agents          string
 			agentInstallCmd string
-			destTypes string
-			destConfigs string
-			templates string
+			destTypes       string
+			destConfigs     string
+			templates       string
 		}
 	}
 }
