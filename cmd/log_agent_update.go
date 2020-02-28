@@ -20,8 +20,6 @@ var logAgentUpdateVersion = &cobra.Command{
 
 func init() {
 	logAgentCmd.AddCommand(logAgentUpdateVersion)
-	logAgentUpdateVersion.Flags().StringVar(&logAgentID, "id", "", "The ID of the log agent")
-	logAgentUpdateVersion.MarkFlagRequired("id")
 }
 
 func updateVersionLogAgent() error {

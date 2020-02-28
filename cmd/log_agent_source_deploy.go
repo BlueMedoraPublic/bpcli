@@ -20,14 +20,10 @@ var logAgentSourceDeploy = &cobra.Command{
 
 func init() {
 	logAgentSourceCmd.AddCommand(logAgentSourceDeploy)
-	logAgentSourceDeploy.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentSourceDeploy.Flags().StringVar(&logAgentSourceID, "config-id", "", "The source config id")
-	logAgentSourceDeploy.MarkFlagRequired("agent-id")
-	logAgentSourceDeploy.MarkFlagRequired("config-id")
 }
 
 func deploySourceLogAgent() error {
-	d, err := bp.DeployLogAgentSource(logAgentID, logAgentSourceID)
+	d, err := bp.DeployLogAgentSource(logAgentID, logConfigID)
 	if err != nil {
 		return err
 	}

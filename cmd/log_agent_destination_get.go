@@ -20,14 +20,10 @@ var logAgentDestGet = &cobra.Command{
 
 func init() {
 	logAgentDestinationCmd.AddCommand(logAgentDestGet)
-	logAgentDestGet.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentDestGet.Flags().StringVar(&logDestConfigID, "destination-id", "", "The destination configuration ID")
-	logAgentDestGet.MarkFlagRequired("agent-id")
-	logAgentDestGet.MarkFlagRequired("destination-id")
 }
 
 func getDestinationsLogAgent() error {
-	d, err := bp.GetLogAgentDest(logAgentID, logDestConfigID)
+	d, err := bp.GetLogAgentDest(logAgentID, logConfigID)
 	if err != nil {
 		return err
 	}

@@ -20,10 +20,8 @@ var logDestConfigDeleteCmd = &cobra.Command{
 
 func init() {
 	logsDestConfigCmd.AddCommand(logDestConfigDeleteCmd)
-	logDestConfigDeleteCmd.Flags().StringVar(&logDestConfigID, "id", "", "The ID of the destination config")
-	logDestConfigDeleteCmd.MarkFlagRequired("id")
 }
 
 func delLogDestConfigs() error {
-	return bp.DelLogDestConfig(logDestConfigID)
+	return bp.DelLogDestConfig(logConfigID)
 }

@@ -20,8 +20,6 @@ var logAgentGetCmd = &cobra.Command{
 
 func init() {
 	logAgentCmd.AddCommand(logAgentGetCmd)
-	logAgentGetCmd.Flags().StringVar(&logAgentID, "id", "", "The ID of the log agent")
-	logAgentGetCmd.MarkFlagRequired("id")
 }
 
 func getLogAgent() error {

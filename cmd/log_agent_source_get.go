@@ -20,14 +20,10 @@ var logAgentSourceGet = &cobra.Command{
 
 func init() {
 	logAgentSourceCmd.AddCommand(logAgentSourceGet)
-	logAgentSourceGet.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentSourceGet.Flags().StringVar(&logAgentSourceID, "source-id", "", "The ID of the log agent's source")
-	logAgentSourceGet.MarkFlagRequired("agent-id")
-	logAgentSourceGet.MarkFlagRequired("source-id")
 }
 
 func getSourceLogAgent() error {
-	s, err := bp.GetLogAgentSource(logAgentID, logAgentSourceID)
+	s, err := bp.GetLogAgentSource(logAgentID, logConfigID)
 	if err != nil {
 		return err
 	}

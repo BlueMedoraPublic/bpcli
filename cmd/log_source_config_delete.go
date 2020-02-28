@@ -20,15 +20,13 @@ var logSourceConfigDeleteCmd = &cobra.Command{
 
 func init() {
 	logsConfigCmd.AddCommand(logSourceConfigDeleteCmd)
-	logSourceConfigDeleteCmd.Flags().StringVar(&logSourceConfigID, "id", "", "The ID of the source config")
-	logSourceConfigDeleteCmd.MarkFlagRequired("id")
 }
 
 func delLogSourceConfigs() error {
-	if err := bp.DeleteLogSourceConfig(logSourceConfigID); err != nil {
+	if err := bp.DeleteLogSourceConfig(logConfigID); err != nil {
 		return err
 	}
 
-	fmt.Println("log source config " + logSourceConfigID + " deleted")
+	fmt.Println("log source config " + logConfigID + " deleted")
 	return nil
 }

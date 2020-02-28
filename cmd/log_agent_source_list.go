@@ -20,8 +20,6 @@ var logAgentSourceList = &cobra.Command{
 
 func init() {
 	logAgentSourceCmd.AddCommand(logAgentSourceList)
-	logAgentSourceList.Flags().StringVar(&logAgentID, "id", "", "The ID of the log agent")
-	logAgentSourceList.MarkFlagRequired("id")
 }
 
 func listSourceLogAgent() error {

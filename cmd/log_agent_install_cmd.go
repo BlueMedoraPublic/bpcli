@@ -3,13 +3,14 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"encoding/json"
 
 	"github.com/spf13/cobra"
 )
 
 var logAgentInstallCmd = &cobra.Command{
 	Use:   "install-cmd",
-	Short: "Get the command(s) required to install an agent on an OS",
+	Short: "Get the command required to install an agent",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := agentInstallCommand(); err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
@@ -27,6 +28,14 @@ func agentInstallCommand() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(b))
+
+	platforms := make(map[string]string)
+	if err := json.Unmarshal(b, &platforms); err != nil {
+		return err
+	}
+
+	for platform, command := range platforms {
+		fmt.Println(platform, command)
+	}
 	return nil
 }

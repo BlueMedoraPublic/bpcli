@@ -20,8 +20,6 @@ var logAgentDeleteCmd = &cobra.Command{
 
 func init() {
 	logAgentCmd.AddCommand(logAgentDeleteCmd)
-	logAgentDeleteCmd.Flags().StringVar(&logAgentID, "id", "", "The ID of the log agent")
-	logAgentDeleteCmd.MarkFlagRequired("id")
 }
 
 func delLogAgent() error {

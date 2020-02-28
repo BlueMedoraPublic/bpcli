@@ -20,12 +20,8 @@ var logAgentDestDel = &cobra.Command{
 
 func init() {
 	logAgentDestinationCmd.AddCommand(logAgentDestDel)
-	logAgentDestDel.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentDestDel.Flags().StringVar(&logDestConfigID, "destination-id", "", "The destination configuration ID")
-	logAgentDestDel.MarkFlagRequired("agent-id")
-	logAgentDestDel.MarkFlagRequired("destination-id")
 }
 
 func delDestinationsLogAgent() error {
-	return bp.DeleteLogAgentDest(logAgentID, logDestConfigID)
+	return bp.DeleteLogAgentDest(logAgentID, logConfigID)
 }

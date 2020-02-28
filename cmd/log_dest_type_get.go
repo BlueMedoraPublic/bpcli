@@ -20,12 +20,10 @@ var logDestTypeGetCmd = &cobra.Command{
 
 func init() {
 	logsDestTypeCmd.AddCommand(logDestTypeGetCmd)
-	logDestTypeGetCmd.Flags().StringVar(&logDestTypeID, "id", "", "The ID of the destination type")
-	logDestTypeGetCmd.MarkFlagRequired("id")
 }
 
 func getLogDestTypes() error {
-	d, err := bp.GetLogDestType(logDestTypeID)
+	d, err := bp.GetLogDestType(logConfigID)
 	if err != nil {
 		return err
 	}

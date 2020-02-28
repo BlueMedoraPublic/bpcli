@@ -20,10 +20,6 @@ var logAgentTaskGetCmd = &cobra.Command{
 
 func init() {
 	logAgentTaskCmd.AddCommand(logAgentTaskGetCmd)
-	logAgentTaskGetCmd.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentTaskGetCmd.Flags().StringVar(&logTaskID, "task-id", "", "The ID of the task")
-	logAgentTaskGetCmd.MarkFlagRequired("agent-id")
-	logAgentTaskGetCmd.MarkFlagRequired("task-id")
 }
 
 func getLogAgentTask() error {

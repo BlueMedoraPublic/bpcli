@@ -20,12 +20,10 @@ var logSourceConfigUpdateVersion = &cobra.Command{
 
 func init() {
 	logsConfigCmd.AddCommand(logSourceConfigUpdateVersion)
-	logSourceConfigUpdateVersion.Flags().StringVar(&logSourceConfigID, "id", "", "The ID of the source config")
-	logSourceConfigUpdateVersion.MarkFlagRequired("id")
 }
 
 func updateVersionLogSourceConfigs() error {
-	c, err := bp.UpdateVersionLogSourceConfig(logSourceConfigID)
+	c, err := bp.UpdateVersionLogSourceConfig(logConfigID)
 	if err != nil {
 		return err
 	}

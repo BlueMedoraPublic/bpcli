@@ -20,12 +20,8 @@ var logAgentSourceDelete = &cobra.Command{
 
 func init() {
 	logAgentSourceCmd.AddCommand(logAgentSourceDelete)
-	logAgentSourceDelete.Flags().StringVar(&logAgentID, "agent-id", "", "The ID of the log agent")
-	logAgentSourceDelete.Flags().StringVar(&logAgentSourceID, "source-id", "", "The ID of the log agent's source")
-	logAgentSourceDelete.MarkFlagRequired("agent-id")
-	logAgentSourceDelete.MarkFlagRequired("source-id")
 }
 
 func delSourceLogAgent() error {
-	return bp.DeleteLogAgentSource(logAgentID, logAgentSourceID)
+	return bp.DeleteLogAgentSource(logAgentID, logConfigID)
 }

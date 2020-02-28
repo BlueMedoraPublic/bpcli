@@ -20,12 +20,10 @@ var logSourceConfigGetCmd = &cobra.Command{
 
 func init() {
 	logsConfigCmd.AddCommand(logSourceConfigGetCmd)
-	logSourceConfigGetCmd.Flags().StringVar(&logSourceConfigID, "id", "", "The ID of the source config")
-	logSourceConfigGetCmd.MarkFlagRequired("id")
 }
 
 func getLogSourceConfigs() error {
-	c, err := bp.GetLogSourceConfig(logSourceConfigID)
+	c, err := bp.GetLogSourceConfig(logConfigID)
 	if err != nil {
 		return err
 	}

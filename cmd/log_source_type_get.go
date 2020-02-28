@@ -20,12 +20,10 @@ var logSourceTypeGetCmd = &cobra.Command{
 
 func init() {
 	logsTypeCmd.AddCommand(logSourceTypeGetCmd)
-	logSourceTypeGetCmd.Flags().StringVar(&logSourceTypeID, "id", "", "The ID of the source type")
-	logSourceTypeGetCmd.MarkFlagRequired("id")
 }
 
 func getLogSourceTypes() error {
-	s, err := bp.GetLogSourceType(logSourceTypeID)
+	s, err := bp.GetLogSourceType(logConfigID)
 	if err != nil {
 		return err
 	}

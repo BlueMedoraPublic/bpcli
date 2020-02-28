@@ -29,14 +29,10 @@ var sourceID string
 var credentialID string
 var credentialTypeID string
 var sourceTemplateID string
-var logSourceTypeID string
-var logSourceConfigID string
+
 var logAgentID string
 var logTaskID string
-var logAgentSourceID string
-var logAgentDestID string
-var logDestTypeID string
-var logDestConfigID string
+var logConfigID string
 
 // bindplane object
 var bp sdk.BindPlane

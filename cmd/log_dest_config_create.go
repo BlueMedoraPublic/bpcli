@@ -21,8 +21,6 @@ var logDestConfigCreateCmd = &cobra.Command{
 
 func init() {
 	logsDestConfigCmd.AddCommand(logDestConfigCreateCmd)
-	logDestConfigCreateCmd.Flags().StringVar(&sourceFile, "file", "", "The destination json file")
-	logDestConfigCreateCmd.MarkFlagRequired("file")
 }
 
 func createLogDestConfigs() error {

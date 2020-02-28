@@ -20,12 +20,10 @@ var logDestConfigGetCmd = &cobra.Command{
 
 func init() {
 	logsDestConfigCmd.AddCommand(logDestConfigGetCmd)
-	logDestConfigGetCmd.Flags().StringVar(&logDestConfigID, "id", "", "The ID of the destination config")
-	logDestConfigGetCmd.MarkFlagRequired("id")
 }
 
 func getLogDestConfigs() error {
-	d, err := bp.GetLogDestConfig(logDestConfigID)
+	d, err := bp.GetLogDestConfig(logConfigID)
 	if err != nil {
 		return err
 	}

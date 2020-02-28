@@ -20,12 +20,10 @@ var logDestConfigUpdateVersion = &cobra.Command{
 
 func init() {
 	logsDestConfigCmd.AddCommand(logDestConfigUpdateVersion)
-	logDestConfigUpdateVersion.Flags().StringVar(&logDestConfigID, "id", "", "The ID of the destination config")
-	logDestConfigUpdateVersion.MarkFlagRequired("id")
 }
 
 func updateVersionLogDestConfigs() error {
-	d, err := bp.UpdateLogDestConfig(logDestConfigID)
+	d, err := bp.UpdateLogDestConfig(logConfigID)
 	if err != nil {
 		return err
 	}
