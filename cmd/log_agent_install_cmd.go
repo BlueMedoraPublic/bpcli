@@ -51,14 +51,14 @@ func agentInstallCommand() error {
 
 	// safe to index p[0] because we know the slice is at
 	// least length 1 from the check above ^
-	foundPlatforms := p[0]
+	valid := p[0]
 	for i, p := range p {
 		if i == 1 {
 			continue
 		}
-		foundPlatforms = foundPlatforms + ", " + p
+		valid = valid + ", " + p
 	}
 
 	err = errors.New("platform is not supported: " + logAgentPlatform)
-	return errors.Wrap(err, "supported platforms: " + foundPlatforms)
+	return errors.Wrap(err, "supported platforms: " + valid)
 }
