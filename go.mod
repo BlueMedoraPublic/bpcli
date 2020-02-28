@@ -1,6 +1,6 @@
 module github.com/BlueMedoraPublic/bpcli
 
-go 1.12
+go 1.14
 
 require (
 	4d63.com/gochecknoinits v0.0.0-20200108094044-eb73b47b9fc4 // indirect
