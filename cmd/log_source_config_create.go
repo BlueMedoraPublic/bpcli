@@ -29,12 +29,11 @@ func createLogSourceConfigs() error {
 		return err
 	}
 
-	var b []byte
-	b, err = bp.CreateLogSourceConfig(f)
+
+	c, err := bp.CreateLogSourceConfig(f)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(string(b))
-	return nil
+	return c.Print(jsonFmt)
 }

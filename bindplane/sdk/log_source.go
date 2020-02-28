@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/pkg/errors"
 )
 
 // LogSourceType type represents a log source type
@@ -32,6 +30,7 @@ type LogSourceConfig struct {
 	// config, not during a list operation, therefore we omit
 	// it when it is not present
 	Configuration map[string]interface{} `json:"configuration,omitempty"`
+	CustomTemplate string `json:"custom_template,omitempty"`
 }
 
 // GetLogSourceType returns a source type
@@ -97,20 +96,16 @@ func (bp BindPlane) ListLogSourceConfigs() ([]LogSourceConfig, error) {
 }
 
 // CreateLogSourceConfig creates a log source config
-func (bp BindPlane) CreateLogSourceConfig(config []byte) ([]byte, error) {
-	// validate the config by marshalling it into
-	// a struct. the origonal []byte will be passed to the API
+func (bp BindPlane) CreateLogSourceConfig(config []byte) (LogSourceConfig, error) {
 	c := newLogSourceConfig()
-	if err := json.Unmarshal(config, &c); err != nil {
-		return nil, errors.Wrap(err, "configuration for creating a log source is invalid")
-	}
-	if err := c.ValidateCreate(); err != nil {
-		return nil, errors.Wrap(err, "cannot create new log source config")
-	}
-
 	uri := bp.paths.logs.sourceConfigs
 	body, err := bp.APICall(http.MethodPost, uri, config)
-	return body, err
+	if err != nil {
+		return c, err
+	}
+
+	err = json.Unmarshal(body, &c)
+	return c, err
 }
 
 // DeleteLogSourceConfig deletes a log source config
@@ -160,36 +155,6 @@ func (c LogSourceConfig) Print(j bool) error {
 	}
 
 	fmt.Println("id:", c.ID, "name:", c.Name, "source:", c.Source.ID)
-	return nil
-}
-
-// ValidateCreate validates a LogSourceConfig to ensure
-// it is formatted properly for creating a new config
-func (c LogSourceConfig) ValidateCreate() error {
-	if c.ID != "" {
-		return errors.New("log source config id should not be set")
-	}
-
-	if c.Name == "" {
-		return errors.New("log source config name is not set")
-	}
-
-	if c.Source.ID == "" {
-		return errors.New("log source config source id is not set")
-	}
-
-	if c.Source.Name == "" {
-		return errors.New("log source config source name is not set")
-	}
-
-	if c.Source.Version == "" {
-		return errors.New("log source config source version is not set")
-	}
-
-	if len(c.Configuration) == 0 {
-		return errors.New("log source config configuration is not set")
-	}
-
 	return nil
 }
 
