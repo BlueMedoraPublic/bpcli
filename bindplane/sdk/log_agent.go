@@ -148,6 +148,20 @@ func (bp BindPlane) GetLogAgentSource(agentID, sourceID string) (LogAgentSource,
     return LogAgentSource{}, err
 }
 
+// DeployLogAgentSource deploys a source config to a log agent
+func (bp BindPlane) DeployLogAgentSource(agentID, configID string) (LogAgentSource, error) {
+    var d LogAgentSource
+    payload := []byte("{\"source_config_id\":\""+configID+"\"}")
+    uri := bp.paths.logs.agents+"/"+agentID+"/deploy_source_config"
+    body, err := bp.APICall(http.MethodPost, uri, payload)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
+}
+
 // DeleteLogAgentSource deletes a source config from a log agent
 func (bp BindPlane) DeleteLogAgentSource(agentID, sourceID string) error {
     uri := bp.paths.logs.agents+"/"+agentID+"/sources/"+sourceID
@@ -183,6 +197,20 @@ func (bp BindPlane) GetLogAgentDest(agentID, destID string) (LogAgentDest, error
 
     err = errors.New("destination with id " + destID + " was not found when reading agent sources. agent_id: " + agentID)
     return LogAgentDest{}, err
+}
+
+// DeployLogAgentDest deploys a destination config to a log agent
+func (bp BindPlane) DeployLogAgentDest(agentID, configID string) (LogAgentDest, error) {
+    var d LogAgentDest
+    payload := []byte("{\"destination_config_id\":\""+configID+"\"}")
+    uri := bp.paths.logs.agents+"/"+agentID+"/deploy_destination_config"
+    body, err := bp.APICall(http.MethodPost, uri, payload)
+    if err != nil {
+        return d, err
+    }
+
+    err = json.Unmarshal(body, &d)
+    return d, err
 }
 
 // DeleteLogAgentDest deletes a destination config from a log agent
