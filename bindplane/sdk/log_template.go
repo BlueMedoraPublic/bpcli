@@ -11,14 +11,7 @@ import (
 
 // LogTemplate represents a bindplane logs template
 type LogTemplate struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	AgentGroup string `json:"agent_group"`
-}
-
-// LogTemplateCreate represents the object used to create
-// a bindplane logs template
-type LogTemplateCreate struct {
+	ID                  string   `json:"id,omitempty"`
 	Name                string   `json:"name"`
 	SourceConfigIds     []string `json:"source_config_ids"`
 	DestinationConfigID string   `json:"destination_config_id"`
@@ -39,7 +32,7 @@ func (bp BindPlane) GetLogTemplate(id string) (LogTemplate, error) {
 }
 
 // CreateLogTemplate returns a log template
-func (bp BindPlane) CreateLogTemplate(t LogTemplateCreate) (LogTemplate, error) {
+func (bp BindPlane) CreateLogTemplate(t LogTemplate) (LogTemplate, error) {
 	template := LogTemplate{}
 	return template, errors.New("creating templates is not currently supported by the API")
 	if err := t.Verify(); err != nil {
@@ -62,7 +55,7 @@ func (bp BindPlane) CreateLogTemplate(t LogTemplateCreate) (LogTemplate, error) 
 }
 
 // UpdateLogTemplate returns a log template
-func (bp BindPlane) UpdateLogTemplate(id string, t LogTemplateCreate) error {
+func (bp BindPlane) UpdateLogTemplate(id string, t LogTemplate) error {
 	if err := t.Verify(); err != nil {
 		return errors.Wrap(err, "cannot create new template")
 	}
@@ -108,12 +101,12 @@ func (t LogTemplate) Print(j bool) error {
 		return nil
 	}
 
-	fmt.Println("id:", t.ID, "name:", t.Name, "agent_group:"+t.AgentGroup)
+	fmt.Println("id:", t.ID, "name:", t.Name)
 	return nil
 }
 
 // Verify validates a LogTemplateCreate type
-func (t LogTemplateCreate) Verify() error {
+func (t LogTemplate) Verify() error {
 	err := errors.New("log template validation failed")
 
 	if t.Name == "" {

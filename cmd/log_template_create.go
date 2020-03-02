@@ -32,7 +32,7 @@ func createLogTemplate() error {
 		return err
 	}
 
-	t := sdk.LogTemplateCreate{}
+	t := sdk.LogTemplate{}
 	if err := json.Unmarshal(f, &t); err != nil {
 		return err
 	}
