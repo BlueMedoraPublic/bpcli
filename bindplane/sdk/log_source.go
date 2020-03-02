@@ -21,16 +21,18 @@ type LogSourceConfig struct {
 	ID     string `json:"id,omitempty"`
 	Name   string `json:"name"`
 	Source struct {
-		ID      string `json:"id"`
-		Name    string `json:"name"`
-		Version string `json:"version"`
-	} `json:"source"`
+		ID      string `json:"id,omitempty"`
+		Name    string `json:"name,omitempty"`
+		Version string `json:"version,omitempty"`
+	} `json:"source,omitempty"`
 
 	// configuration is only returned when getting a specific
 	// config, not during a list operation, therefore we omit
 	// it when it is not present
 	Configuration map[string]interface{} `json:"configuration,omitempty"`
 	CustomTemplate string `json:"custom_template,omitempty"`
+	SourceTypeID string `json:"source_type_id,omitempty"`
+	SourceVersion string `json:"source_version,omitempty"`
 }
 
 // GetLogSourceType returns a source type
@@ -96,7 +98,26 @@ func (bp BindPlane) ListLogSourceConfigs() ([]LogSourceConfig, error) {
 }
 
 // CreateLogSourceConfig creates a log source config
-func (bp BindPlane) CreateLogSourceConfig(config []byte) (LogSourceConfig, error) {
+func (bp BindPlane) CreateLogSourceConfig(config LogSourceConfig) (LogSourceConfig, error) {
+	c := newLogSourceConfig()
+
+	payload, err := json.Marshal(config)
+	if err != nil {
+		return c, err
+	}
+
+	uri := bp.paths.logs.sourceConfigs
+	body, err := bp.APICall(http.MethodPost, uri, payload)
+	if err != nil {
+		return c, err
+	}
+
+	err = json.Unmarshal(body, &c)
+	return c, err
+}
+
+// CreateLogSourceConfig creates a log source config
+func (bp BindPlane) CreateLogSourceConfigRaw(config []byte) (LogSourceConfig, error) {
 	c := newLogSourceConfig()
 	uri := bp.paths.logs.sourceConfigs
 	body, err := bp.APICall(http.MethodPost, uri, config)

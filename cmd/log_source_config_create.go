@@ -29,8 +29,7 @@ func createLogSourceConfigs() error {
 		return err
 	}
 
-
-	c, err := bp.CreateLogSourceConfig(f)
+	c, err := bp.CreateLogSourceConfigRaw(f)
 	if err != nil {
 		return err
 	}
