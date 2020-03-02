@@ -39,20 +39,26 @@ func (bp BindPlane) GetLogTemplate(id string) (LogTemplate, error) {
 }
 
 // CreateLogTemplate returns a log template
-func (bp BindPlane) CreateLogTemplate(t LogTemplateCreate) error {
-	return errors.New("creating templates is not currently supported by the API")
+func (bp BindPlane) CreateLogTemplate(t LogTemplateCreate) (LogTemplate, error) {
+	template := LogTemplate{}
+	return template, errors.New("creating templates is not currently supported by the API")
 	if err := t.Verify(); err != nil {
-		return errors.Wrap(err, "cannot create new template")
+		return template, errors.Wrap(err, "cannot create new template")
 	}
 
 	payload, err := json.Marshal(t)
 	if err != nil {
-		return err
+		return template, err
 	}
 
 	uri := bp.paths.logs.templates
-	_, err = bp.APICall(http.MethodPost, uri, payload)
-	return err
+	body, err := bp.APICall(http.MethodPost, uri, payload)
+	if err != nil {
+		return template, err
+	}
+
+	err = json.Unmarshal(body, &template)
+	return template, err
 }
 
 // UpdateLogTemplate returns a log template

@@ -37,10 +37,11 @@ func createLogTemplate() error {
 		return err
 	}
 
-	if err := bp.CreateLogTemplate(t); err != nil {
+	template, err := bp.CreateLogTemplate(t)
+	if err != nil {
 		return err
 	}
 
-	fmt.Println("template created")
+	fmt.Println("template created: " + template.ID)
 	return nil
 }
