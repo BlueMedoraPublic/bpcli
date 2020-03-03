@@ -116,7 +116,7 @@ func (bp BindPlane) CreateLogSourceConfig(config LogSourceConfig) (LogSourceConf
 	return c, err
 }
 
-// CreateLogSourceConfig creates a log source config
+// CreateLogSourceConfigRaw creates a log source config
 func (bp BindPlane) CreateLogSourceConfigRaw(config []byte) (LogSourceConfig, error) {
 	c := newLogSourceConfig()
 	uri := bp.paths.logs.sourceConfigs
