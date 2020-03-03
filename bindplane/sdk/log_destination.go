@@ -25,7 +25,7 @@ type LogDestConfig struct {
 		Name    string `json:"name,omitempty"`
 		Version string `json:"version,omitempty"`
 	} `json:"destination,omitempty"`
-	Configuration map[string]interface{} `json:"configuraton,omitempty"`
+	Configuration map[string]interface{} `json:"configuration,omitempty"`
 	DestinationTypeID string `json:"destination_type_id,omitempty"`
 	DestinationVersion string `json:"destination_version,omitempty"`
 }
