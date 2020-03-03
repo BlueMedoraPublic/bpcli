@@ -84,7 +84,7 @@ func (bp BindPlane) InstallCMDLogAgent(logAgentPlatform string) (string, error) 
 	// least length 1 from the check above ^
 	valid := p[0]
 	for i, p := range p {
-		if i == 1 {
+		if i == 0 {
 			continue
 		}
 		valid = valid + ", " + p
