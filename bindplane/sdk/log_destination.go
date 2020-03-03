@@ -18,13 +18,16 @@ type LogDestType struct {
 
 // LogDestConfig represents a logging destination configuration
 type LogDestConfig struct {
-	ID          string `json:"id"`
+	ID          string `json:"id,omitempty"`
 	Name        string `json:"name"`
 	Destination struct {
-		ID      string `json:"id"`
-		Name    string `json:"name"`
-		Version string `json:"version"`
-	} `json:"destination"`
+		ID      string `json:"id,omitempty"`
+		Name    string `json:"name,omitempty"`
+		Version string `json:"version,omitempty"`
+	} `json:"destination,omitempty"`
+	Configuration map[string]interface{} `json:"configuraton,omitempty"`
+	DestinationTypeID string `json:"destination_type_id,omitempty"`
+	DestinationVersion string `json:"destination_version,omitempty"`
 }
 
 // GetLogDestType returns a logging destination type
