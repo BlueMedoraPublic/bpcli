@@ -33,11 +33,11 @@ func init() {
 	// define all agent sub command flags here
 	const (
 		agentIDFlagName    = "agent-id"
-		agentIDFlagShort   = "a"
+		agentIDFlagShort   = ""
 		agentIDFlagDefault = ""
 		agentIDFlagDesc    = "log agent id"
 
-		destIDFlagName    = "destination-id"
+		destIDFlagName    = "config-id"
 		destIDFlagShort   = ""
 		destIDFlagDefault = ""
 		destIDFlagDesc    = "destination configuration ID"

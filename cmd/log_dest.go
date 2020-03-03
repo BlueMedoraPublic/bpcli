@@ -26,12 +26,12 @@ func init() {
 
 	// define all destination sub command flags here
 	const (
-		logDestIDFlagName    = "destination-id"
+		logDestIDFlagName    = "config-id"
 		logDestIDFlagShort   = ""
 		logDestIDFlagDefault = ""
 		logDestIDFlagDesc    = "destination id"
 
-		logDestTypeIDFlagName    = "destination-type-id"
+		logDestTypeIDFlagName    = "type-id"
 		logDestTypeIDFlagShort   = ""
 		logDestTypeIDFlagDefault = ""
 		logDestTypeIDFlagDesc    = "destination type id"

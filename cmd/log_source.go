@@ -26,12 +26,12 @@ func init() {
 
 	// define all agent source sub command flags here
 	const (
-		logSourceIDFlagName    = "source-id"
+		logSourceIDFlagName    = "config-id"
 		logSourceIDFlagShort   = ""
 		logSourceIDFlagDefault = ""
-		logSourceIDFlagDesc    = ""
+		logSourceIDFlagDesc    = "log source config id"
 
-		logSourceTypeIDFlagName    = "source-type-id"
+		logSourceTypeIDFlagName    = "type-id"
 		logSourceTypeIDFlagShort   = ""
 		logSourceTypeIDFlagDefault = ""
 		logSourceTypeIDFlagDesc    = "source type id"
