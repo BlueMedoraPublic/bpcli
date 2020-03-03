@@ -69,8 +69,27 @@ func (bp BindPlane) ListLogDestTypes() ([]LogDestType, error) {
 }
 
 // CreateLogDestConfig creates a destination config
-func (bp BindPlane) CreateLogDestConfig(config []byte) (LogDestType, error) {
-	var d LogDestType
+func (bp BindPlane) CreateLogDestConfig(config LogDestConfig) (LogDestConfig, error) {
+	var d LogDestConfig
+
+	p, err := json.Marshal(config)
+	if err != nil {
+		return d, err
+	}
+
+	uri := bp.paths.logs.destConfigs
+	body, err := bp.APICall(http.MethodPost, uri, p)
+	if err != nil {
+		return d, err
+	}
+
+	err = json.Unmarshal(body, &d)
+	return d, err
+}
+
+// CreateLogDestConfigRaw creates a destination config
+func (bp BindPlane) CreateLogDestConfigRaw(config []byte) (LogDestConfig, error) {
+	var d LogDestConfig
 	uri := bp.paths.logs.destConfigs
 	body, err := bp.APICall(http.MethodPost, uri, config)
 	if err != nil {

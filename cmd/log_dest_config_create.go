@@ -29,7 +29,7 @@ func createLogDestConfigs() error {
 		return err
 	}
 
-	d, err := bp.CreateLogDestConfig(f)
+	d, err := bp.CreateLogDestConfigRaw(f)
 	if err != nil {
 		return err
 	}
