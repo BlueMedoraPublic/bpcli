@@ -53,10 +53,45 @@ type LogAgentDest struct {
 
 // InstallCMDLogAgent returns the install commands for installing
 // the bindplane log agent
-func (bp BindPlane) InstallCMDLogAgent() ([]byte, error) {
+func (bp BindPlane) InstallCMDLogAgent(logAgentPlatform string) (string, error) {
 	uri := bp.paths.logs.agentInstallCmd
 	body, err := bp.APICall(http.MethodGet, uri, nil)
-	return body, err
+
+	platforms := make(map[string]string)
+	if err := json.Unmarshal(body, &platforms); err != nil {
+		return "", err
+	}
+
+	if logAgentPlatform == "all" {
+		return string(body), err
+	}
+
+	p := []string{}
+	for platform, command := range platforms {
+		p = append(p, platform)
+		if platform == logAgentPlatform {
+			return command, nil
+		}
+	}
+
+	// exit early if no platforms are returned
+	if len(p) < 1 {
+		err := errors.New("unexpected response from server, no install commands returned")
+		return "", err
+	}
+
+	// safe to index p[0] because we know the slice is at
+	// least length 1 from the check above ^
+	valid := p[0]
+	for i, p := range p {
+		if i == 1 {
+			continue
+		}
+		valid = valid + ", " + p
+	}
+
+	err = errors.New("platform is not supported: " + logAgentPlatform)
+	return "", errors.Wrap(err, "supported platforms: "+valid)
 }
 
 // GetLogAgent returns a log agent

@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"encoding/json"
 
-	"github.com/pkg/errors"
+	"github.com/BlueMedoraPublic/bpcli/util/pprint"
+
 	"github.com/spf13/cobra"
 )
 
@@ -25,40 +26,19 @@ func init() {
 }
 
 func agentInstallCommand() error {
-	b, err := bp.InstallCMDLogAgent()
+	c, err := bp.InstallCMDLogAgent(logAgentPlatform)
 	if err != nil {
 		return err
 	}
 
-	platforms := make(map[string]string)
-	if err := json.Unmarshal(b, &platforms); err != nil {
-		return err
-	}
-
-	p := []string{}
-	for platform, command := range platforms {
-		p = append(p, platform)
-		if platform == logAgentPlatform {
-			fmt.Println(command)
-			return nil
+	if logAgentPlatform == "all" {
+		m := make(map[string]string)
+		if err := json.Unmarshal([]byte(c), &m); err != nil {
+			return err
 		}
+		return pprint.PrintJSONStringMap(m)
 	}
 
-	// exit early if no platforms are returned
-	if len(p) < 1 {
-		return errors.New("unexpected response from server, no install commands returned")
-	}
-
-	// safe to index p[0] because we know the slice is at
-	// least length 1 from the check above ^
-	valid := p[0]
-	for i, p := range p {
-		if i == 1 {
-			continue
-		}
-		valid = valid + ", " + p
-	}
-
-	err = errors.New("platform is not supported: " + logAgentPlatform)
-	return errors.Wrap(err, "supported platforms: "+valid)
+	fmt.Println(c)
+	return nil
 }
