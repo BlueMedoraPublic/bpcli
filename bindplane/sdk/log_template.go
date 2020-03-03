@@ -34,7 +34,6 @@ func (bp BindPlane) GetLogTemplate(id string) (LogTemplate, error) {
 // CreateLogTemplate returns a log template
 func (bp BindPlane) CreateLogTemplate(t LogTemplate) (LogTemplate, error) {
 	template := LogTemplate{}
-	return template, errors.New("creating templates is not currently supported by the API")
 	if err := t.Verify(); err != nil {
 		return template, errors.Wrap(err, "cannot create new template")
 	}
@@ -126,10 +125,6 @@ func (t LogTemplate) Verify() error {
 
 	if t.DestinationConfigID == "" {
 		return errors.Wrap(err, "destination_config_id is empty")
-	}
-
-	if t.AgentGroup == "" {
-		return errors.Wrap(err, "agent_group is empty")
 	}
 
 	return nil
