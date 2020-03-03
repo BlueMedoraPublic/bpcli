@@ -49,9 +49,9 @@ func init() {
 	logDestConfigUpdateVersion.Flags().StringVarP(&logConfigID, logDestIDFlagName, logDestIDFlagShort, logDestIDFlagDefault, logDestIDFlagDesc)
 	logDestConfigUpdateVersion.MarkFlagRequired(logDestIDFlagName)
 
-	logDestTypeGetCmd.Flags().StringVarP(&logConfigID, logDestTypeIDFlagName, logDestTypeIDFlagShort, logDestTypeIDFlagDefault, logDestTypeIDFlagDesc)
+	logDestTypeGetCmd.Flags().StringVarP(&logTypeID, logDestTypeIDFlagName, logDestTypeIDFlagShort, logDestTypeIDFlagDefault, logDestTypeIDFlagDesc)
 	logDestTypeGetCmd.MarkFlagRequired(logDestTypeIDFlagName)
 
-	logDestTypeParametersCmd.Flags().StringVarP(&logConfigID, logDestTypeIDFlagName, logDestTypeIDFlagShort, logDestTypeIDFlagDefault, logDestTypeIDFlagDesc)
+	logDestTypeParametersCmd.Flags().StringVarP(&logTypeID, logDestTypeIDFlagName, logDestTypeIDFlagShort, logDestTypeIDFlagDefault, logDestTypeIDFlagDesc)
 	logDestTypeParametersCmd.MarkFlagRequired(logDestTypeIDFlagName)
 }
