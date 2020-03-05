@@ -53,8 +53,11 @@ type LogAgentDest struct {
 
 // InstallCMDLogAgent returns the install commands for installing
 // the bindplane log agent
-func (bp BindPlane) InstallCMDLogAgent(logAgentPlatform string) (string, error) {
+func (bp BindPlane) InstallCMDLogAgent(logAgentPlatform, templateID string) (string, error) {
 	uri := bp.paths.logs.agentInstallCmd
+	if templateID != "" {
+		uri = uri + "?template_id=" + templateID
+	}
 	body, err := bp.APICall(http.MethodGet, uri, nil)
 
 	platforms := make(map[string]string)

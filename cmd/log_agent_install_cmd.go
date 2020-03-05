@@ -12,7 +12,7 @@ import (
 
 var logAgentInstallCmd = &cobra.Command{
 	Use:   "install-cmd",
-	Short: "Get the command required to install an agent",
+	Short: "Get the command required to install an agent, with an optional template",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := agentInstallCommand(); err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
@@ -26,7 +26,7 @@ func init() {
 }
 
 func agentInstallCommand() error {
-	c, err := bp.InstallCMDLogAgent(logAgentPlatform)
+	c, err := bp.InstallCMDLogAgent(logAgentPlatform, logTemplateID)
 	if err != nil {
 		return err
 	}
