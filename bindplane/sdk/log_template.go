@@ -16,6 +16,8 @@ type LogTemplate struct {
 	SourceConfigIds     []string `json:"source_config_ids"`
 	DestinationConfigID string   `json:"destination_config_id"`
 	AgentGroup          string   `json:"agent_group"`
+	CreatedAt int64 `json:"created_at,omitempty"`
+	UpdatedAt int64 `json:"updated_at,omitempty"`
 }
 
 // GetLogTemplate returns a log template
