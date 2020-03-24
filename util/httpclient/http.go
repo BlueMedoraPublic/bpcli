@@ -4,13 +4,21 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 
+	"github.com/golang/glog"
 	"github.com/pkg/errors"
 )
 
 // Request returns a response body and status code
 func Request(method string, uri string, payload []byte, token string) ([]byte, error) {
+	// just keep debug to false if ParseBool returns an error
+	debug, _ := strconv.ParseBool(os.Getenv("BINDPLANE_DEBUG"))
+	if debug {
+		glog.Info(method + " " + uri + " " + string(payload))
+	}
+
 	req, err := CreateRequest(method, uri, payload, token)
 	if err != nil {
 		return nil, err
@@ -19,6 +27,13 @@ func Request(method string, uri string, payload []byte, token string) ([]byte, e
 	body, status, err := performRequest(req)
 	if err != nil {
 		return nil, errors.Wrap(err, "error while making request to "+uri)
+	}
+
+	if debug {
+		glog.Info("status_code:" + strconv.Itoa(status))
+		if body != nil {
+			glog.Info("response_body: " + string(body))
+		}
 	}
 
 	if StatusIs20X(status) == false {
@@ -33,7 +48,9 @@ func CreateRequest(method string, uri string, payload []byte, token string) (*ht
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "application/json")
+	if payload != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("x-bindplane-api-key", token)
 	return req, err

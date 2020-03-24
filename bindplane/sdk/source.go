@@ -86,7 +86,7 @@ type SourceCreateResponse struct {
 // GetSource will return a source object
 func (bp BindPlane) GetSource(id string) (SourceConfigGet, error) {
 	var s SourceConfigGet
-	body, err := bp.APICall(http.MethodGet, bp.paths.sources+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.sources+"/"+id, nil)
 	if err != nil {
 		return s, err
 	}
@@ -98,7 +98,7 @@ func (bp BindPlane) GetSource(id string) (SourceConfigGet, error) {
 // GetSources will return a source object
 func (bp BindPlane) GetSources() ([]SourceConfigGet, error) {
 	var s []SourceConfigGet
-	body, err := bp.APICall(http.MethodGet, bp.paths.sources, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.sources, nil)
 	if err != nil {
 		return s, err
 	}
@@ -111,7 +111,7 @@ func (bp BindPlane) GetSources() ([]SourceConfigGet, error) {
 // default values
 func (bp BindPlane) GetSourceTemplate(id string) (SourceTypeTemplate, error) {
 	var t SourceTypeTemplate
-	body, err := bp.APICall(http.MethodGet, bp.paths.sourceTypes+"/"+id+"/template", nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.sourceTypes+"/"+id+"/template", nil)
 	if err != nil {
 		return t, err
 	}
@@ -123,7 +123,7 @@ func (bp BindPlane) GetSourceTemplate(id string) (SourceTypeTemplate, error) {
 // GetSourceType will return a source type
 func (bp BindPlane) GetSourceType(id string) (SourceType, error) {
 	var t SourceType
-	body, err := bp.APICall(http.MethodGet, bp.paths.sourceTypes+"/"+id, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.sourceTypes+"/"+id, nil)
 	if err != nil {
 		return t, err
 	}
@@ -135,7 +135,7 @@ func (bp BindPlane) GetSourceType(id string) (SourceType, error) {
 // ListSourceTypes will return an array of available source types
 func (bp BindPlane) ListSourceTypes() ([]SourceType, error) {
 	var t []SourceType
-	body, err := bp.APICall(http.MethodGet, bp.paths.sourceTypes, nil)
+	body, err := bp.APICall(http.MethodGet, bp.paths.metrics.sourceTypes, nil)
 	if err != nil {
 		return t, err
 	}
@@ -146,14 +146,14 @@ func (bp BindPlane) ListSourceTypes() ([]SourceType, error) {
 
 // DeleteSource will delete a configured source
 func (bp BindPlane) DeleteSource(id string) ([]byte, error) {
-	return bp.APICall(http.MethodDelete, bp.paths.sources+"/"+id, nil)
+	return bp.APICall(http.MethodDelete, bp.paths.metrics.sources+"/"+id, nil)
 }
 
 // CreateSource will configure a new source, returning the
 // http response body, http status code, and an error
 func (bp BindPlane) CreateSource(payload []byte) (SourceCreateResponse, error) {
 	var resp SourceCreateResponse
-	body, err := bp.APICall(http.MethodPost, bp.paths.sources, payload)
+	body, err := bp.APICall(http.MethodPost, bp.paths.metrics.sources, payload)
 	if err != nil {
 		return resp, err
 	}

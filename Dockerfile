@@ -1,4 +1,4 @@
-FROM golang:1.13
+FROM golang:1.14
 
 ARG bindplane_api_key
 ARG bindplane_live_test
