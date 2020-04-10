@@ -29,12 +29,12 @@ type LogSourceConfig struct {
 	// configuration is only returned when getting a specific
 	// config, not during a list operation, therefore we omit
 	// it when it is not present
-	Configuration map[string]interface{} `json:"configuration,omitempty"`
-	CustomTemplate string `json:"custom_template,omitempty"`
-	SourceTypeID string `json:"source_type_id,omitempty"`
-	SourceVersion string `json:"source_version,omitempty"`
-	CreatedAt int64 `json:"created_at,omitempty"`
-	UpdatedAt int64 `json:"updated_at,omitempty"`
+	Configuration  map[string]interface{} `json:"configuration,omitempty"`
+	CustomTemplate string                 `json:"custom_template,omitempty"`
+	SourceTypeID   string                 `json:"source_type_id,omitempty"`
+	SourceVersion  string                 `json:"source_version,omitempty"`
+	CreatedAt      int64                  `json:"created_at,omitempty"`
+	UpdatedAt      int64                  `json:"updated_at,omitempty"`
 }
 
 // GetLogSourceType returns a source type

@@ -25,11 +25,11 @@ type LogDestConfig struct {
 		Name    string `json:"name,omitempty"`
 		Version string `json:"version,omitempty"`
 	} `json:"destination,omitempty"`
-	Configuration map[string]interface{} `json:"configuration,omitempty"`
-	DestinationTypeID string `json:"destination_type_id,omitempty"`
-	DestinationVersion string `json:"destination_version,omitempty"`
-	CreatedAt int64 `json:"created_at,omitempty"`
-	UpdatedAt int64 `json:"updated_at,omitempty"`
+	Configuration      map[string]interface{} `json:"configuration,omitempty"`
+	DestinationTypeID  string                 `json:"destination_type_id,omitempty"`
+	DestinationVersion string                 `json:"destination_version,omitempty"`
+	CreatedAt          int64                  `json:"created_at,omitempty"`
+	UpdatedAt          int64                  `json:"updated_at,omitempty"`
 }
 
 // GetLogDestType returns a logging destination type

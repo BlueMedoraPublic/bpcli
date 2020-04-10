@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/pkg/errors"
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
 const envAPIKey = "BINDPLANE_API_KEY"
@@ -182,7 +182,7 @@ func currentAPIKeyENV() (string, error) {
 
 	if a != "" {
 		if _, err := uuid.Parse(a); err != nil {
-			return "", errors.Wrap(err, envAPIKey + " is set but is not a valid UUID")
+			return "", errors.Wrap(err, envAPIKey+" is set but is not a valid UUID")
 		}
 	}
 	return a, nil
@@ -197,7 +197,7 @@ func currentAccount() (string, error) {
 	for _, a := range accounts {
 		if a.Current {
 			if _, err := uuid.Parse(a.Key); err != nil {
-				return "", errors.Wrap(err, "Found current account in config, '" + a.Name + "', however, the API key is not a valid UUID")
+				return "", errors.Wrap(err, "Found current account in config, '"+a.Name+"', however, the API key is not a valid UUID")
 			}
 			return a.Key, nil
 		}
@@ -225,7 +225,7 @@ func validateNewAccount(accounts []account, name string, key string) error {
 	}
 
 	if _, err := uuid.Parse(key); err != nil {
-		return errors.Wrap(err, "The API Key given is not a valid UUID: " + key)
+		return errors.Wrap(err, "The API Key given is not a valid UUID: "+key)
 	}
 
 	if uniqueUUID(accounts, key) == false {
