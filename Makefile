@@ -10,7 +10,7 @@ VERSION := $(shell cat bindplane/version.go | grep "const VERSION" | cut -c 17- 
 
 $(shell mkdir -p artifacts)
 
-build: clean
+build:
 	$(info building bpcli ${VERSION})
 
 	@docker build \
