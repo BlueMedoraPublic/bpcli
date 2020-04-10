@@ -1,15 +1,12 @@
+// +build integration
+
 package sdk
 
 import (
-	"os"
 	"testing"
 )
 
 func TestGetCollector(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -25,10 +22,6 @@ func TestGetCollector(t *testing.T) {
 }
 
 func TestGetCollectors(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -76,11 +69,6 @@ func TestGetCollectors(t *testing.T) {
 }
 
 func TestDeleteCollector(t *testing.T) {
-	// non destructive test, expect an error from api
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -92,12 +80,4 @@ func TestDeleteCollector(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected DeleteCollector() to return an error when using a bad id")
 	}
-}
-
-func liveTest() bool {
-	x := os.Getenv("BINDPLANE_LIVE_TEST")
-	if x == "1" {
-		return true
-	}
-	return false
 }
