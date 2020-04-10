@@ -6,6 +6,7 @@ require (
 	4d63.com/gochecknoinits v0.0.0-20200108094044-eb73b47b9fc4 // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/google/go-cmp v0.3.1
+	github.com/google/uuid v1.1.1
 	github.com/mibk/dupl v1.0.0 // indirect
 	github.com/mitchellh/gox v1.0.1 // indirect
 	github.com/pkg/errors v0.8.1
