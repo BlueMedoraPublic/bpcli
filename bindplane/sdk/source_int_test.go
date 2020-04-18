@@ -3,8 +3,8 @@
 package sdk
 
 import (
-    "strings"
-    "testing"
+	"strings"
+	"testing"
 )
 
 var testSource = strings.TrimRight(`{
