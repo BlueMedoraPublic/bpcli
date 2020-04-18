@@ -35,8 +35,6 @@ clean () {
     rm -f bpcli
 
     docker ps | grep $UNIX_TIME | awk '{print $1}' | xargs --no-run-if-empty -I{} docker rm -f {} >> /dev/null
-
-    exit
 }
 trap clean ERR
 
