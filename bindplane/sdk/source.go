@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
+	"github.com/google/uuid"
 )
 
 // SourceConfigGet type describes a source configuration
@@ -168,12 +168,12 @@ func (s SourceConfigCreate) Validate() error {
 	if s.CollectionInterval < 1 {
 		msg = msg + "\ncollection interval cannot be less than 1"
 	}
-	if !uuid.IsUUID(s.CollectorID) {
-		msg = msg + "\ncollector id is invalid"
+	if _, err := uuid.Parse(s.CollectorID); err != nil {
+		msg = msg + "\ncollector id is invalid: " + err.Error()
 	}
 	if len(s.Credentials.Credentials) > 0 {
-		if !uuid.IsUUID(s.Credentials.Credentials) {
-			msg = msg + "\ncredentials id is not a valid UUID"
+		if _, err := uuid.Parse(s.Credentials.Credentials); err != nil {
+			msg = msg + "\ncredentials id is not a valid UUID: " + err.Error()
 		}
 	}
 	if len(s.Name) == 0 {

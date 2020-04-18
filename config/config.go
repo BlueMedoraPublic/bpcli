@@ -6,10 +6,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
+
+const envAPIKey = "BINDPLANE_API_KEY"
 
 // account stores users BindPlane account information
 type account struct {
@@ -59,24 +61,18 @@ or the 'current' API key found in the credentials file if
 the environment is not set
 */
 func CurrentAPIKey() (string, error) {
-	apiKey, found, err := currentAPIKeyENV()
-
-	// return an error if env is found but malformed
-	if found == true && err != nil {
-		return "", err
-	}
-
-	// return api key if found
-	if found == true && err == nil {
-		return apiKey, nil
-	}
-
-	apiKey, err = currentAccount()
+	apiKey, err := currentAPIKeyENV()
 	if err != nil {
-		// return both ENV and File errors
-		//return "", errors.Wrap(err, e.Error())
-		return "", err
+		return apiKey, err
 	}
+
+	if apiKey == "" {
+		apiKey, err = currentAccount()
+		if err != nil {
+			return "", errors.Wrap(err, "could not read api key from environment or configuration file")
+		}
+	}
+
 	return apiKey, nil
 }
 
@@ -181,21 +177,15 @@ func SetCurrent(name string) error {
 	return write(updatedListBytes)
 }
 
-// currentAPIKeyENV returns the API key, true, and nil if
-// the API key is found in the environment and is a valid uuid
-// returns false if the environment is empty
-func currentAPIKeyENV() (string, bool, error) {
-	a := os.Getenv("BINDPLANE_API_KEY")
+func currentAPIKeyENV() (string, error) {
+	a := os.Getenv(envAPIKey)
 
-	if len(strings.TrimSpace(a)) == 0 {
-		return "", false, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not set")
+	if a != "" {
+		if _, err := uuid.Parse(a); err != nil {
+			return "", errors.Wrap(err, envAPIKey+" is set but is not a valid UUID")
+		}
 	}
-
-	if !uuid.IsUUID(a) {
-		return "", true, errors.New("ERROR: The BINDPLANE_API_KEY environment variable is not a valid uuid")
-	}
-
-	return a, true, nil
+	return a, nil
 }
 
 func currentAccount() (string, error) {
@@ -205,12 +195,11 @@ func currentAccount() (string, error) {
 	}
 
 	for _, a := range accounts {
-		if a.Current == true {
-			if uuid.IsUUID(a.Key) {
-				return a.Key, nil
+		if a.Current {
+			if _, err := uuid.Parse(a.Key); err != nil {
+				return "", errors.Wrap(err, "Found current account in config, '"+a.Name+"', however, the API key is not a valid UUID")
 			}
-			//return a.Key, nil
-			return "", errors.New("Found current account in config, '" + a.Name + "', however, the API key is not a valid UUID")
+			return a.Key, nil
 		}
 	}
 	return "", noCurrentAccountError()
@@ -235,23 +224,15 @@ func validateNewAccount(accounts []account, name string, key string) error {
 		return errors.New("The name cannot be an empty string")
 	}
 
-	if !uuid.IsUUID(key) {
-		return errors.New("The API Key given is not a valid UUID")
+	if _, err := uuid.Parse(key); err != nil {
+		return errors.Wrap(err, "The API Key given is not a valid UUID: "+key)
 	}
 
-	b, err := uniqueUUID(accounts, key)
-	if err != nil {
-		return err
-	}
-	if b == false {
+	if uniqueUUID(accounts, key) == false {
 		return errors.New("The API Key given already exists within the config file")
 	}
 
-	n, err := uniqueName(accounts, name)
-	if err != nil {
-		return err
-	}
-	if n == false {
+	if uniqueName(accounts, name) == false {
 		return errors.New("The name given already exists within the config file")
 	}
 

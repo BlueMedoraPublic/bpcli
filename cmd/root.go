@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 
+	"github.com/google/uuid"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -85,38 +85,38 @@ func initConfig() {
 // validateFlags returns nil if all flags pass their checks
 func validateFlags() error {
 	if len(collectorID) > 0 {
-		if uuid.IsUUID(collectorID) != true {
-			return errors.New("collector id must be a valid UUID")
+		if _, err := uuid.Parse(collectorID); err != nil {
+			return errors.Wrap(err, "collector id must be a valid UUID")
 		}
 	}
 
 	if len(groupID) > 0 {
-		if uuid.IsUUID(groupID) != true {
-			return errors.New("group id must be a valid UUID")
+		if _, err := uuid.Parse(groupID); err != nil {
+			return errors.Wrap(err, "group id must be a valid UUID")
 		}
 	}
 
 	if len(jobID) > 0 {
-		if uuid.IsUUID(jobID) != true {
-			return errors.New("job id must be a valid UUID")
+		if _, err := uuid.Parse(jobID); err != nil {
+			return errors.Wrap(err, "job id must be a valid UUID")
 		}
 	}
 
 	if len(sourceID) > 0 {
-		if uuid.IsUUID(sourceID) != true {
-			return errors.New("source id must be a valid UUID")
+		if _, err := uuid.Parse(sourceID); err != nil {
+			return errors.Wrap(err, "source id must be a valid UUID")
 		}
 	}
 
 	if len(credentialID) > 0 {
-		if uuid.IsUUID(credentialID) != true {
-			return errors.New("credential must be a valid UUID")
+		if _, err := uuid.Parse(credentialID); err != nil {
+			return errors.Wrap(err, "credential must be a valid UUID")
 		}
 	}
 
 	if len(credentialTypeID) > 0 {
-		if uuid.IsUUID(credentialTypeID) != true {
-			return errors.New("credential type id must be a valid UUID")
+		if _, err := uuid.Parse(credentialTypeID); err != nil {
+			return errors.Wrap(err, "credential type id must be a valid UUID")
 		}
 	}
 
