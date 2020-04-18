@@ -25,14 +25,16 @@ CRED_FILE="${CRED_NAME}.cred"
 # cleanup when done
 clean () {
     echo "cleaning up deployment. . ."
-    
+
     rm -f *.source
     rm -f *.cred
 
     ./bpcli source list --json | jq ".[] | select(.name | contains(\"${UNIX_TIME}\"))" | jq .id | xargs --no-run-if-empty -n1 ./bpcli source delete --id
     ./bpcli credential list | grep $UNIX_TIME | awk '{print $2}' | xargs --no-run-if-empty -n1 ./bpcli credential delete --id
-    sleep 10
-    ./bpcli collector delete --id $COLLECTOR_UUID || sleep 30 && ./bpcli collector delete --id $COLLECTOR_UUID
+    ./bpcli collector list | grep $COLLECTOR_NAME | awk '{print $2}' | xargs -n1 --no-run-if-empty -n1 ./bpcli collector delete --id
+
+    rm -f bpcli
+
     docker ps | grep $UNIX_TIME | awk '{print $1}' | xargs --no-run-if-empty -I{} docker rm -f {} >> /dev/null
 
     exit
