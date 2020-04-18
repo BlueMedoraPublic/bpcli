@@ -10,7 +10,6 @@ UNIX_TIME=$(date +%s)
 # collector
 COLLECTOR_NAME="intigration-test-${UNIX_TIME}"
 COLLECTOR_UUID=$(uuidgen)
-COLLECTOR_SECRET_KEY="e223ccf9-3e93-4f62-ba6e-2a9803b41bc2"
 API_ADDRESS="https://production.api.bindplane.bluemedora.com"
 BINDPLANE_HOME="/opt/bluemedora/bindplane-collector"
 
