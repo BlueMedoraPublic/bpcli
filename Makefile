@@ -6,15 +6,11 @@ ifndef BINDPLANE_API_KEY
     $(error BINDPLANE_API_KEY is not set)
 endif
 
-ifndef BINDPLANE_LIVE_TEST
-    $(info BINDPLANE_LIVE_TEST is not set, tests will be performed locally only.)
-endif
-
 VERSION := $(shell cat bindplane/version.go | grep "const VERSION" | cut -c 17- | tr -d '"')
 
 $(shell mkdir -p artifacts)
 
-build: clean
+build:
 	$(info building bpcli ${VERSION})
 
 	@docker build \
@@ -30,7 +26,12 @@ build: clean
 	# cleanup
 	@docker rm -fv bpcliartifacts &> /dev/null
 
-test:
+test: clean-test quick
+	go test --tags=integration ./...
+	$(shell cp -f bpcli scripts/test/)
+	./scripts/test/test_all.sh
+
+test-local:
 	go test ./...
 
 lint:
@@ -39,7 +40,10 @@ lint:
 fmt:
 	go fmt ./...
 
-clean:
+clean-test:
+	$(shell rm -f scripts/test/bpcli)
+
+clean: clean-tests
 	$(shell rm -rf artifacts/*)
 
 quick:

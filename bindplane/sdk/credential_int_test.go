@@ -1,3 +1,5 @@
+// +build integration
+
 package sdk
 
 import (
@@ -18,10 +20,6 @@ var testCred = strings.TrimRight(`{
 }`, "\r\n")
 
 func TestGetCredential(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -36,10 +34,6 @@ func TestGetCredential(t *testing.T) {
 }
 
 func TestGetCredentials(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -65,10 +59,6 @@ func TestGetCredentials(t *testing.T) {
 }
 
 func TestGetCredentialTemplate(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -88,10 +78,6 @@ func TestGetCredentialTemplate(t *testing.T) {
 }
 
 func TestGetCredentialType(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
@@ -111,10 +97,6 @@ func TestGetCredentialType(t *testing.T) {
 }
 
 func TestCreateDeleteCredential(t *testing.T) {
-	if liveTest() == false {
-		return
-	}
-
 	var bp BindPlane
 	err := bp.Init()
 	if err != nil {
