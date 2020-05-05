@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 UNIX_TIME=$(date +%s)
 
 # collector
-COLLECTOR_NAME="intigration-test-${UNIX_TIME}"
+COLLECTOR_NAME="integration-test-${UNIX_TIME}"
 COLLECTOR_UUID=$(uuidgen)
 API_ADDRESS="https://production.api.bindplane.bluemedora.com"
 BINDPLANE_HOME="/opt/bluemedora/bindplane-collector"
