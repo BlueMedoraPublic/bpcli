@@ -21,6 +21,11 @@ SOURCE_FILE="${SOURCE_NAME}.source"
 CRED_NAME="${UNIX_TIME}-psql-integration"
 CRED_FILE="${CRED_NAME}.cred"
 
+if [[ -z "${COLLECTOR_SECRET_KEY}" ]]; then
+  echo "COLLECTOR_SECRET_KEY must be set"
+  exit 1
+fi
+
 # cleanup when done
 clean () {
     echo "cleaning up deployment. . ."
